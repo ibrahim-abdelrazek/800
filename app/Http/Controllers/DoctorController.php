@@ -40,7 +40,7 @@ class DoctorController extends Controller
                 $doctors = Doctor::where('user_id', Auth::user()->id)->get();
             }
             $specialities = Doctor::select('specialty')->pluck('specialty');
-            return view('doctors.index')->with('doctors', $doctors)->with('specialites', array_unique($specialities));
+            return view('doctors.index')->with('doctors', $doctors)->with('specialites', array_unique($specialities->toArray()));
         }else {
             return view('extra.404');
         }
@@ -75,7 +75,9 @@ class DoctorController extends Controller
             $request->validate([
                 'name' => 'required|string|max:100',
                 'specialty' => 'required|string|max:100',
-                'contact_details' => 'required|string'
+                'contact_email' => 'required|email|unique:doctors',
+                'contact_number' => 'required|string',
+
             ]);
 
 

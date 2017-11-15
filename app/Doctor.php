@@ -14,7 +14,8 @@ class Doctor extends Model
         'id',
         'name',
         'specialty',
-        'contact_details',
+        'contact_email',
+        'contact_number',
         'partner_id',
         'nurse_id',
         'user_id'

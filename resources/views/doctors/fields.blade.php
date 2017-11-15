@@ -26,7 +26,6 @@
      <input type='text'placeholder='Enter Doctor Specialities' 
      class='flexdatalist form-control'
      data-min-length='1'
-     multiple='multiple'
      list='ks-flexdatalist-multiple-languages'
      name='specialty'>
      <datalist id="ks-flexdatalist-multiple-languages">
@@ -48,7 +47,7 @@
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:') !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('contact_number', null, [  'placeholder'=>'Enter Doctor\'s Number', 'class' => 'form-control']) !!}
+        {!! Form::text('contact_number', null, [  'placeholder'=>'Enter Doctor\'s Number', 'id'=>'', 'class' => 'form-control ks-phone-mask-input']) !!}
     </div>
 </div>
 
@@ -88,6 +87,8 @@
     @else
         {!! Form::submit('Save', ['disabled', 'class' => 'btn btn-large btn-success']) !!}
     @endif
+    
+    <button id="reset" class="btn btn-default" type="button">Reset</button>
 </div>
 
 

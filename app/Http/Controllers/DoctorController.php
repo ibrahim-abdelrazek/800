@@ -39,8 +39,8 @@ class DoctorController extends Controller
 
                 $doctors = Doctor::where('user_id', Auth::user()->id)->get();
             }
-
-            return view('doctors.index')->with('doctors', $doctors);
+            $specialities = Doctor::select('specialty')->pluck('specialty');
+            return view('doctors.index')->with('doctors', $doctors)->with('specialites', array_unique($specialities));
         }else {
             return view('extra.404');
         }
@@ -57,6 +57,7 @@ class DoctorController extends Controller
         //
         if (Auth::user()->ableTo('add', Doctor::$model))
             return view('doctors.create');
+            
         else
             return view('extra.404');
     }

@@ -23,17 +23,35 @@
     <label for="default-input"
            class="col-sm-2 form-control-label">{!! Form::label('specialty', 'specialty:') !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('specialty', null, [  'placeholder'=>'Enter Doctor\'s Speciality', 'class' => 'form-control']) !!}
+     <input type='text'placeholder='Enter Doctor Specialities' 
+     class='flexdatalist form-control'
+     data-min-length='1'
+     multiple='multiple'
+     list='ks-flexdatalist-multiple-languages'
+     name='specialty'>
+     <datalist id="ks-flexdatalist-multiple-languages">
+           @foreach($specialites as $speciality)
+           <option value="{{ $speciality }}">{{ $speciality }}</option>
+            @endforeach
+    </datalist>
     </div>
+
 </div>
 <!--  contact -->
 <div class="form-group row">
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('contact', 'Contact details:') !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('contact_email', 'Contact Email:') !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('contact_details', null, [  'placeholder'=>'Enter Doctor\'s Contact details', 'class' => 'form-control']) !!}
+        {!! Form::email('contact_email', null, [  'placeholder'=>'Enter Doctor\'s Contact Email', 'class' => 'form-control']) !!}
     </div>
 </div>
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:') !!}</label>
+    <div class="col-sm-10">
+        {!! Form::text('contact_number', null, [  'placeholder'=>'Enter Doctor\'s Number', 'class' => 'form-control']) !!}
+    </div>
+</div>
+
 @if(Auth::user()->isAdmin())
 <!--  Partner -->
 <div class="form-group row">

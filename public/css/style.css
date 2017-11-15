@@ -1,0 +1,18 @@
+
+.create {
+    margin-top: -46px;
+}
+
+.show span:first-child{
+    display: inline-block;
+    width: 200px;
+    font-size: 18px;
+}
+
+.show span.value{
+    font-size: 18px ;
+    font-weight: bold;
+}
+table th {
+    text-align: center;
+}

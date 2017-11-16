@@ -1,4 +1,12 @@
-
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li class="text-danger"><b>{{ $error }}</b></li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
 <!--  Name -->
 <div class="form-group col-sm-8 col-sm-offset-2" id='name'>

@@ -13,15 +13,6 @@
 
                         {!! Form::model($partnertype, ['route' => ['partnertypes.update', $partnertype->id], 'method' => 'patch']) !!}
 
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li class="text-danger"><b>{{ $error }}</b></li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
 
                         @include('partnertypes.fields')
 

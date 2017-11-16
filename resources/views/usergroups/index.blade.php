@@ -8,6 +8,9 @@
     <div class="ks-page-header">
         <section class="ks-title">
             <h3>User Groups</h3>
+            <a href="{{ route('usergroups.create') }} " class="pull-right btn btn-success create"> Create User Group</a>
+
+
         </section>
     </div>
     <div class="ks-page-content">
@@ -15,11 +18,8 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-6 col-sm-12 col-sm-12">
-
-                        @include('usergroups.create')
-                    </div>
-                    <div class="col-lg-6 col-sm-12 col-sm-12">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8 col-lg-offset-2  col-sm-12 col-sm-12">
                         @include('usergroups.table')
                     </div>
                 </div>

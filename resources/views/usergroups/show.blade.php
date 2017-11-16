@@ -2,7 +2,9 @@
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class=""> {!! $usergroup->group_name !!}</h3>
+                <p class="">Group Name: <b>{!! $usergroup->group_name !!}</b></p>
+                <p> Partner Name:  <b>{!! \App\Partner::where('id', $usergroup->partner_id)->value('name') !!}</b></p>
+
             </div>
 
             <div class="panel-body">

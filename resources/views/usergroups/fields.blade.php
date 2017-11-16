@@ -1,3 +1,15 @@
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li class="text-danger"><b>{{ $error }}</b></li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
 <!--  Name -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('group_name', 'Name:') !!}</label>
@@ -19,9 +31,9 @@
 @php
 
     $models = [
-    \App\Partner::$model,
+/*    \App\Partner::$model,
     \App\PartnerType::$model,
-    \App\UserGroup::$model,
+    \App\UserGroup::$model,*/
     \App\Doctor::$model,
     \App\Patient::$model,
     \App\HotelGuest::$model,
@@ -34,8 +46,8 @@
 
 
 @endphp
-
-<div class="table text-center">
+<div class="row">
+<div class="table text-center" style="margin-left: 17%">
     <table class="table table-responsive" id="igfollows-table">
         <thead>
         <th>Model</th>
@@ -56,10 +68,12 @@
         </tbody>
     </table>
 </div>
-
+</div>
 <!-- Submit Field -->
 <div class="form-group col-sm-8 col-sm-offset-2" id='submit'>
-    {!! Form::submit('Save', ['class' => 'btn btn-success']) !!}
+    {!! Form::submit('Save', ['class' => 'btn btn-success' , 'style' =>'margin-left: 17%']) !!}
+    <a href="{!! route('usergroups.index') !!}" class="btn btn-default">Cancel</a>
+
 </div>
 
 

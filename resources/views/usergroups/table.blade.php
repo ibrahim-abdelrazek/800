@@ -3,6 +3,7 @@
     <tr>
         <th width="1">#</th>
         <th>Name</th>
+        <th>Parnter</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -12,6 +13,8 @@
         <tr>
             <td>{{$i}}</td>
             <td>{!! $usergroup->group_name !!}</td>
+            <td>{!! \App\Partner::where('id', $usergroup->partner_id)->value('name') !!}</td>
+
 
             <td>
                 <div class='btn-group'>

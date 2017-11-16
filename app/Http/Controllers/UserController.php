@@ -62,26 +62,15 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        if(Auth::user()->isAdmin())
-            $count = User::where('email', $request->email)->where('partner_id', $request->partner_id)->count();
-        else
-            $count = User::where('email', $request->email)->where('partner_id', Auth::user()->partner_id)->count();
-
-        if($count >0 ) {
-            $err = "The Email has already been taken.";
-            return view('users.create')->with("repeat", $err);
-        }
-
         $request->validate([
             'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
             'username' => 'required|min:5|max:50|regex:/^\S*$/',
-            'email' => 'required',
+            'email' => 'required|unique:users',
             'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
             'user_group_id' => 'required',
         ],
             ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
                 'username.regex' => 'Username not allowing space',
-                'name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .'
             ]);
 
         if(Auth::user()->isAdmin())
@@ -145,27 +134,11 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        if(Auth::user()->isAdmin())
-            $count = User::where('id','!=',$id)->where('email', $request->email)->where('partner_id', $request->partner_id)->count();
-        else
-            $count = User::where('id','!=',$id)->where('email', $request->email)->where('partner_id', Auth::user()->partner_id)->count();
-
-        if($count >0 ){
-            $err = "The Email has already been taken.";
-            $data = array();
-            $data['id']= $id;
-            if(Auth::user()->isAdmin())
-                $data['partner_id']=$request->partner_id ;
-            else
-                $data['partner_id']= Auth::user()->partner_id ;
-            return view('users.edit')->with('user',$data )->with('repeat',$err );
-        }
 
         $request->validate([
             'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
             'username' => 'required|min:5|max:50|regex:/^\S*$/',
-            'email' => 'required',
+            'email' => 'required|unique:users,email,' . $id ,
             'user_group_id' => 'required',
         ]);
 

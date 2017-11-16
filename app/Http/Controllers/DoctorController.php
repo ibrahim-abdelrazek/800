@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Doctor;
 use App\Nurse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-
+use Intervention\Image\ImageManagerStatic as Image;
 class DoctorController extends Controller
 {
     /**
@@ -19,9 +19,10 @@ class DoctorController extends Controller
         $doctor = Doctor::find($id);
         $person = new \stdClass();
         $person->name = $doctor->name;
-        $person->job_title = $doctor->speciality.'doctor';
+        $person->job_title = $doctor->specialty . ' doctor';
         $person->email = $doctor->contact_email;
         $person->phone = $doctor->contact_number;
+        $person->photo = $doctor->photo;
         if (!empty($doctor))
             return view('extras.card')->with('person', $person);
     }
@@ -78,8 +79,8 @@ class DoctorController extends Controller
 
             $request->validate([
                 'name' => 'required|string|max:100',
-                'specialty' => 'required|string|max:100',
-                'contact_email' => 'required|email|unique:doctors',
+                'specialty' => 'required|string',
+                'contact_email' => 'required|email|unique:doctors,contact_email',
                 'contact_number' => 'required|string',
 
             ]);
@@ -94,6 +95,14 @@ class DoctorController extends Controller
                     $doctor = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
                     $doctor = array_merge($doctor, ['user_id' => Auth::user()->id]);
                 }
+            }
+
+            if($request->hasFile('photo')){
+                $avatar = $request->file('photo');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/doctors/'.$filename));
+                $doctor['photo'] = '/upload/doctors/'.$filename;
             }
 
             if (Doctor::create($doctor))
@@ -138,12 +147,12 @@ class DoctorController extends Controller
         if (Auth::user()->ableTo('edit', Doctor::$model)) {
 
             $doctor = Doctor::find($id);
-
+            $specialities = Doctor::select('specialty')->pluck('specialty');
             if (empty($doctor)) {
                 return redirect(route('doctors.index'));
             }
 
-            return view('doctors.edit')->with('doctor', $doctor);
+            return view('doctors.edit')->with('doctor', $doctor)->with('specialites', array_unique($specialities->toArray()));
         } else {
             return view('extra.404');
         }
@@ -160,16 +169,18 @@ class DoctorController extends Controller
     {
         //
         if (Auth::user()->ableTo('edit', Doctor::$model)) {
-
+            $doc = Doctor::find($id);
             $request->validate([
                 'name' => 'required|string|max:100',
-                'specialty' => 'required|string|max:100',
-                'contact_details' => 'required|string'
+                'specialty' => 'required|string',
+                'contact_email' => 'required|email|unique:doctors,contact_email,'.$doc->id,
+                'contact_number' => 'required|string',
+
             ]);
 
-            $doc = Doctor::find($id);
 
-            if (empty($doctor)) {
+
+            if (empty($doc)) {
                 return redirect(route('doctors.index'));
             }
 
@@ -182,6 +193,15 @@ class DoctorController extends Controller
                     $doctor = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
                     $doctor = array_merge($doctor, ['user_id' => Auth::user()->id]);
                 }
+            }
+            if($request->hasFile('photo')){
+                $avatar = $request->file('photo');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/doctors/'.$filename));
+                $doctor['photo'] = '/upload/doctors/'.$filename;
+                // remove old image
+                unlink(asset($doc->photo));
             }
 
             if ($doc->update($doctor))

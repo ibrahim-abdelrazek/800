@@ -1,14 +1,14 @@
-<div class="col-sm-6">
+<div class="row">
     <div class="business-card">
         <div class="media">
-            <div class="media-left">
-                @if(isset($person->photo))
+            <div class="media-left col-md-4">
+                @if(!empty($person->photo))
                     <img class="media-object img-circle profile-img" src="{{ asset($person->photo) }}">
                 @else
                     <img class="media-object img-circle profile-img" src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png">
                 @endif
             </div>
-            <div class="media-body">
+            <div class="media-body col-md-8">
                 <h2 class="media-heading">{{$person->name}}</h2>
                 <div class="job">{{$person->job_title}}</div>
                 <div class="mail"><a href="mailto:{{$person->email}}">{{$person->email}}</a> </div>

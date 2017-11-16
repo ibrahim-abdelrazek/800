@@ -56,10 +56,10 @@ class PartnersController extends Controller
         if (Auth::user()->ableTo('add', Partner::$model)) {
             //
             $request->validate([
-                'name' => 'required|min:5|max:50|alpha_dash',
+                'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
                 'location' => 'required|max:100',
                 'partner_type_id' => 'required',
-                'username' => 'required|min:5|max:50|regex:/^\S*$/',
+                'username' => 'required|min:5|max:50|alpha_dash',
                 'email' => 'required|unique:users',
                 'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
             ],
@@ -163,10 +163,10 @@ class PartnersController extends Controller
             $userID =User::where('partner_id', $id)->where('user_group_id',2)->value('id');
 
             $request->validate([
-                'name' => 'required|min:5|max:50|alpha_dash',
+                'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
                 'location' => 'required|max:100',
                 'partner_type_id' => 'required',
-                'username' => 'required|min:5|max:50|regex:/^\S*$/',
+                'username' => 'required|min:5|max:50|alpha_dash',
                 'email' => 'required|unique:users,email,' . $userID
             ],
             ['username.regex' => 'Username not allowing space' ,

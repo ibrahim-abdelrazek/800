@@ -31,7 +31,12 @@
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner_type_id', 'Partner Type:') !!}</label>
     <div class="col-sm-10">
-        {!! Form::select('partner_type_id',  App\PartnerType::pluck('name', 'id') , null, ['class' => 'form-control' , 'required']) !!}
+        @if(\App\PartnerType::count() > 0)
+            {!! Form::select('partner_type_id',  App\PartnerType::pluck('name', 'id') , null, ['class' => 'form-control' , 'required']) !!}
+        @else
+            <p>You don't have added Partner Types yet, Please <a href="{{route('partnertypes.index')}}"><b class="label-danger">Add
+                        new Partner Types</b></a></p>
+        @endif
     </div>
 </div>
 
@@ -55,9 +60,15 @@
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password', 'Password:') !!}</label>
     <div class="col-sm-10">
+        @if(!isset($partner))
         {!! Form::password('password', ['class' => 'form-control' , 'required']) !!}
         <br>
         <b class="text-warning"> Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). </b>
+        @else
+            {!! Form::password('password', ['class' => 'form-control'] ) !!}
+            <br>
+            <b class="text-warning"> Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). </b>
+        @endif
     </div>
 </div>
 
@@ -66,6 +77,8 @@
 <div class="form-group col-sm-8 col-sm-offset-2" id='submit'>
 
     {!! Form::submit('Save', ['class' => 'btn btn-success']) !!}
+    <a href="{!! route('partners.index') !!}" class="btn btn-default">Cancel</a>
+
 </div>
 
 

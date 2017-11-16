@@ -10,48 +10,48 @@
 @endif
 <!--  first-Name -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('first_name', 'f_Name:') !!}
+    {!! Form::label('first_name', 'First Name:') !!}
     {!! Form::text('first_name', null, [  'class' => 'form-control']) !!}
 </div>
 
 
 <!--  last-Name -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('last_name', 'l_Name:') !!}
+    {!! Form::label('last_name', 'Last Name:') !!}
     {!! Form::text('last_name', null, [  'class' => 'form-control']) !!}
 </div>
 
 
 <!--  date -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('date', 'date:') !!}
+    {!! Form::label('date', 'Date:') !!}
     {!! Form::date('date',null,  [  'class' => 'form-control']) !!}
 </div>
 
 <!-- gender-->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('gender', 'gender:') !!}
+    {!! Form::label('gender', 'Gender:') !!}
     {!! Form::select('gender',['male' => 'male','female'=>'female' ],null, [  'class' => 'form-control']) !!}
 </div>
 
 
 <!--  contact_number-->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('contact_number', 'contact_number:') !!}
+    {!! Form::label('contact_number', 'Contact Number:') !!}
     {!! Form::text('contact_number',null, [  'class' => 'form-control']) !!}
 </div>
 
 
 <!--  email-->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('email', 'email:') !!}
+    {!! Form::label('email', 'Email:') !!}
     {!! Form::email('email',null, [  'class' => 'form-control']) !!}
 </div>
 
 
 <!-- insurance_card_details-->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('insurance_card_details', 'insurance card details:') !!}
+    {!! Form::label('insurance card details', 'Insurance Card Details:') !!}
     {!! Form::text('insurance_card_details',null, [  'class' => 'form-control']) !!}
 </div>
 
@@ -59,7 +59,7 @@
 <!-- emirates_id_details -->
 
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('emirates_id_details', 'emirates id details:') !!}
+    {!! Form::label('emirates id details', 'Emirates Id Details:') !!}
     {!! Form::text('emirates_id_details',null, [  'class' => 'form-control']) !!}
 </div>
 
@@ -67,7 +67,7 @@
 <!-- notes-->
 
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('notes', 'notes:') !!}
+    {!! Form::label('notes', 'Notes:') !!}
     {!! Form::textarea('notes',null, [  'class' => 'form-control']) !!}
 </div>
 
@@ -75,19 +75,19 @@
 <!-- address -->
 <!-- address city-->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('address city', 'city:') !!}
+    {!! Form::label('address city', 'City:') !!}
     {!! Form::text('city',null, [  'class' => 'form-control','required' => 'required']) !!}
 </div>
 
 <!-- address area-->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('address area', 'area:') !!}
+    {!! Form::label('address area', 'Area:') !!}
     {!! Form::text('area',null, [  'class' => 'form-control','required' => 'required']) !!}
 </div>
 
 <!-- address street-->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('address street', 'street:') !!}
+    {!! Form::label('address street', 'Street:') !!}
     {!! Form::text('street',null, [  'class' => 'form-control','required' => 'required']) !!}
 </div>
 
@@ -129,7 +129,7 @@
 @if (Auth::user()->isAdmin())
     <!--  partner_id -->
     <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-        {!! Form::label('partner', 'partner') !!}
+        {!! Form::label('partner', 'Partner') !!}
         {!! form :: select ('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}
 
     </div>

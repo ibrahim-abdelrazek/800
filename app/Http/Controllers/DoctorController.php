@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Nurse;
-use Illuminate\Http\Request;
 use App\Doctor;
+use App\Nurse;
 use Illuminate\Support\Facades\Auth;
-use PhpParser\Comment\Doc;
 
 
 class DoctorController extends Controller
@@ -18,8 +16,14 @@ class DoctorController extends Controller
      */
     public function viewCard($id)
     {
-        if (Doctor::find($id))
-            return view('extras.card')->with($id);
+        $doctor = Doctor::find($id);
+        $person = new \stdClass();
+        $person->name = $doctor->name;
+        $person->job_title = $doctor->speciality.'doctor';
+        $person->email = $doctor->contact_email;
+        $person->phone = $doctor->contact_number;
+        if (!empty($doctor))
+            return view('extras.card')->with('person', $person);
     }
 
     public function index()
@@ -92,7 +96,7 @@ class DoctorController extends Controller
                 }
             }
 
-            if (Doctor::create($doctor)) ;
+            if (Doctor::create($doctor))
             return redirect(route('doctors.index'));
 
         } else {
@@ -222,9 +226,9 @@ class DoctorController extends Controller
     public function getNurses($id) {
 
         $nurses = Nurse::where("partner_id",$id)->pluck("name","id");
-
-        return json_encode($nurses);
-
+        if(!empty($nurses) && count($nurses) > 0)
+            return response()->json(['success'=>true, 'data'=>$nurses], 200);
+        return response()->json(['success'=>false], 200);
     }
 }
 

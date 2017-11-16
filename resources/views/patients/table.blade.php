@@ -63,7 +63,7 @@
     <script type="application/javascript">
         (function ($) {
             $(document).ready(function () {
-                var table = $('#user-datatable').DataTable({
+                var table = $('#patient-datatable').DataTable({
                     lengthChange: false,
                     buttons: [
                         'copyHtml5',

@@ -62,15 +62,15 @@ class PatientController extends Controller
         if(Auth::user()->ableTo('add',Patient::$model)) {
 
             $request->validate([
-                'first_name' => 'required|string|max:45|min:2',
-                'last_name' => 'required|string|max:45|min:2',
+                'first_name' => 'required|string|max:45|min:2|alpha_dash',
+                'last_name' => 'required|string|max:45|min:2|alpha_dash',
                 'date' => 'required',
                 'gender' => 'required',
                 'contact_number' => 'required|string',
                 'email' => 'required|unique:patients',
                 'insurance_card_details' => 'required',
                 'emirates_id_details' => 'required',
-                'notes' => 'required',
+                'notes' => 'max:200|min:0',
 
 
             ]);
@@ -231,14 +231,14 @@ class PatientController extends Controller
         //
         if (Auth::user()->ableTo('edit', Patient::$model)) {
             $request->validate([
-                'first_name' => 'required|string|max:45|min:2',
-                'last_name' => 'required|string|max:45|min:2',
+                'first_name' => 'required|string|max:45|min:2|alpha_dash',
+                'last_name' => 'required|string|max:45|min:2|alpha_dash',
                 'date' => 'required|date',
                 'gender' => 'required',
                 'contact_number' => 'required',
                 'insurance_card_details' => 'required',
                 'emirates_id_details' => 'required',
-                'notes' => 'required',
+                'notes' => 'max:200|min:0',
 
             ]);
 

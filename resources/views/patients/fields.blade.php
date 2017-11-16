@@ -1,13 +1,15 @@
-@if($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach($errors->all() as $error)
-                <li>{{$error}}</li>
-            @endforeach
+<div>
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li class="text-danger"><b>{{$error}}</b></li>
+                @endforeach
 
-        </ul>
-    </div>
-@endif
+            </ul>
+        </div>
+    @endif
+</div>
 <!--  first-Name -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
     {!! Form::label('first_name', 'First Name:') !!}
@@ -126,13 +128,20 @@
 </div>
 
 
-@if (Auth::user()->isAdmin())
-    <!--  partner_id -->
-    <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-        {!! Form::label('partner', 'Partner') !!}
-        {!! form :: select ('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}
-
-    </div>
+@if(Auth::user()->isAdmin())
+<!--  Partner -->
+<div class="form-group col-sm-8 col-sm-offset-2">
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner', 'partner:') !!}</label>
+    
+        @if(\App\Partner::count() > 0)
+            {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}
+        @else
+            <p>You don't have added partners yet, Please <a href="{{route('partners.index')}}"><b class="label-danger">Add
+                        new Partner</b></a></p>
+        @endif
+   
+</div>
+<!-- End Partner -->
 @endif
 
 

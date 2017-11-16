@@ -21,7 +21,7 @@ class CreatePatientsTable extends Migration
             $table->string('gender');
             $table->string('contact_number');
             $table->string('email');
-            $table->string(' insurance_card_details');
+            $table->string('insurance_card_details');
             $table->string('emirates_id_details');
             $table->string('notes');
             $table->string('address');

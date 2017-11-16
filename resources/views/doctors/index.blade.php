@@ -175,7 +175,7 @@
                     $.getJSON("{{url('/doctors/get-nurses')}}/" + partner_id, [], function (data) {
                         var html = '';
                         if(data.success){
-                            html = '<select class="form-control" name="nurse_id">';
+                            html = '<select class="form-control ks-select" name="nurse_id">';
                             $.each(data.data , function (key, value) {
                                 html += '<option value="'+key+'">'+value+'</option>';
                             });
@@ -190,6 +190,7 @@
 
                     })
                 }
+                $('select.ks-select').select2();
             })(jQuery);
 
         </script>

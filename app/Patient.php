@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {
+    protected $table = 'patientss';
     static $model = 'patient';
     protected $fillable = [
         'id',
@@ -15,8 +16,13 @@ class Patient extends Model
         'gender',
         'contact_number',
         'email',
-        'insurance_card_details',
-        'emirates_id_details',
+        'insurance_file',
+        'insurance_provider',
+        'card_number',
+        'insurance_expiry',
+        'id_file',
+        'id_expiry',
+        'id_number',
         'notes',
         'address',
         'partner_id',

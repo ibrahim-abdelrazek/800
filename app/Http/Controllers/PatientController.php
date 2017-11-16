@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Nighborhood;
 use App\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,12 @@ use Illuminate\Support\Facades\Auth;
 class PatientController extends Controller
 {
 
+    public function getNeighbors($id){
+        $neighbors = Nighborhood::where("city_id",$id)->pluck("neighborhood_name","id");
+        if(!empty($neighbors) && count($neighbors) > 0)
+            return response()->json(['success'=>true, 'data'=>$neighbors], 200);
+        return response()->json(['success'=>false], 200);
+    }
     public function index()
     {
         //
@@ -68,8 +75,9 @@ class PatientController extends Controller
                 'gender' => 'required',
                 'contact_number' => 'required|string',
                 'email' => 'required|unique:patients',
-                'insurance_card_details' => 'required',
-                'emirates_id_details' => 'required',
+                'insurance_provider' => 'required|numeric',
+                'card_number' => 'string',
+                'id_number' => 'string',
                 'notes' => 'max:200|min:0',
 
 
@@ -101,6 +109,20 @@ class PatientController extends Controller
                     $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
                     $patient = array_merge($patient, ['user_id' => Auth::user()->id]);
                 }
+            }
+            if($request->hasFile('id_file')){
+                $avatar = $request->file('id_file');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
+                $patient['photo'] = '/upload/insurance/'.$filename;
+            }
+            if($request->hasFile('insurance_file')){
+                $avatar = $request->file('insurance_file');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
+                $patient['photo'] = '/upload/insurance/'.$filename;
             }
 
             if(Patient::create($patient))
@@ -230,20 +252,26 @@ class PatientController extends Controller
     {
         //
         if (Auth::user()->ableTo('edit', Patient::$model)) {
+            $patientt = Patient::find($id);
             $request->validate([
                 'first_name' => 'required|string|max:45|min:2|alpha_dash',
                 'last_name' => 'required|string|max:45|min:2|alpha_dash',
-                'date' => 'required|date',
+                'date' => 'required',
                 'gender' => 'required',
-                'contact_number' => 'required',
-                'insurance_card_details' => 'required',
-                'emirates_id_details' => 'required',
+                'contact_number' => 'required|string',
+                'email' => 'required|unique:patients,email,'.$patientt->email,
+                'insurance_file' => 'image|mimes:jpg,png|max:5000',
+                'id_file' => 'image|mimes:jpg,png|max:5000',
+                'insurance_provider' => 'required|numeric',
+                'card_number' => 'string',
+                'id_number' => 'string',
                 'notes' => 'max:200|min:0',
+
 
             ]);
 
 
-            $patientt = Patient::find($id);
+
 
             if (empty($patientt)) {
                 return redirect(route('patients.index'));

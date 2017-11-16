@@ -3,7 +3,9 @@
 @section('content')
     <div class="ks-page-header">
         <section class="ks-title">
-            <h3>Doctors</h3>
+            <h3>Partners</h3>
+            <a href="{{ route('partners.create') }} " class="pull-right btn btn-success create"> Create Partner</a>
+
         </section>
     </div>
     <div class="ks-page-content">
@@ -11,11 +13,8 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-4 col-sm-12 col-sm-12">
 
-                        @include('partners.create')
-                    </div>
-                    <div class="col-lg-8 col-sm-12 col-sm-12">
+                    <div class="col-lg-12 col-sm-12 col-sm-12">
                         @include('partners.table')
                     </div>
                 </div>

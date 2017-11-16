@@ -75,16 +75,48 @@
                         backgroundDismiss: true
                     });
                 });
-            $('a[data-toggle="tab"]').click(function (e) {
+                $('a[data-toggle="tab"]').click(function (e) {
             e.preventDefault();
             $(this).tab('show');
         });
-        $('.ks-phone-mask-input').mask('(000)000-0000');
-         $('#reset').click(function(){
-             $('input').val(''); $('textarea').val('');
-        });
+                $('.ks-phone-mask-input').mask('(000)000-0000');
+                $('#reset').click(function(){
+                     $('input').val(''); $('textarea').val('');
+                });
             });
         })(jQuery);
         
     </script>
+    @if(Auth::user()->isAdmin())
+        <script type="application/javascript">
+            // asynchronous content
+            (function ($) {
+                $(document).ready(function () {
+                    loadNurses($('select[name=partner_id]').val());
+                    $('select[name=partner_id]').on('change', function(e){
+                       var partner_id = $(this).val();
+                        loadNurses(partner_id);
+                    });
+                });
+                function loadNurses(partner_id)
+                {
+                    $.getJSON("{{url('/doctors/get-nurses')}}/" + partner_id, [], function (data) {
+                        var html = '';
+                        if(data.success){
+                            html = '<select class="form-control" name="partner_id">';
+                            $.each(data.data , function (key, value) {
+                                html += '<option value="'+key+'">'+value+'</option>';
+                            });
+                            html += '</select>';
+                        }else{
+                            html = "<p>You don't have added nurses yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add " +
+                                "new Nurse</b></a></p>";
+                        }
+                        $('#nurses-holder').html(html);
+                    })
+                }
+            })(jQuery);
+
+        </script>
+    @endif
 @endpush

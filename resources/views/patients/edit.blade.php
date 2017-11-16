@@ -87,4 +87,36 @@
 
         });
     </script>
+    <script type="application/javascript">
+        // asynchronous content
+        (function ($) {
+            $(document).ready(function () {
+                loadNeighbors($('select[name=city]').val());
+                $('select[name=city]').on('change', function(e){
+                    var neighbor_id = $(this).val();
+                    loadNeighbors(neighbor_id);
+                });
+            });
+            function loadNeighbors(id)
+            {
+                $.getJSON("{{url('/doctors/get-neighbors')}}/" + id, [], function (data) {
+                    var html = '';
+                    if(data.success){
+                        html = '<select class="form-control" name="area">';
+                        $.each(data.data , function (key, value) {
+                            html += '<option value="'+key+'">'+value+'</option>';
+                        });
+                        html += '</select>';
+                        $('input[type=submit]').prop('disabled', function(i, v) { return false; });
+                    }else{
+                        $('input[type=submit]').prop('disabled', function(i, v) { return true; });
+                    }
+                    $('#neighbors-holder').html(html);
+
+                })
+            }
+        })(jQuery);
+
+    </script>
+
 @endpush

@@ -50,8 +50,9 @@ class PartnerTypesController extends Controller
     {
         //
         $request->validate([
-            'name' => 'required|unique:partner_types'
-        ]);
+            'name' => 'required|min:5|max:50|alpha_dash|unique:partner_types'
+        ],
+            ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']);
 
         $input = $request->all();
 
@@ -109,10 +110,11 @@ class PartnerTypesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $request->validate([
-            'name' => 'required|unique:partner_types'
-        ]);
+            'name' => 'required|min:5|max:50|alpha_dash|unique:partner_types,name,'. $id
+        ],
+
+            ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']);
 
         $partnertype = PartnerType::find($id);
 

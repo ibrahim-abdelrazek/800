@@ -43,6 +43,22 @@
     {!! Form::text('items', null, [  'class' => 'form-control']) !!}
 </div>
 
+@if(Auth::user()->isAdmin())
+<!--  Partner -->
+<div class="form-group col-sm-8 col-sm-offset-2">
+   {!! Form::label('partner', 'partner') !!}
+    
+        @if(\App\Partner::count() > 0)
+            {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}
+        @else
+            <p>You don't have added partners yet, Please <a href="{{route('partners.index')}}"><b class="label-danger">Add
+                        new Partner</b></a></p>
+        @endif
+    
+</div>
+<!-- End Partner -->
+@endif
+
 <!-- Submit Field -->
 <div class="form-group col-sm-8 col-sm-offset-2" id='submit'>
 

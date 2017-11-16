@@ -11,6 +11,8 @@
                     <th rowspan="1" colspan="1">Guest Room Number</th>
                     <th rowspan="1" colspan="1">Special Instructions</th>
                     <th rowspan="1" colspan="1">Actions</th>
+                    <th rowspan="1" colspan="1">user</th>
+                    <th rowspan="1" colspan="3"></th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -22,6 +24,8 @@
                     <th rowspan="1" colspan="1">Guest Room Number</th>
                     <th rowspan="1" colspan="1">Special Instructions</th>
                     <th rowspan="1" colspan="1">Actions</th>
+                    <th rowspan="1" colspan="1">user</th>
+                    <th rowspan="1" colspan="3"></th>
                 </tr>
                 </tfoot>
                 <tbody>

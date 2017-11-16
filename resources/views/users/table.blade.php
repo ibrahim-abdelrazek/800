@@ -8,6 +8,9 @@
                     <th rowspan="1" colspan="1">User Name</th>
                     <th rowspan="1" colspan="1">Email</th>
                     <th rowspan="1" colspan="1">User Group</th>
+                    @if(Auth::user()->isAdmin())
+                        <th>Partner</th>
+                    @endif
                     <th rowspan="1" colspan="1">Actions</th>
                 </tr>
                 </thead>
@@ -17,6 +20,9 @@
                     <th rowspan="1" colspan="1">User Name</th>
                     <th rowspan="1" colspan="1">Email</th>
                     <th rowspan="1" colspan="1">User Group</th>
+                    @if(Auth::user()->isAdmin())
+                        <th>Partner</th>
+                    @endif
                     <th rowspan="1" colspan="1">Actions</th>
                 </tr>
                 </tfoot>
@@ -28,8 +34,11 @@
                 <td>{!! $user->username !!}</td>
                 <td>{!! $user->email !!}</td>
                 <td>{!! $user->userGroup->group_name !!}</td>
+                @if(Auth::user()->isAdmin())
+                    <td>{!! \App\Partner::where('id',$user->partner_id)->value('name')!!}</td>
+                @endif
 
-                <td>
+                    <td>
                     {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{!! route('users.show', [$user->id]) !!}" class='btn btn-default btn-xs'>Show</a>

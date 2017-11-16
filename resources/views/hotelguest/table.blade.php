@@ -10,9 +10,9 @@
                     <th rowspan="1" colspan="1">Contact Number</th>
                     <th rowspan="1" colspan="1">Guest Room Number</th>
                     <th rowspan="1" colspan="1">Special Instructions</th>
-                    <th rowspan="1" colspan="1">Actions</th>
+                    <th rowspan="1" colspan="1">Items</th>
                     <th rowspan="1" colspan="1">User</th>
-                    <th rowspan="1" colspan="3"></th>
+                    <th rowspan="1" colspan="3">Actions</th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -23,9 +23,9 @@
                     <th rowspan="1" colspan="1">Contact Number</th>
                     <th rowspan="1" colspan="1">Guest Room Number</th>
                     <th rowspan="1" colspan="1">Special Instructions</th>
-                    <th rowspan="1" colspan="1">Actions</th>
+                    <th rowspan="1" colspan="1">Items</th>
                     <th rowspan="1" colspan="1">User</th>
-                    <th rowspan="1" colspan="3"></th>
+                    <th rowspan="1" colspan="3">Actions</th>
                 </tr>
                 </tfoot>
                 <tbody>

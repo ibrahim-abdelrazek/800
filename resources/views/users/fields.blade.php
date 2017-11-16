@@ -1,3 +1,15 @@
+<div>
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li class="text-danger"><b>{{$error}}</b></li>
+                @endforeach
+
+            </ul>
+        </div>
+    @endif
+</div>
 <!--  Name -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:') !!}</label>
@@ -24,6 +36,9 @@
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password', 'Password:') !!}</label>
     <div class="col-sm-10">
         {!! Form::password('password',[  'class' => 'form-control']) !!}
+        <br>
+        <b class="text-warning"> Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). </b>
+
     </div>
 </div>
 
@@ -33,7 +48,7 @@
            class="col-sm-2 form-control-label">{!! Form::label('user_group_id', 'User Group:') !!}</label>
     <div class="col-sm-10">
         @if(Auth::user()->isAdmin())
-            {!! Form::select('user_group_id', \App\UserGroup::all()->pluck('group_name','id'), null, [  'class' => 'form-control']) !!}
+            {!! Form::select('user_group_id', \App\UserGroup::where('id','!=',1)->where('id','!=',2)->pluck('group_name','id'), null, [  'class' => 'form-control']) !!}
         @else
             {!! Form::select('user_group_id', \App\UserGroup::where('partner_id',Auth::user()->partner_id)->pluck('group_name','id'), null, [  'class' => 'form-control']) !!}
 
@@ -46,7 +61,7 @@
         <label for="default-input"
                class="col-sm-2 form-control-label">{!! Form::label('partner_id', 'Partner:') !!}</label>
         <div class="col-sm-10">
-            {!! Form::select('user_group_id', \App\Partner::all()->pluck('name','id'), null, [  'class' => 'form-control']) !!}
+            {!! Form::select('partner_id', \App\Partner::all()->pluck('name','id'), null, [  'class' => 'form-control']) !!}
 
         </div>
     </div>

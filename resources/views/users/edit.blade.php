@@ -8,7 +8,7 @@
                     <h5 class="card-title">Edit User</h5>
 
 
-                    {!! Form::model($user, ['route' => ['users.update', $user->id], 'method' => 'patch']) !!}
+                    {!! Form::model($user, ['route' => ['users.update', $user['id']], 'method' => 'patch']) !!}
 
                     @include('users.fields')
 

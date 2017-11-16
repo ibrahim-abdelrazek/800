@@ -49,6 +49,10 @@ class PartnerTypesController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name' => 'required|unique:partner_types'
+        ]);
+
         $input = $request->all();
 
         $partnerTypes = PartnerType::create($input);
@@ -85,6 +89,7 @@ class PartnerTypesController extends Controller
     public function edit($id)
     {
         //
+
         $partnertype = PartnerType::find($id);
 
         if(empty($partnertype)){
@@ -105,6 +110,10 @@ class PartnerTypesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate([
+            'name' => 'required|unique:partner_types'
+        ]);
+
         $partnertype = PartnerType::find($id);
 
         if(empty($partnertype)){

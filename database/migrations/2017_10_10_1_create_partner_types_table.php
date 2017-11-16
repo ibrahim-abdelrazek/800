@@ -15,7 +15,7 @@ class CreatePartnerTypesTable extends Migration
     {
         Schema::create('partner_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("name");
+            $table->string("name")->unique();
             $table->tinyInteger("status")->default('1');
             $table->timestamps();
         });

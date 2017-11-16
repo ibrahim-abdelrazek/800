@@ -12,8 +12,18 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-6 col-sm-12 col-sm-12">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li class="text-danger"><b>{{ $error }}</b></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         @include('partnertypes.create')
                     </div>
+
                     <div class="col-lg-6 col-sm-12 col-sm-12">
                         @include('partnertypes.table')
                     </div>

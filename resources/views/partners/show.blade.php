@@ -36,9 +36,11 @@
                             <span class="value" >{!! $partner->user->email !!}</span>
                         </div>
 
+                        <div class="pull-right">
+                            <a href="{!! route('partners.index') !!}" class="btn btn-default">Back</a>
+                        </div>
+                        <div class="clearfix"></div>
 
-                        <br>
-                        <a href="{!! route('partners.index') !!}" class="btn btn-default pull-right">Back</a>
 
 
 

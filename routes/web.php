@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('partners' , 'PartnersController');
     Route::resource('doctors', 'DoctorController');
     Route::get('doctors/viewCard/{id}', 'DoctorController@viewCard');
+    Route::get('doctors/get-nurses/{id}', 'DoctorController@getNurses');
     Route::resource('patients', 'PatientController');
     Route::resource('nurses', 'NurseController');
     Route::resource('products', 'ProductController');
@@ -38,7 +39,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
     });
     Route::get('/get-user-group/{id}', 'UserController@getUserGroups')->name("get-user-group");
-    Route::get('/get-nurse/{id}', 'DoctorController@getNurses')->name("get-nurse");
-Route::get('/getall/{id}', 'OrderController@getAll')->name("getall");
+    Route::get('/getall/{id}', 'OrderController@getAll')->name("getall");
 });
 

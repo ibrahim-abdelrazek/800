@@ -3,14 +3,14 @@ APP_ENV=local
 APP_KEY=base64:iOG2uRos6YIyDhme/AUbpsJh/IbVTa4yzR3Czf/RH94=
 APP_DEBUG=true
 APP_LOG_LEVEL=debug
-APP_URL=http://800pharmacy.awstreams.com
+APP_URL=localhost
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=pharmacy_pharmacy
-DB_USERNAME=pharmacy_admin
-DB_PASSWORD=U{eLq8JQrRGP
+DB_DATABASE=80pharmacy
+DB_USERNAME=root
+DB_PASSWORD=
 
 BROADCAST_DRIVER=log
 CACHE_DRIVER=file

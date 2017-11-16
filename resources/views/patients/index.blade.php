@@ -46,7 +46,7 @@
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active ks-column-section" id="patients-list" role="tabpanel">
+                    <div class="tab-pane active ks-column-section" id="nurses-list" role="tabpanel">
                         <!-- Content Here -->
                         @include('patients.table')
                     </div>

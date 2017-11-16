@@ -20,12 +20,6 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-    public function __construct()
-    {
-
-    }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -68,11 +62,25 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
+            'username' => 'required|min:5|max:50|regex:/^\S*$/',
+            'email' => 'required|unique:users',
+            'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
+            'user_group_id' => 'required',
+        ],
+            ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
+                'username.regex' => 'Username not allowing space',
+            ]);
+
+        if(Auth::user()->isAdmin())
+            $request->validate(['partner_id'=> 'required']);
 
 
         if (!$request->has('partner_id'))
             $user = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
         else $user = $request->all();
+
 
         if (User::create($user))
             return redirect(route('users.index'));
@@ -126,7 +134,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $request->validate([
+            'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
+            'username' => 'required|min:5|max:50|regex:/^\S*$/',
+            'email' => 'required|unique:users,email,' . $id ,
+            'user_group_id' => 'required',
+        ]);
+
+        if(Auth::user()->isAdmin())
+            $request->validate(['partner_id'=> 'required']);
+
+        if(isset($request->password)){
+            $request->validate([
+                'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
+            ],
+                ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ']);
+        }
+
         $user = User::find($id);
 
         if (empty($user)) {
@@ -139,6 +164,7 @@ class UserController extends Controller
                     'username' => request('username'),
                     'email' => request('email'),
                     'user_group_id' => request('user_group_id'),
+                    'partner_id'=> request('partner_id')
                 )
             );
         } else {

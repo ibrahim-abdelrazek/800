@@ -224,7 +224,10 @@ class UserGroupController extends Controller
                 $err = "The name has already been taken.";
                 $data = array();
                 $data['id']= $id;
-                $data['partner_id']=$request->partner_id ;
+                if(Auth::user()->isAdmin())
+                    $data['partner_id']=$request->partner_id ;
+                else
+                    $data['partner_id']= Auth::user()->partner_id ;
                 return view('usergroups.edit')->with('usergroup',$data )->with('repeat',$err );
             }
 

@@ -26,14 +26,15 @@
                         </div>
 
                         <div class="show">
-                            <span>Sub-User: </span>
+                            <span>User Group: </span>
                             <span class="value" >{!! $user->UserGroup->group_name !!}</span>
                         </div>
+
 
                         <br>
                         <a href="{!! route('users.index') !!}" class="btn btn-default pull-right">Back</a>
 
-
+                        <div class="clearfix"></div>
 
                     </div>
                 </div>

@@ -11,7 +11,15 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-8 col-sm-8 col-sm-offset-2">
-        {!! Form::model($profile, ['route' => ['profile.update', $profile['id']], 'method' => 'patch']) !!}
+        {!! Form::model($profile, ['route' => ['profile.update', $profile['id']], 'method' => 'patch', 'files' => true]) !!}
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="/upload/avatars/<?= (empty($profile['avatar']))? 'default.jpg' : $profile['avatar'];?>" style="width:150px; height:150px; float: left; border-radius:50%;margin-right:25px;">
+                    <h2>{{ $profile['name'] }}'s Profile</h2>
+                    {!! Form::label('avatar', 'Update Profile Image') !!}<br>
+                    {!! Form::file('avatar',null,  [  'class' => 'form-control']) !!}
+                </div>
+            </div>
 
         <!--  Name -->
             <!--  Name -->
@@ -41,10 +49,11 @@
                     {!! Form::email('email', null, [  'class' => 'form-control' , 'required']) !!}
                 </div>
             </div>
+
             <!--  password -->
             <div class="form-group row">
                 <label for="default-input"
-                       class="col-sm-2 form-control-label">{!! Form::label('password', 'password:') !!}</label>
+                       class="col-sm-2 form-control-label">{!! Form::label('password', 'Password:') !!}</label>
                 <div class="col-sm-10">
                     {!! Form::password('password', [  'class' => 'form-control' ]) !!}
                 </div>

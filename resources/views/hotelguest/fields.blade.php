@@ -1,5 +1,16 @@
 
+<div>
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
 
+            </ul>
+        </div>
+    @endif
+</div>
 <!--  Name -->
 <div class="form-group col-sm-8 col-sm-offset-2" id='name'>
     {!! Form::label('name', 'Hotel name:') !!}
@@ -16,7 +27,7 @@
 <!--  Name -->
 <div class="form-group col-sm-8 col-sm-offset-2" id='name'>
     {!! Form::label('contact_number', 'Contact Number:') !!}
-    {!! Form::text('contact_number', null, [  'class' => 'form-control']) !!}
+    {!! Form::text('contact_number', null,  [  'placeholder'=>'Enter Doctor\'s Number', 'id'=>'', 'class' => 'form-control ks-phone-mask-input']) !!}
 </div>
 
 <!--  Name -->

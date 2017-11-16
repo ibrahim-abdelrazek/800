@@ -48,7 +48,7 @@
             <td>{{$doctor->contact_email}}</td>
             <td>{{ $doctor->contact_number }}</td>
             @if(Auth::user()->isAdmin())
-                <td>{{ $http_response_header->partner->name }}</td>
+                <td>{{ $doctor->partner->name }}</td>
             @endif
             <td>
 

@@ -9,7 +9,7 @@ use App\GetUserGroup;
 use App\UserGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\ImageManagerStatic as Imagee;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
 {
@@ -53,40 +53,31 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-
         if(Auth::user()->user_group_id = 2 ){
-
             Partner::where('id', $request->partner_id)->update(array(
                 'name' => request('name'),
                 'location' => request('location')
             ));
-
-
         }
-        //dd(Auth::user()->id);
 
+        $data = array(
+            'name' => request('name'),
+            'username' => request('username'),
+            'email' => request('email')
+        );
+
+        if($request->hasFile('avatar')){
+            $avatar = $request->file('avatar');
+            $filename = time(). '.' . $avatar->getClientOriginalExtension();
+            //Image::configure(array('driver' => 'imagick'));
+            Image::make($avatar)->resize(300, 300)->save( public_path('/upload/avatars/'.$filename));
+            $data['avatar'] = $filename;
+        }
         if(isset($request->password)){
-
-
-            User::where('id',Auth::user()->id)->update(array(
-                'name' => request('name'),
-                'username' => request('username'),
-                'email' => request('email'),
-                'password' => bcrypt(request('password'))
-            ));
-        } else{
-            User::where('id',Auth::user()->id)->update(array(
-                'name' => request('name'),
-                'username' => request('username'),
-                'email' => request('email')
-            ));
+            $data['password'] = bcrypt(request('password'));
         }
+        User::where('id',Auth::user()->id)->update($data);
 
         return redirect(route("profile.index"));
-
-
-
     }
-
 }

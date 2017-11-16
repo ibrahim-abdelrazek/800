@@ -55,8 +55,9 @@ class PartnersController extends Controller
                 'partner_type_id' => 'required',
                 'username' => 'required',
                 'email' => 'required|unique:users',
-                'password' => 'required',
-            ]);
+                'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
+            ],
+                ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ']);
 
 
             $partners = Partner::create([
@@ -151,39 +152,41 @@ class PartnersController extends Controller
     {
         if (Auth::user()->ableTo('edit', Partner::$model)) {
 
-        $request->validate([
-            'name' => 'required',
-            'location' => 'required',
-            'partner_type_id' => 'required',
-            'username' => 'required',
-            'email' => 'required|unique:users,email,' . User::where('id', $request->uid)->value('id')
-        ]);
+            $userID =User::where('partner_id', $id)->where('user_group_id',2)->value('id');
 
-        Partner::where('id', $id)->update(array(
-            'name' => request('name'),
-            'location' => request('location'),
-            'partner_type_id' => request('partner_type_id')
-        ));
+            $request->validate([
+                'name' => 'required',
+                'location' => 'required',
+                'partner_type_id' => 'required',
+                'username' => 'required',
+                'email' => 'required|unique:users,email,' . $userID
+            ]);
 
-        if (isset($request->password)) {
-            User::where('id', $request->uid)->update(array(
+            Partner::where('id', $id)->update(array(
                 'name' => request('name'),
-                'username' => request('username'),
-                'email' => request('email'),
-                'password' => bcrypt(request('password')),
-                'user_group_id' => request('user_group_id'),
+                'location' => request('location'),
+                'partner_type_id' => request('partner_type_id')
             ));
-        } else {
-            User::where('id', $request->uid)->update(array(
-                'name' => request('name'),
-                'username' => request('username'),
-                'email' => request('email'),
-                'user_group_id' => request('user_group_id'),
-            ));
-        }
+
+            if (isset($request->password)) {
+                User::where('id', $request->uid)->update(array(
+                    'name' => request('name'),
+                    'username' => request('username'),
+                    'email' => request('email'),
+                    'password' => bcrypt(request('password')),
+                    'user_group_id' => 2,
+                ));
+            } else {
+                User::where('id', $request->uid)->update(array(
+                    'name' => request('name'),
+                    'username' => request('username'),
+                    'email' => request('email'),
+                    'user_group_id' => 2,
+                ));
+            }
 
 
-        return redirect(route("partners.index"));
+            return redirect(route("partners.index"));
 
         }
         return view('extra.404');

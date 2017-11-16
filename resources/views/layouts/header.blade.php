@@ -104,7 +104,7 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false">
                         <span class="ks-avatar">
-                            <img src="{{ asset(Auth::user()->photo) }}" width="36" height="36">
+                            <img src="<?= (empty(Auth::user()->avatar))? asset('upload/avatars/default.jpg') : asset('upload/avatars/'.Auth::user()->avatar);?>" width="36" height="36">
                         </span>
                         <span class="ks-info">
                             <span class="ks-name">{{ Auth::user()->name }}</span>

@@ -13,6 +13,7 @@
 
                         {!! Form::model($partnertype, ['route' => ['partnertypes.update', $partnertype->id], 'method' => 'patch']) !!}
 
+
                         @include('partnertypes.fields')
 
                         {!! Form::close() !!}

@@ -4,7 +4,7 @@
         <ul class="nav nav-pills nav-stacked">
             <li class="nav-item ks-user dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img src="{{ asset(Auth::user()->photo) }}" width="36" height="36" class="ks-avatar rounded-circle">
+                    <img src="<?= (empty(Auth::user()->avatar))? asset('upload/avatars/default.jpg') : asset('upload/avatars/'.Auth::user()->avatar);?>" width="36" height="36" class="ks-avatar rounded-circle">
                     <div class="ks-info">
                         <div class="ks-name">{{ Auth::user()->name }}</div>
                         <div class="ks-text">{{ Auth::user()->usergroup->group_name }}</div>
@@ -91,12 +91,6 @@
                    aria-expanded="false">
                     <span class="ks-icon la la-usd"></span>
                     <span>Orders</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" target="_blank" href="https://www.awstreams.com/contact-us">
-                    <span class="ks-icon la la-book"></span>
-                    <span>Help</span>
                 </a>
             </li>
         </ul>

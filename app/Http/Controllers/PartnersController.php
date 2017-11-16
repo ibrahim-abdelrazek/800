@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class PartnersController extends Controller
 {
+    protected  $location ;
+
+    public function __construct()
+    {
+        $this->location =['Abu Dhabi' , 'Dubai' , 'Sharjah' , 'Ajman' ,'Umm Al Quwain','Ras Al Khaimah' ,'Fujairah' ];
+    }
 
     /**
      * Display a listing of the resource.
@@ -50,19 +56,22 @@ class PartnersController extends Controller
         if (Auth::user()->ableTo('add', Partner::$model)) {
             //
             $request->validate([
-                'name' => 'required',
-                'location' => 'required',
+                'name' => 'required|min:5|max:50|alpha_dash',
+                'location' => 'required|max:100',
                 'partner_type_id' => 'required',
-                'username' => 'required',
+                'username' => 'required|min:5|max:50|regex:/^\S*$/',
                 'email' => 'required|unique:users',
                 'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
             ],
-                ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ']);
+                ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
+                    'username.regex' => 'Username not allowing space',
+                    'name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .'
+                ]);
 
 
             $partners = Partner::create([
                 'name' => request('name'),
-                'location' => request('location'),
+                'location' => $this->location[request('location')],
                 'partner_type_id' => request('partner_type_id')
             ]);
 
@@ -123,7 +132,7 @@ class PartnersController extends Controller
             $p = collect([
                 'id' => $partner['id'],
                 'name' => $partner['name'],
-                'location' => $partner['location'],
+                'location' => array_search($partner['location'],$this->location),
                 'partner_type' => $partner->partnerType->name,
                 'username' => $user['username'],
                 'email' => $user['email'],
@@ -134,7 +143,7 @@ class PartnersController extends Controller
 
                 return redirect(route("partners.index"));
             }
-
+           // dd($p);
             return view('partners.edit')->with("partner", $p);
         }
         return view('extra.404');
@@ -155,16 +164,27 @@ class PartnersController extends Controller
             $userID =User::where('partner_id', $id)->where('user_group_id',2)->value('id');
 
             $request->validate([
-                'name' => 'required',
-                'location' => 'required',
+                'name' => 'required|min:5|max:50|alpha_dash',
+                'location' => 'required|max:100',
                 'partner_type_id' => 'required',
-                'username' => 'required',
+                'username' => 'required|min:5|max:50|regex:/^\S*$/',
                 'email' => 'required|unique:users,email,' . $userID
+            ],
+            ['username.regex' => 'Username not allowing space' ,
+                'name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .'
             ]);
+
+            if(isset($request->password)){
+                $request->validate([
+                    'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
+                ],
+                    ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ']);
+            }
+
 
             Partner::where('id', $id)->update(array(
                 'name' => request('name'),
-                'location' => request('location'),
+                'location' => $this->location[request('location')],
                 'partner_type_id' => request('partner_type_id')
             ));
 

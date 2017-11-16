@@ -37,6 +37,7 @@
                 </a>
             </li>
             @endif
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner())
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('usergroups.index') }}" role="button" aria-haspopup="true"
                    aria-expanded="false">
@@ -51,6 +52,7 @@
                     <span>Users</span>
                 </a>
             </li>
+            @endif
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('hotelguest.index') }}" role="button" aria-haspopup="true"
                    aria-expanded="false">

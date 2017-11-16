@@ -8,7 +8,15 @@
                     <h5 class="card-title">Edit User</h5>
 
 
-                    {!! Form::model($user, ['route' => ['users.update', $user->id], 'method' => 'patch']) !!}
+                    {!! Form::model($user, ['route' => ['users.update', $user['id']], 'method' => 'patch']) !!}
+
+                    @if (isset($repeat))
+                        <div class="alert alert-danger">
+                            <ul>
+                                <li class="text-danger"><b>{{ $repeat }}</b></li>
+                            </ul>
+                        </div>
+                    @endif
 
                     @include('users.fields')
 

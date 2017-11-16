@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('doctors/get-nurses/{id}', 'DoctorController@getNurses');
     Route::resource('patients', 'PatientController');
     Route::resource('nurses', 'NurseController');
+    Route::get('nurse/viewCard/{id}', 'NurseController@viewCard');
     Route::resource('products', 'ProductController');
     Route::resource('orders', 'OrderController');
     Route::group(['prefix' => 'messages'], function () {

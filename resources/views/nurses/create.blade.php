@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-block">
                 <h5 class="card-title">Create new Nurse</h5>
-                {!! Form::open(['route' => 'nurses.store']) !!}
+                {!! Form::open(['route' => 'nurses.store' ,'files'=>true]) !!}
 
                 @include('nurses.fields')
 

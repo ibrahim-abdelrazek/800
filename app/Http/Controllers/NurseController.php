@@ -5,11 +5,24 @@ namespace App\Http\Controllers;
 use App\Nurse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\ImageManagerStatic as Image;
 
 
 class NurseController extends Controller
 {
 
+    public function viewCard($id)
+    {
+        $nurse = Nurse::find($id);
+        $person = new \stdClass();
+        $person->name = $nurse->name;
+        $person->job_title = 'Nurse at ' . $nurse->partner->name;
+        $person->email = $nurse->contact_email;
+        $person->phone = $nurse->contact_number;
+        $person->photo = $nurse->photo;
+        if (!empty($nurse))
+            return view('extras.card')->with('person', $person);
+    }
 
     public function index()
     {
@@ -64,7 +77,10 @@ class NurseController extends Controller
         if (Auth::user()->ableTo('add', Nurse::$model)) {
 
             $request->validate([
-                'name' => 'required|string|max:100'
+                'name' => 'required|string|max:100',
+                'contact_email' => 'required|email|unique:doctors,contact_email',
+                'contact_number' => 'required|string',
+                'photo' => 'image|mimes:jpg,png|max:5000'
             ]);
 
             if ($request->has('partner_id')) {
@@ -77,7 +93,13 @@ class NurseController extends Controller
                     $nurses = array_merge($nurses, ['user_id' => Auth::user()->id]);
                 }
             }
-
+            if($request->hasFile('photo')){
+                $avatar = $request->file('photo');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/nurses/'.$filename));
+                $nurses['photo'] = '/upload/nurses/'.$filename;
+            }
             if (Nurse::create($nurses))
                 return redirect(route('nurses.index'));
 
@@ -145,12 +167,17 @@ class NurseController extends Controller
     {
         //
         if (Auth::user()->ableTo('edit', Nurse::$model)) {
-
+            $nurse = Nurse::find($id);
+            if(empty($nurse))
+                return redirect(route('nurses.index'));
             $request->validate([
-                'name' => 'required|string|max:100'
+                'name' => 'required|string|max:100',
+                'contact_email' => 'required|email|unique:doctors,contact_email,'. $nurse->contact_email,
+                'contact_number' => 'required|string',
+                'photo' => 'image|mimes:jpg,png|max:5000'
             ]);
 
-            $nursee = Nurse::find($id);
+
 
             if (empty($nurse)) {
                 return redirect(route('nurses.index'));
@@ -166,8 +193,17 @@ class NurseController extends Controller
                     $nurses = array_merge($nurses, ['user_id' => Auth::user()->id]);
                 }
             }
+            if($request->hasFile('photo')){
+                $avatar = $request->file('photo');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/nurses/'.$filename));
+                $nurses['photo'] = '/upload/nurses/'.$filename;
+                // remove old image
+                unlink(asset($nurse->photo));
+            }
 
-            if ($nursee->update($nurses))
+            if ($nurse->update($nurses))
                 return redirect(route('nurses.index'));
 
         } else {

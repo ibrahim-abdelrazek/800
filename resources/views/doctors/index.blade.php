@@ -38,6 +38,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#" data-toggle="tab" data-target="#new_doctor">
                             Create New Doctor
+                            @if($errors->any())
+                                <span class="badge badge-danger badge-pill">{{ count($errors->all()) }}</span>
+                            @endif
                         </a>
                     </li>
                 </ul>

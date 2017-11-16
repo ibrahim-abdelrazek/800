@@ -65,6 +65,16 @@
                         backgroundDismiss: true
                     });
                 });
+                $('.view-doctor').on('click', function () {
+                    $.dialog({
+                        title: 'View Doctor',
+                        content: 'url:' + "{!! url('doctors') !!}/" + $(this).attr('data-id'),
+                        animation: 'zoom',
+                        columnClass: 'medium',
+                        closeAnimation: 'scale',
+                        backgroundDismiss: true
+                    });
+                });
             $('a[data-toggle="tab"]').click(function (e) {
             e.preventDefault();
             $(this).tab('show');

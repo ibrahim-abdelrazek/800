@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Nurse;
 use Illuminate\Http\Request;
 use App\Doctor;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Comment\Doc;
 
@@ -18,8 +19,14 @@ class DoctorController extends Controller
      */
     public function viewCard($id)
     {
-        if (Doctor::find($id))
-            return view('extras.card')->with($id);
+        $doctor = Doctor::find($id);
+        if (!empty($doctor))
+            return view('extras.card')->with('person', collect([
+                'name' =>$doctor->name,
+                'job_title'=> $doctor->speciality . 'doctor',
+                'email' => $doctor->contact_email,
+                'phone' => $doctor->contact_number
+            ]));
     }
 
     public function index()

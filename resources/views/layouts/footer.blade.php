@@ -1,6 +1,5 @@
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="{{ asset('libs/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('js/playSound.js') }}"></script>
 <script src="{{ asset('libs/responsejs/response.min.js') }}"></script>
 <script src="{{ asset('libs/loading-overlay/loadingoverlay.min.js') }}"></script>
 <script src="{{ asset('libs/tether/js/tether.min.js') }}"></script>

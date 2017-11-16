@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\PartnerType;
 use App\User;
 use App\UserGroup;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,17 +20,22 @@ class UserGroupController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->user_group_id == 1  ){
+        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
+            if (Auth::user()->user_group_id == 1) {
 
-            $usergroups = UserGroup::where('id', '!=' ,1)->where('id', '!=' ,2)->get();
+                $usergroups = UserGroup::where('id', '!=', 1)->where('id', '!=', 2)->get();
 
-        }elseif(Auth::user()->user_group_id == 2  ) {
+            } elseif (Auth::user()->user_group_id == 2) {
 
-            $usergroups = UserGroup::where('partner_id',Auth::user()->partner_id)->get();
+                $usergroups = UserGroup::where('partner_id', Auth::user()->partner_id)->get();
 
+            }
+
+            return view('usergroups.index')->with('usergroups', $usergroups);
+        }else {
+
+            return view('extra.404');
         }
-
-        return view('usergroups.index')->with('usergroups' , $usergroups );
 
     }
 
@@ -41,8 +47,13 @@ class UserGroupController extends Controller
     public function create()
     {
         //
+        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
 
-        return view('usergroups.create');
+            return view('usergroups.create');
+        }else {
+
+            return view('extra.404');
+        }
     }
 
     /**
@@ -53,44 +64,69 @@ class UserGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $input = $request->all();
-        $models = [
-            \App\Doctor::$model,
-            \App\Patient::$model,
-            \App\HotelGuest::$model,
-            \App\Nurse::$model,
-            \App\Order::$model,
-            \App\Product::$model,
-            \App\Transaction::$model
-        ] ;        $actions = ['view', 'add' ,'edit' ,'delete'];
-        $data = array();
-        foreach ($models as $model){
-            $var = '';
-            foreach ($actions as $action){
-                if(isset($input[$model.$action])){
-                    $var .='1';
-                }else {
-                    $var .= '0';
-                }
 
-            }
-            $data[$model]= $var ;
+        if(Auth::user()->isAdmin())
+            $count = UserGroup::where('group_name', $request->group_name)->where('partner_id', $request->partner_id)->count();
+        else
+            $count = UserGroup::where('group_name', $request->group_name)->where('partner_id', Auth::user()->partner_id)->count();
+
+
+        if($count >0 ) {
+            $err = "The name has already been taken.";
+            return view('usergroups.create')->with("repeat", $err);
         }
-        //dd($data);
 
 
-        $action = serialize($data);
+        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
+
+            $request->validate([
+                'group_name' => 'required|min:5|max:50|alpha_dash'],
+                ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']
+            );
+
+            $input = $request->all();
+            $models = [
+                \App\Doctor::$model,
+                \App\Patient::$model,
+                \App\HotelGuest::$model,
+                \App\Nurse::$model,
+                \App\Order::$model,
+                \App\Product::$model,
+                \App\Transaction::$model
+            ];
+            $actions = ['view', 'add', 'edit', 'delete'];
+            $data = array();
+
+            $j = -1;
+            foreach ($models as $model) {
+                $j++;
+                $var = '';
+                foreach ($actions as $action) {
+                    if (isset($input[$model . $action])) {
+                        $var .= '1';
+                    } else {
+                        $var .= '0';
+                    }
+
+                }
+                $data[$model] = $var;
+            }
+
+            $action = serialize($data);
 
 
-        $data['group_name'] = $input['group_name'];
-        $data['action'] = $action;
-        $data['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id ;
+            $data['group_name'] = $input['group_name'];
+            $data['action'] = $action;
+            $data['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id;
 
-        $usergroups = UserGroup::create($data);
+            $usergroups = UserGroup::create($data);
 
-        return redirect(route('usergroups.index'));
+            return redirect(route('usergroups.index'));
 
+        }else {
+
+            return view('extra.404');
+        }
     }
 
     /**
@@ -102,14 +138,19 @@ class UserGroupController extends Controller
     public function show($id)
     {
         //
-        $usergroup = UserGroup::find($id);
+        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
 
-        if(empty($usergroup)){
-            return redirect(route('usergroups.index'));
+            $usergroup = UserGroup::find($id);
+
+            if (empty($usergroup)) {
+                return redirect(route('usergroups.index'));
+            }
+
+            return view('usergroups.show')->with('usergroup', $usergroup);
+        }else {
+
+            return view('extra.404');
         }
-
-        return view('usergroups.show')->with('usergroup' , $usergroup );
-
     }
 
     /**
@@ -120,39 +161,45 @@ class UserGroupController extends Controller
      */
     public function edit($id)
     {
-        //
-        $usergroup = UserGroup::find($id);
+        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
 
-        $models = [
-            \App\Doctor::$model,
-            \App\Patient::$model,
-            \App\HotelGuest::$model,
-            \App\Nurse::$model,
-            \App\Order::$model,
-            \App\Product::$model,
-            \App\Transaction::$model
-        ] ;        $actions = ['view', 'add' ,'edit' ,'delete'];
+            $usergroup = UserGroup::find($id);
 
-        $data = unserialize($usergroup['action']);
+            $models = [
+                \App\Doctor::$model,
+                \App\Patient::$model,
+                \App\HotelGuest::$model,
+                \App\Nurse::$model,
+                \App\Order::$model,
+                \App\Product::$model,
+                \App\Transaction::$model
+            ];
+            $actions = ['view', 'add', 'edit', 'delete'];
 
-        foreach ($data as $k => $v){
-            $result = str_split($v);
-            $i =0 ;
-            foreach ($actions as $a){
-                $dataa[$k.$a] = $result[$i];
-                $i++;
+            $data = unserialize($usergroup['action']);
+
+            foreach ($data as $k => $v) {
+                $result = str_split($v);
+                $i = 0;
+                foreach ($actions as $a) {
+                    $dataa[$k . $a] = $result[$i];
+                    $i++;
+                }
             }
+
+            $dataa['group_name'] = $usergroup['group_name'];
+            $dataa['id'] = $usergroup['id'];
+            $dataa['partner_id'] = $usergroup['partner_id'];
+
+            if (empty($usergroup)) {
+                return redirect(route('usergroups.index'));
+            }
+
+            return view('usergroups.edit')->with('usergroup', $dataa);
+        }else {
+
+            return view('extra.404');
         }
-
-        $dataa['group_name']= $usergroup['group_name'];
-        $dataa['id']= $usergroup['id'];
-
-        if(empty($usergroup)){
-            return redirect(route('usergroups.index'));
-        }
-
-        return view('usergroups.edit')->with('usergroup' , $dataa );
-
     }
 
     /**
@@ -165,48 +212,73 @@ class UserGroupController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $usergroup = UserGroup::find($id);
+        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
 
-        $input = $request->all();
+            if(Auth::user()->isAdmin())
+                $count = UserGroup::where('id','!=',$id)->where('group_name', $request->group_name)->where('partner_id', $request->partner_id)->count();
+            else
+                $count = UserGroup::where('id','!=',$id)->where('group_name', $request->group_name)->where('partner_id', Auth::user()->partner_id)->count();
 
-        $models = [
-            \App\Doctor::$model,
-            \App\Patient::$model,
-            \App\HotelGuest::$model,
-            \App\Nurse::$model,
-            \App\Order::$model,
-            \App\Product::$model,
-            \App\Transaction::$model
-        ] ;        $actions = ['view', 'add' ,'edit' ,'delete'];
-        $data = array();
-        foreach ($models as $model){
-            $var = '';
-            foreach ($actions as $action){
-                if(isset($input[$model.$action])){
-                    $var .='1';
-                }else {
-                    $var .= '0';
-                }
 
+            if($count >0 ){
+                $err = "The name has already been taken.";
+                $data = array();
+                $data['id']= $id;
+                $data['partner_id']=$request->partner_id ;
+                return view('usergroups.edit')->with('usergroup',$data )->with('repeat',$err );
             }
-            $data[$model]= $var ;
-        }
 
 
-        $action = serialize($data);
 
-        $data['group_name'] = $input['group_name'];
-        $data['action'] = $action;
-        $data['partner_id'] = Auth::user()->partner_id ;
+            $request->validate([
+                'group_name' => 'required|min:5|max:50|alpha_dash',
+            ], ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']);
 
-        if(empty($usergroup)){
+
+            $usergroup = UserGroup::find($id);
+
+            $input = $request->all();
+            $models = [
+                \App\Doctor::$model,
+                \App\Patient::$model,
+                \App\HotelGuest::$model,
+                \App\Nurse::$model,
+                \App\Order::$model,
+                \App\Product::$model,
+                \App\Transaction::$model
+            ];
+            $actions = ['view', 'add', 'edit', 'delete'];
+            $data = array();
+            foreach ($models as $model) {
+                $var = '';
+                foreach ($actions as $action) {
+                    if (isset($input[$model . $action])) {
+                        $var .= '1';
+                    } else {
+                        $var .= '0';
+                    }
+
+                }
+                $data[$model] = $var;
+            }
+
+
+            $action = serialize($data);
+
+            $data['group_name'] = $input['group_name'];
+            $data['action'] = $action;
+            $data['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id;
+
+            if (empty($usergroup)) {
+                return redirect(route('usergroups.index'));
+            }
+            $usergroup->update($data);
+
             return redirect(route('usergroups.index'));
+        }else {
+
+            return view('extra.404');
         }
-
-        $usergroup->update($data);
-
-        return redirect(route('usergroups.index'));
-
     }
 
     /**
@@ -217,18 +289,23 @@ class UserGroupController extends Controller
      */
     public function destroy($id)
     {
+        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
 
-         $usergroup = UserGroup::find($id);
-         if(empty($usergroup)){
-             return redirect(route('usergroups.index'));
-         }
-
-
-         $usergroup->delete($id);
+            $usergroup = UserGroup::find($id);
+            if (empty($usergroup)) {
+                return redirect(route('usergroups.index'));
+            }
 
 
-        return redirect(route('usergroups.index'));
+            $usergroup->delete($id);
 
+
+            return redirect(route('usergroups.index'));
+
+        } else {
+
+            return view('extra.404');
+        }
 
     }
 }

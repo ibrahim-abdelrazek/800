@@ -6,6 +6,9 @@
         <th rowspan="2">Name</th>
         <th rowspan="2">Speciality</th>
         <th colspan="2">Contact Details</th>
+        @if(Auth::user()->isAdmin())
+            <th rowspan="2">Partner</th>
+        @endif
         <th rowspan="2">Actions</th>
     </tr>
     <tr>
@@ -21,6 +24,9 @@
         <th rowspan="1">Speciality</th>
         <th rowspan="1">Email</th>
         <th rowspan="1">Number</th>
+        @if(Auth::user()->isAdmin())
+            <th rowspan="1">Partner</th>
+        @endif
         <th rowspan="1">Actions</th>
 
     </tr>
@@ -41,6 +47,9 @@
             <td>{{ $doctor->specialty }}</td>
             <td>{{$doctor->contact_email}}</td>
             <td>{{ $doctor->contact_number }}</td>
+            @if(Auth::user()->isAdmin())
+                <td>{{ $http_response_header->partner->name }}</td>
+            @endif
             <td>
 
                 {!! Form::open(['route' => ['doctors.destroy', $doctor->id], 'method' => 'delete']) !!}

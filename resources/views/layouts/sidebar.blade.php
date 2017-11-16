@@ -95,6 +95,14 @@
                     <span>Orders</span>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('settings.index') }}" role="button" aria-haspopup="true"
+                   aria-expanded="false">
+                    <span class="ks-icon la la-cog"></span>
+                    <span>Settings</span>
+                </a>
+            </li>
         </ul>
         <div class="ks-sidebar-extras-block">
             <div class="ks-sidebar-copyright">© {{ date('Y') }} 800Pharmacy. All right reserved</div>

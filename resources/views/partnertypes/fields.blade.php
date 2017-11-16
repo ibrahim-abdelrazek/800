@@ -11,7 +11,7 @@
 <!--  Name -->
 <div class="form-group col-sm-8 col-sm-offset-2" id='name'>
     {!! Form::label('name', 'Name:') !!}
-    {!! Form::text('name', null, [  'class' => 'form-control']) !!}
+    {!! Form::text('name', null, [  'class' => 'form-control', 'required'=> 'required']) !!}
 </div>
 
 
@@ -27,7 +27,7 @@
 <div class="form-group col-sm-8 col-sm-offset-2" id='submit'>
 
     {!! Form::submit('Save', ['class' => 'btn btn-danger']) !!}
-    <a href="{!! route('partnertypes.index') !!} " class="btn btn-default" > Cancel</a>
+    <a href="{!! url('/dashboard') !!} " class="btn btn-default" > Cancel</a>
 </div>
 
 

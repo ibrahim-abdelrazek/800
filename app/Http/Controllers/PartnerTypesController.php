@@ -49,10 +49,16 @@ class PartnerTypesController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-            'name' => 'required|min:5|max:50|alpha_dash|unique:partner_types'
+        $this->validate(request(), [
+            'name' => [
+                'required',
+                'min:5',
+                'max:50',
+                'unique:partner_types',
+                'regex:/^[\pL\s]+$/u'
+                ]
         ],
-            ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']);
+            ['name.regex' => 'The name may only contain letters and space .']);
 
         $input = $request->all();
 

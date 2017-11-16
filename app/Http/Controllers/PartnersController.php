@@ -133,7 +133,7 @@ class PartnersController extends Controller
                 'id' => $partner['id'],
                 'name' => $partner['name'],
                 'location' => array_search($partner['location'],$this->location),
-                'partner_type' => $partner->partnerType->name,
+                'partner_type_id' => $partner->partnerType->id,
                 'username' => $user['username'],
                 'email' => $user['email'],
                 'uid' => $user['id']
@@ -143,7 +143,6 @@ class PartnersController extends Controller
 
                 return redirect(route("partners.index"));
             }
-           // dd($p);
             return view('partners.edit')->with("partner", $p);
         }
         return view('extra.404');

@@ -20,6 +20,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/notifications', 'UserController@notifications');
     Route::get('/threads', 'UserController@threads');
     Route::resource('profile', 'ProfileController');
+    Route::resource('settings', 'SettingsController');
+    Route::post('settings/update', 'SettingsController@update');
     Route::resource('partnertypes' , 'PartnerTypesController');
     Route::resource('usergroups' , 'UserGroupController');
     Route::resource('users' , 'UserController');

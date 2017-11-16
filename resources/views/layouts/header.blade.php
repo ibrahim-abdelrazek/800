@@ -9,7 +9,7 @@
         <!-- END RESPONSIVE SIDEBAR TOGGLER -->
 
         <div class="ks-navbar-logo">
-            <a href="{{ url('/') }}" class="ks-logo">800Pharmacy</a>
+            <a href="{{ url('/') }}" class="ks-logo">{{$AppName }}</a>
         </div>
     </div>
     <!-- END LOGO -->
@@ -20,18 +20,18 @@
             <!-- BEGIN NAVBAR MENU -->
             <div class="ks-navbar-menu">
                 <!-- Fast Links -->
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                       aria-haspopup="true" aria-expanded="false">
-                        Recent navigations
-                    </a>
-                    <div class="dropdown-menu ks-info" aria-labelledby="Preview">
-                        <a class="dropdown-item ks-active" href="#">Dropdown Link 1</a>
-                        <a class="dropdown-item" href="#">Dropdown Link 2</a>
-                        <a class="dropdown-item" href="#">Dropdown Link 3</a>
+                {{--<div class="nav-item dropdown">--}}
+                    {{--<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"--}}
+                       {{--aria-haspopup="true" aria-expanded="false">--}}
+                        {{--Recent navigations--}}
+                    {{--</a>--}}
+                    {{--<div class="dropdown-menu ks-info" aria-labelledby="Preview">--}}
+                        {{--<a class="dropdown-item ks-active" href="#">Dropdown Link 1</a>--}}
+                        {{--<a class="dropdown-item" href="#">Dropdown Link 2</a>--}}
+                        {{--<a class="dropdown-item" href="#">Dropdown Link 3</a>--}}
 
-                    </div>
-                </div>
+                    {{--</div>--}}
+                {{--</div>--}}
                 <!-- End Fast Links -->
             </div>
             <!-- END NAVBAR MENU -->

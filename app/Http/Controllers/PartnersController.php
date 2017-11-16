@@ -136,7 +136,6 @@ class PartnersController extends Controller
                 'partner_type_id' => $partner->partnerType->id,
                 'username' => $user['username'],
                 'email' => $user['email'],
-                'uid' => $user['id']
             ]);
 
             if (empty($partner)) {
@@ -188,7 +187,7 @@ class PartnersController extends Controller
             ));
 
             if (isset($request->password)) {
-                User::where('id', $request->uid)->update(array(
+                User::where('id', $userID)->update(array(
                     'name' => request('name'),
                     'username' => request('username'),
                     'email' => request('email'),
@@ -196,7 +195,7 @@ class PartnersController extends Controller
                     'user_group_id' => 2,
                 ));
             } else {
-                User::where('id', $request->uid)->update(array(
+                User::where('id', $userID)->update(array(
                     'name' => request('name'),
                     'username' => request('username'),
                     'email' => request('email'),

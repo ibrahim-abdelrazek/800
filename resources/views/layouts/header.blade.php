@@ -19,20 +19,7 @@
         <nav class="nav navbar-nav">
             <!-- BEGIN NAVBAR MENU -->
             <div class="ks-navbar-menu">
-                <!-- Fast Links -->
-                {{--<div class="nav-item dropdown">--}}
-                    {{--<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"--}}
-                       {{--aria-haspopup="true" aria-expanded="false">--}}
-                        {{--Recent navigations--}}
-                    {{--</a>--}}
-                    {{--<div class="dropdown-menu ks-info" aria-labelledby="Preview">--}}
-                        {{--<a class="dropdown-item ks-active" href="#">Dropdown Link 1</a>--}}
-                        {{--<a class="dropdown-item" href="#">Dropdown Link 2</a>--}}
-                        {{--<a class="dropdown-item" href="#">Dropdown Link 3</a>--}}
 
-                    {{--</div>--}}
-                {{--</div>--}}
-                <!-- End Fast Links -->
             </div>
             <!-- END NAVBAR MENU -->
 
@@ -61,7 +48,7 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane ks-messages-tab active" id="ks-navbar-messages-inbox" role="tabpanel">
-                                <div class="ks-wrapper ks-scrollable">
+                                <div id="messagesMenu" class="ks-wrapper ks-scrollable">
 
                                 </div>
                                 <div class="ks-view-all">

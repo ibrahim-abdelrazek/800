@@ -12,6 +12,7 @@ class Partner extends Model
         'id',
          'name',
          'location',
+         'photo',
          'partner_type_id'
     ];
 
@@ -48,5 +49,14 @@ class Partner extends Model
         })->first(['partners.name','partners.partner_type_id','location','users.name','users.username','users.email','users.password','users.partner_id']);
     }
     //join('user_groups', function($q){ $q->where('user_groups.id', 2); })->
+    public function getTransactionAmount(){
+        $amount = 0;
+        if(!$this->transactions->count() > 0)
+            return 0;
 
+        foreach ($this->transactions as $transaction){
+            $amount += $transaction->amount;
+        }
+        return $amount;
+    }
 }

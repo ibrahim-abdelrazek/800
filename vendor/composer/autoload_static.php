@@ -330,6 +330,7 @@ class ComposerStaticInitf7435ea18f49c95d9e8809c686c35193
     );
 
     public static $classMap = array (
+        'App\\City' => __DIR__ . '/../..' . '/app/City.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Doctor' => __DIR__ . '/../..' . '/app/Doctor.php',
         'App\\Events\\MessageCreated' => __DIR__ . '/../..' . '/app/Events/MessageCreated.php',
@@ -353,6 +354,7 @@ class ComposerStaticInitf7435ea18f49c95d9e8809c686c35193
         'App\\Http\\Controllers\\PatientController' => __DIR__ . '/../..' . '/app/Http/Controllers/PatientController.php',
         'App\\Http\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductController.php',
         'App\\Http\\Controllers\\ProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProfileController.php',
+        'App\\Http\\Controllers\\SettingsController' => __DIR__ . '/../..' . '/app/Http/Controllers/SettingsController.php',
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Controllers\\UserGroupController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserGroupController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
@@ -365,7 +367,9 @@ class ComposerStaticInitf7435ea18f49c95d9e8809c686c35193
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\PartnerRequest' => __DIR__ . '/../..' . '/app/Http/Requests/PartnerRequest.php',
+        'App\\InsuranceProvider' => __DIR__ . '/../..' . '/app/InsuranceProvider.php',
         'App\\Message' => __DIR__ . '/../..' . '/app/Message.php',
+        'App\\Nighborhood' => __DIR__ . '/../..' . '/app/Nighborhood.php',
         'App\\Notifications\\MessageCreated' => __DIR__ . '/../..' . '/app/Notifications/MessageCreated.php',
         'App\\Notifications\\OrderCreated' => __DIR__ . '/../..' . '/app/Notifications/OrderCreated.php',
         'App\\Nurse' => __DIR__ . '/../..' . '/app/Nurse.php',
@@ -379,9 +383,12 @@ class ComposerStaticInitf7435ea18f49c95d9e8809c686c35193
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Settings' => __DIR__ . '/../..' . '/app/Settings.php',
+        'App\\Status' => __DIR__ . '/../..' . '/app/Status.php',
         'App\\Transaction' => __DIR__ . '/../..' . '/app/Transaction.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'App\\UserGroup' => __DIR__ . '/../..' . '/app/UserGroup.php',
+        'Backpack\\Settings\\database\\seeds\\SettingsTableSeeder' => __DIR__ . '/../..' . '/database/seeds/SettingsTableSeeder.php',
         'Carbon\\Carbon' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Carbon.php',
         'Carbon\\CarbonInterval' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
         'Carbon\\Exceptions\\InvalidDateException' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',

@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\City' => $baseDir . '/app/City.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Doctor' => $baseDir . '/app/Doctor.php',
     'App\\Events\\MessageCreated' => $baseDir . '/app/Events/MessageCreated.php',
@@ -29,6 +30,7 @@ return array(
     'App\\Http\\Controllers\\PatientController' => $baseDir . '/app/Http/Controllers/PatientController.php',
     'App\\Http\\Controllers\\ProductController' => $baseDir . '/app/Http/Controllers/ProductController.php',
     'App\\Http\\Controllers\\ProfileController' => $baseDir . '/app/Http/Controllers/ProfileController.php',
+    'App\\Http\\Controllers\\SettingsController' => $baseDir . '/app/Http/Controllers/SettingsController.php',
     'App\\Http\\Controllers\\UserController' => $baseDir . '/app/Http/Controllers/UserController.php',
     'App\\Http\\Controllers\\UserGroupController' => $baseDir . '/app/Http/Controllers/UserGroupController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
@@ -41,7 +43,9 @@ return array(
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Http\\Requests\\PartnerRequest' => $baseDir . '/app/Http/Requests/PartnerRequest.php',
+    'App\\InsuranceProvider' => $baseDir . '/app/InsuranceProvider.php',
     'App\\Message' => $baseDir . '/app/Message.php',
+    'App\\Nighborhood' => $baseDir . '/app/Nighborhood.php',
     'App\\Notifications\\MessageCreated' => $baseDir . '/app/Notifications/MessageCreated.php',
     'App\\Notifications\\OrderCreated' => $baseDir . '/app/Notifications/OrderCreated.php',
     'App\\Nurse' => $baseDir . '/app/Nurse.php',
@@ -55,9 +59,12 @@ return array(
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
+    'App\\Settings' => $baseDir . '/app/Settings.php',
+    'App\\Status' => $baseDir . '/app/Status.php',
     'App\\Transaction' => $baseDir . '/app/Transaction.php',
     'App\\User' => $baseDir . '/app/User.php',
     'App\\UserGroup' => $baseDir . '/app/UserGroup.php',
+    'Backpack\\Settings\\database\\seeds\\SettingsTableSeeder' => $baseDir . '/database/seeds/SettingsTableSeeder.php',
     'Carbon\\Carbon' => $vendorDir . '/nesbot/carbon/src/Carbon/Carbon.php',
     'Carbon\\CarbonInterval' => $vendorDir . '/nesbot/carbon/src/Carbon/CarbonInterval.php',
     'Carbon\\Exceptions\\InvalidDateException' => $vendorDir . '/nesbot/carbon/src/Carbon/Exceptions/InvalidDateException.php',

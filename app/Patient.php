@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {
-    protected $table = 'patientss';
     static $model = 'patient';
     protected $fillable = [
         'id',

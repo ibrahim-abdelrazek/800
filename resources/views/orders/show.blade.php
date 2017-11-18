@@ -35,7 +35,6 @@
                                             break;
                                         }
                                     @endphp
-
                                     <span  style="background:{{$color}}" class="ks-status-paid"><span class="ks-icon la la-check"></span> {{$order->status->message}}</span>
                                 </div>
                                 <div class="ks-body">
@@ -65,8 +64,6 @@
                                         $patient->apartment_number = $address[0];
                                         $patient->apartment_name = $address[1];
                                         $patient->street =$address[2];
-
-
                                     }else {
                                         $patient->office_number = $address[0];
                                         $patient->building_name = $address[1];

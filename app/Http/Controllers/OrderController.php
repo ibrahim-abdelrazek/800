@@ -84,7 +84,6 @@ class OrderController extends Controller
                 $prescription = '/upload/orders/'.$filename;
                 // remove old image
             }
-
             if ($request->has('partner_id')) {
                 $order = $request->all();
             }else {

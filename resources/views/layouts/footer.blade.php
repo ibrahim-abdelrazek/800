@@ -54,6 +54,8 @@
             var htmlElements = notifications.map(function (notification) {
                 return makeNotification(notification);
             });
+
+            //alert('notifications =>>'+notifications.length);
             $(target + 'Menu').html(htmlElements.join(''));
             $('#notifier').html('<span class="badge badge-pill badge-info">' + notifications.length + '</span>')
         } else {
@@ -66,6 +68,7 @@
             var htmlElements = messages.map(function (message) {
                 return makeMessage(message);
             });
+            //alert(notifications.length);
             $(target + 'Menu').html(htmlElements.join(''));
             $('#messenger-notifier').html('<span class="badge badge-pill badge-info">' + messages.length + '</span>')
         } else {

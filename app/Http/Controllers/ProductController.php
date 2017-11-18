@@ -23,20 +23,25 @@ class ProductController extends Controller
     public function index()
     {
         //
-        if(Auth::user()->user_group_id == 1 ){
+        if(Auth::user()->ableTo('view',Product::$model)) {
 
-           $products = Product::get();
+            if (Auth::user()->user_group_id == 1) {
 
-        }elseif (Auth::user()->user_group_id == 2 ) {
+                $products = Product::get();
 
-          $products = Product::where('partner_id',Auth::user()->partner_id)->get();
+            } elseif (Auth::user()->user_group_id == 2) {
 
-        } else{
+                $products = Product::where('partner_id', Auth::user()->partner_id)->get();
 
-        $products = Product::where('user_id',Auth::user()->id)->get();
+            } else {
+
+                $products = Product::where('user_id', Auth::user()->id)->get();
+            }
+
+            return view('products.index')->with('products', $products);
+        }else {
+            return view('extra.404');
         }
-
-        return view('products.index')->with('products' , $products );
     }
     
 
@@ -48,8 +53,12 @@ class ProductController extends Controller
     public function create()
     {
         //
-        return view('products.create');
+        if(Auth::user()->ableTo('add',Product::$model)) {
 
+            return view('products.create');
+        }else {
+            return view('extra.404');
+        }
     }
 
     /**
@@ -61,39 +70,43 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-        'name' => 'required|max:45',
-        'image' => 'required',
-        'price' => 'required',
-        'partner_id'=>'required'
-        ]);
-        
+        if(Auth::user()->ableTo('add',Product::$model)) {
 
-        $input = $request->all();
+            if (Auth::user()->isAdmin())
+                $count = Product::where('name', $request->name)->where('partner_id', $request->partner_id)->count();
+            else
+                $count = Product::where('name', $request->name)->where('partner_id', Auth::user()->partner_id)->count();
 
-         $destinationPath = './upload/';
-         $file = $request->file('image');
-         $input['image'] = $file->getClientOriginalName();
-                //$input['image']  =  rand(0,10000000)  . '_' .$input['image'] ;
-                /*$image = Product::make($file->getPathName());
-                if( $file->width() > 1080 || $file->height() > 1350 ){
-                    if($file->width() > 1080 && $file->height() < 1350)
-                        $file->resize(1080, null);
-                    elseif ($file->width() < 1080 && $file->height() > 1350)
-                        $file->resize(null, 1350);
-                    elseif($file->width() > $file->height()) {
-                        $file->resize(1080, null);
-                    }else {
-                        $file->resize(null, 1350);
-                    }
-                }
 
-               */
-        $file->move($destinationPath,$file->getClientOriginalName());
-        $products = Product::create($input);
+            if ($count > 0) {
+                $err = "The name has already been taken.";
+                return view('products.create')->with("repeat", $err);
+            }
 
-         
-        return redirect(route('products.index'));
+            $request->validate([
+                'name' => 'required|min:5|max:50',
+                'image' => 'required|image|mimes:jpg,png,jpeg|max:5000',
+                'price' => 'required|numeric',
+            ]);
+
+
+            $input = $request->all();
+
+            $destinationPath = './upload/';
+            $file = $request->file('image');
+            $input['image'] = $file->getClientOriginalName();
+
+
+            $file->move($destinationPath, $file->getClientOriginalName());
+
+            $input['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id;
+
+            $products = Product::create($input);
+
+            return redirect(route('products.index'));
+        }else {
+            return view('extra.404');
+        }
     }
 
     /**
@@ -105,13 +118,19 @@ class ProductController extends Controller
     public function show($id)
     {
         //
-        $product = Product::find($id);
+        if(Auth::user()->ableTo('view',Product::$model)) {
 
-        if(empty($product)){
-            return redirect(route('products.index'));
+            $product = Product::find($id);
+
+            if (empty($product)) {
+                return redirect(route('products.index'));
+            }
+
+            return view('products.show')->with('product', $product);
+        }else {
+            return view('extra.404');
         }
 
-        return view('products.show')->with('product' , $product );
     }
 
     /**
@@ -123,13 +142,19 @@ class ProductController extends Controller
     public function edit($id)
     {
         //
-        $product = Product::find($id);
+        if (Auth::user()->ableTo('view', Product::$model)) {
 
-        if(empty($product)){
-            return redirect(route('products.index'));
+            $product = Product::find($id);
+
+            if (empty($product)) {
+                return redirect(route('products.index'));
+            }
+
+            return view('products.edit')->with('product', $product);
+        }else {
+            return view('extra.404');
         }
 
-        return view('products.edit')->with('product' , $product );
     }
 
     /**
@@ -142,42 +167,66 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $request->validate([
-        'name' => 'required|max:45',
-        'image' => 'required',
-        'price' => 'required',
-        'partner_id'=>'required'
-        ]);
+        if(Auth::user()->ableTo('view',Product::$model)) {
 
-        $product = Product::find($id);
+            if (Auth::user()->isAdmin())
+                $count = Product::where('id', '!=', $id)->where('name', $request->name)->where('partner_id', $request->partner_id)->count();
+            else
+                $count = Product::where('id', '!=', $id)->where('name', $request->name)->where('partner_id', Auth::user()->partner_id)->count();
 
-        if(empty($product)){
+
+            if ($count > 0) {
+                $err = "The name has already been taken.";
+                $data = array();
+                $data['id'] = $id;
+                if (Auth::user()->isAdmin())
+                    $data['partner_id'] = $request->partner_id;
+                else
+                    $data['partner_id'] = Auth::user()->partner_id;
+                return view('products.edit')->with('product', $data)->with('repeat', $err);
+            }
+
+            $request->validate([
+                'name' => 'required|min:5|max:50',
+                'image' => 'image|mimes:jpg,png|max:5000',
+                'price' => 'required|numeric',
+            ]);
+
+            $product = Product::find($id);
+
+            if (empty($product)) {
+                return redirect(route('products.index'));
+            }
+            $input = $request->all();
+            $destinationPath = './upload/';
+
+            if (isset($request->image)) {
+                $file = $request->file('image');
+                $input['image'] = $file->getClientOriginalName();
+                $file->move($destinationPath, $file->getClientOriginalName());
+
+            }
+
+
+            $input['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id;
+
+            if (!isset($request->image)) {
+                $product->update(
+                    array(
+                        'name' => request('name'),
+                        'price' => request('price'),
+                        'email' => request('email'),
+                        'partner_id'=>$input['partner_id']
+                    )
+                );
+            } else {
+                $product->update($input);
+            }
+
             return redirect(route('products.index'));
+        }else {
+            return view('extra.404');
         }
-       $input=$request->all();
-        $destinationPath = './upload/';
-
-         $file = $request->file('image');
-         $input['image'] = $file->getClientOriginalName();
-                //$input['image']  =  rand(0,10000000)  . '_' .$input['image'] ;
-                /*$image = Product::make($file->getPathName());
-                if( $file->width() > 1080 || $file->height() > 1350 ){
-                    if($file->width() > 1080 && $file->height() < 1350)
-                        $file->resize(1080, null);
-                    elseif ($file->width() < 1080 && $file->height() > 1350)
-                        $file->resize(null, 1350);
-                    elseif($file->width() > $file->height()) {
-                        $file->resize(1080, null);
-                    }else {
-                        $file->resize(null, 1350);
-                    }
-                }
-*/
-        $file->move($destinationPath,$file->getClientOriginalName());
-        $product->update($input);
-         
-
-        return redirect(route('products.index'));
     }
 
     /**
@@ -189,11 +238,16 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
-        $product =Product::find($id);
-        if(empty($product)){
+        if (Auth::user()->ableTo('view', Product::$model)) {
+
+            $product = Product::find($id);
+            if (empty($product)) {
+                return redirect(route('products.index'));
+            }
+            $product->delete($id);
             return redirect(route('products.index'));
+        }else {
+            return view('extra.404');
         }
-        $product->delete($id);
-        return redirect(route('products.index'));
     }
 }

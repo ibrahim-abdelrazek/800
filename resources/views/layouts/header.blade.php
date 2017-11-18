@@ -28,35 +28,35 @@
 
                 <!-- BEGIN NAVBAR MESSAGES -->
                 <div class="nav-item dropdown ks-messages">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                       aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="{{route('messages')}}" >
+                        <!-- data-toggle="dropdown"  role="button" aria-haspopup="true" aria-expanded="false" -->
                         <span id="messenger-notifier" class="la la-envelope ks-icon" aria-hidden="true">
-                            <span class="badge badge-pill badge-info">3</span>
+                            {{--<span class="badge badge-pill badge-info">3</span>--}}
                         </span>
                         <span class="ks-text">Messages</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Preview">
-                        <section class="ks-tabs-actions">
-                            <a href="#"><i class="la la-plus ks-icon"></i></a>
-                            <a href="#"><i class="la la-search ks-icon"></i></a>
-                        </section>
-                        <ul class="nav nav-tabs ks-nav-tabs ks-info" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#" data-toggle="tab"
-                                   data-target="#ks-navbar-messages-inbox" role="tab">Inbox</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane ks-messages-tab active" id="ks-navbar-messages-inbox" role="tabpanel">
-                                <div id="messagesMenu" class="ks-wrapper ks-scrollable">
+                    {{--<div class="dropdown-menu dropdown-menu-right" aria-labelledby="Preview">--}}
+                        {{--<section class="ks-tabs-actions">--}}
+                            {{--<a href="#"><i class="la la-plus ks-icon"></i></a>--}}
+                            {{--<a href="#"><i class="la la-search ks-icon"></i></a>--}}
+                        {{--</section>--}}
+                        {{--<ul class="nav nav-tabs ks-nav-tabs ks-info" role="tablist">--}}
+                            {{--<li class="nav-item">--}}
+                                {{--<a class="nav-link active" href="#" data-toggle="tab"--}}
+                                   {{--data-target="#ks-navbar-messages-inbox" role="tab">Inbox</a>--}}
+                            {{--</li>--}}
+                        {{--</ul>--}}
+                        {{--<div class="tab-content">--}}
+                            {{--<div class="tab-pane ks-messages-tab active" id="ks-navbar-messages-inbox" role="tabpanel">--}}
+                                {{--<div id="messagesMenu" class="ks-wrapper ks-scrollable">--}}
 
-                                </div>
-                                <div class="ks-view-all">
-                                    <a href="{{route('messages')}}">View all</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                {{--</div>--}}
+                                {{--<div class="ks-view-all">--}}
+                                    {{--<a href="{{route('messages')}}">View all</a>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                 </div>
                 <!-- END NAVBAR MESSAGES -->
 
@@ -78,7 +78,7 @@
                         <div class="tab-content">
                             <div class="tab-pane ks-notifications-tab active" id="navbar-notifications-all"
                                  role="tabpanel">
-                                <div id="notificationsMenu" class="ks-wrapper ks-scrollable">
+                                <div id="notificationsMenu" class="ks-wrapper" style="overflow: scroll !important;">
                                 </div>
                             </div>
                         </div>

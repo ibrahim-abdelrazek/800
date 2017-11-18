@@ -13,17 +13,9 @@
 
                         <div class="show">
                             <span>prescription: </span>
-                            <span class="value" >{{ $order->prescription }}</span>
+                            <span class="value" ><img src="{!! URL::asset('upload'.$order->prescription) !!}"></span>
                         </div>
 
-                        <div class="show">
-                            <span>insurance image </span>
-                            <span class="value" ><img src="{!! URL::asset('upload'.'/'.$order->insurance_image) !!}"></span>
-                        </div>
-                        <div class="show">
-                            <span>insurance text </span>
-                            <span class="value" >{{ $order->insurance_text }}</span>
-                        </div>
                         <div class="show">
                             <span>notes </span>
                             <span class="value" >{{ $order->notes }}</span>

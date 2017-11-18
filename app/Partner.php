@@ -9,11 +9,15 @@ class Partner extends Model
     static $model = 'partner';
     protected $appends = ['user'];
      protected $fillable = [
-        'id',
+         'id',
          'name',
          'location',
          'photo',
-         'partner_type_id'
+         'partner_type_id',
+         'logo',
+         'phone',
+         'email',
+         'fax'
     ];
 
 
@@ -31,7 +35,7 @@ class Partner extends Model
     	return $this->hasMany(Patient::class);
     }
     public function products (){
-    	return $this->hasMany(Prduct::class);
+    	return $this->hasMany(Product::class);
     }
     public function orders (){
     	return $this->hasMany(Order::class);

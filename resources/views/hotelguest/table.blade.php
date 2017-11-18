@@ -77,7 +77,6 @@
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('libs/select2/js/select2.min.js') }}"></script>
     <script type="application/javascript">
         (function ($) {
             $(document).ready(function () {

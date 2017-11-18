@@ -19,6 +19,9 @@ class Order extends Model
          'status_id',
          'user_id'
     ];
+    protected $casts = [
+        'products' => 'array'
+    ];
     public function partner (){
     	return $this->belongsTo(Partner::class);
     }

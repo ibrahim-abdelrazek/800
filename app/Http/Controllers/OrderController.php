@@ -96,8 +96,8 @@ class OrderController extends Controller
             }
             $order = array_merge($order, ['user_id' => Auth::user()->id,
                 'prescription' => $prescription,
-                'status_id' => 1]);
-
+                'status_id' => getConfig('order_default_status'),
+                'products'=>array_combine($request->products, $request->quantities)]);
             if(Order::create($order))
                 return redirect(route('orders.index'));
 

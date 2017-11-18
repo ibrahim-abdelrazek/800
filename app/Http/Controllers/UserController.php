@@ -215,6 +215,6 @@ class UserController extends Controller
     }
     public function threads()
     {
-        return auth()->user()->unreadNotifications()->limit(5)->get()->toArray();
+        return auth()->user()->unreadMeessages()->limit(5)->get()->toArray();
     }
 }

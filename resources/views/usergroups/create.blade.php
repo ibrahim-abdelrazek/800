@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@push('customcss')
+<link rel="stylesheet" type="text/css" href="{{asset('assets/styles/apps/crm/roles-permissions.min.css')}}">
+@endpush
 @section('content')
 <div class="row">
     <div class="col-lg-12 ks-panels-column-section">

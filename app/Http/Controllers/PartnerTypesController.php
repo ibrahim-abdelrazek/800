@@ -116,13 +116,14 @@ class PartnerTypesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $partnertype = PartnerType::find($id);
         $request->validate([
-            'name' => 'required|min:5|max:50|alpha_dash|unique:partner_types,name,'. $id
+            'name' => 'required|min:5|max:50|alpha_dash|unique:partner_types,name,'. $partnertype->name
         ],
 
             ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']);
 
-        $partnertype = PartnerType::find($id);
+
 
         if(empty($partnertype)){
             return redirect(route('partnertypes.index'));

@@ -48,7 +48,7 @@
 @endphp
 <div class="row">
 <div class="table text-center" style="margin-left: 17%">
-    <table class="table table-responsive" id="igfollows-table">
+    <table class="table table-responsive">
         <thead>
         <th>Model</th>
         @foreach ($actions  as $action )
@@ -61,7 +61,11 @@
             <tr>
                 <td>{{$model}}</td>
                 @foreach ($actions as $action)
-                    <td>{{ Form::checkbox( $model.$action,1) }}
+                   <td><label class="custom-control custom-checkbox ks-checkbox ks-no-description ks-checkbox-success">
+                        {{ Form::checkbox( $model.$action,1, null, ['class'=> 'custom-control-input']) }}
+                        <span class="custom-control-indicator"></span>
+                    </label>
+                   </td>
                 @endforeach
             </tr>
         @endforeach

@@ -48,13 +48,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Partner::class, 'partner_id', 'id');
     }
-
-    public function messages(){
-
-        return $this->hasMany( Message::class);
-
-    }
-
     public function isAdmin(){
         if($this->usergroup->id === 1)
             return true;

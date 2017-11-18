@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Carbon\Carbon;
-use Cmgmyr\Messenger\Models\Message;
-use Cmgmyr\Messenger\Models\Participant;
-use Cmgmyr\Messenger\Models\Thread;
+use App\Messenger\Models\Message;
+use App\Messenger\Models\Participant;
+use App\Messenger\Models\Thread;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
-use LRedis;
 class MessagesController extends Controller
 {
     /**
@@ -159,8 +158,6 @@ class MessagesController extends Controller
         /*
          * Notify Redis with new chat messages
          */
-        //$redis = LRedis::connection();
-        //$redis->publish('chat', $html);
 
         return \response()->json([$html]);
     }

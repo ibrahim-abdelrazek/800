@@ -1,9 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Laravel template
-vendor/
 node_modules/
 npm-debug.log
-
+landing/
 # Laravel 4 specific
 bootstrap/compiled.php
 app/storage/
@@ -22,4 +21,3 @@ Homestead.json
 .rocketeer/
 
 .idea/
-public/upload/

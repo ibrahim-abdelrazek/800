@@ -21,7 +21,28 @@
         </div>
     </div>
 @endsection
+@push('customjs')
+    <script type="text/javascript">
+        (function($){
+            $(document).ready(function(){
+                var addButton = $('.add_button'); //Add button selector
+                var wrapper = $('#products_wrapper'); //Input field wrapper
+                var productSelector = '{!! form :: select ('products[]',App\Product::pluck('name','id'),null,['class' => 'form-control'])!!}';
+                var quantitiesSelector = '{!! Form::text('quantities[]', null, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}';
+                var fieldHTML = '<div class="form-group row"><div class="col-sm-3">' + productSelector + '</div><div class="col-sm-1 text-center"><span>X</span></div>';
+                fieldHTML += '<div class="col-sm-3">'+quantitiesSelector+'</div><div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div></div>'; //New input field html
+                $(addButton).click(function(){ //Once add button is clicked
+                    $(wrapper).append(fieldHTML); // Add field html
+                });
+                $(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
+                    e.preventDefault();
+                    $(this).parent().parent().remove(); //Remove field html
+                });
+            });
 
+        })(jQuery);
+        </script>
+@endpush
 @if(Auth::user()->isAdmin())
     @push('customjs')
         <script type="application/javascript">
@@ -81,3 +102,4 @@
         </script>
     @endpush
 @endif
+

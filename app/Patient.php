@@ -33,4 +33,10 @@ class Patient extends Model
     public function orders (){
     	return $this->hasMany(Order::class);
     }
+    public function city(){
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+    public function area(){
+        return $this->belongsTo(Nighborhood::class, 'nighborhood_id', 'id');
+    }
 }

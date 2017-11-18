@@ -6,7 +6,8 @@ use App\Partner;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Hash;
+use Intervention\Image\ImageManagerStatic as Image;
 class PartnersController extends Controller
 {
     protected  $location ;
@@ -58,30 +59,45 @@ class PartnersController extends Controller
             $request->validate([
                 'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
                 'location' => 'required|max:100',
+                'logo' =>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'phone' =>'required|numeric',
+                'fax' => 'numeric',
                 'partner_type_id' => 'required',
                 'username' => 'required|min:5|max:50|alpha_dash',
                 'email' => 'required|unique:users',
-                'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
-            ],
+                'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',
+                'password_confirmation'=>''
+                ],
                 ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
                     'username.regex' => 'Username not allowing space',
                     'name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .'
                 ]);
 
-
-            $partners = Partner::create([
-                'name' => request('name'),
-                'location' => $this->location[request('location')],
-                'partner_type_id' => request('partner_type_id')
-            ]);
+            $partner  = new Partner();
+            $partner->name = $request->name;
+            $partner->location = $this->location[$request->location];
+            $partner->partner_type_id = $request->partner_type_id;
+            $partner->phone = $request->phone;
+            $partner->email = $request->email;
+            $partner->commission = $request->commission;
+            $partner->fax = $request->fax;
+            if($request->hasFile('logo')){
+                $logo = $request->file('logo');
+                $filename = time(). '.' . $logo->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($logo)->save( public_path('/upload/partners/'.$filename));
+                $partner->logo = '/upload/partners/'.$filename;
+                // remove old image
+            }
+            $partner->save();
 
             $users = User::create([
                 'name' => request('name'),
                 'username' => request('username'),
                 'email' => request('email'),
-                'password' => bcrypt(request('password')),
+                'password' => Hash::make(request('password')),
                 'user_group_id' => 2,
-                'partner_id' => $partners->id
+                'partner_id' => $partner->id
             ]);
 
             return redirect(route('partners.index'));
@@ -126,6 +142,7 @@ class PartnersController extends Controller
         if (Auth::user()->ableTo('edit', Partner::$model)) {
             //
 
+
             $partner = Partner::where('id', $id)->first();
 
             $user = User::where('partner_id', $id)->first();
@@ -136,6 +153,7 @@ class PartnersController extends Controller
                 'partner_type_id' => $partner->partnerType->id,
                 'username' => $user['username'],
                 'email' => $user['email'],
+
             ]);
 
             if (empty($partner)) {
@@ -166,32 +184,26 @@ class PartnersController extends Controller
                 'location' => 'required|max:100',
                 'partner_type_id' => 'required',
                 'username' => 'required|min:5|max:50|alpha_dash',
-                'email' => 'required|unique:users,email,' . $userID
+                'email' => 'required|unique:users,email,' . $userID,
+                'logo' =>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'phone' =>'required|numeric',
+                'fax' => 'numeric',
+                'password' => 'min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',
+                'password_confirmation'=>''
+
             ],
             ['username.regex' => 'Username not allowing space' ,
                 'name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .'
             ]);
 
-            if(isset($request->password)){
-                $request->validate([
-                    'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
-                ],
-                    ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ']);
-            }
-
-
-            Partner::where('id', $id)->update(array(
-                'name' => request('name'),
-                'location' => $this->location[request('location')],
-                'partner_type_id' => request('partner_type_id')
-            ));
+            Partner::where('id', $id)->update($request->except('password'));
 
             if (isset($request->password)) {
                 User::where('id', $userID)->update(array(
                     'name' => request('name'),
                     'username' => request('username'),
                     'email' => request('email'),
-                    'password' => bcrypt(request('password')),
+                    'password' => Hash::make(request('password')),
                     'user_group_id' => 2,
                 ));
             } else {

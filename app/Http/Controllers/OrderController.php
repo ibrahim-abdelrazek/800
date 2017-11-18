@@ -95,8 +95,8 @@ class OrderController extends Controller
             }
             $order = array_merge($order, ['user_id' => Auth::user()->id,
                 'prescription' => $prescription,
-                'status_id' => 1]);
-
+                'status_id' => getConfig('order_default_status'),
+                'products'=>array_combine($request->products, $request->quantities)]);
             if(Order::create($order))
                 return redirect(route('orders.index'));
 
@@ -165,11 +165,12 @@ class OrderController extends Controller
 
             //|image|mimes:jpeg,png,jpg,gif,svg|max:2048
             $this->validate($request, [
-                'prescription' => 'required|min:3',
-                'insurance_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'insurance_text' => 'required',
-                'notes' => 'required|min:5'
-                ]);
+                'prescription' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'notes' => 'string',
+                'patient_id' => 'required|numeric',
+                'doctor_id' => 'required|numeric'
+            ]);
+
 
             $orderr = Order::find($id);
 
@@ -178,23 +179,19 @@ class OrderController extends Controller
             }
 
             // upload image
-            $destinationPath = './upload/';
-            $file = $request->file('insurance_image');
-
-            $input['insurance_image'] = $file->getClientOriginalName();
-            $input['insurance_image']  =  rand(0,10000000)  . '_' .$input['insurance_image'] ;
-            $file->move($destinationPath, $file->getClientOriginalName());
-
-            if ($request->has('partner_id')) {
-                $order = $request->all();
-            }else {
-                if (Auth::user()->user_group_id == 2) {
-                    $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                } else {
-                    $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                    $order = array_merge($order, ['user_id' => Auth::user()->id]);
-                }
+            $prescription = '';
+            // upload image
+            $order = $request->all();
+            if($request->hasFile('prescription')){
+                $avatar = $request->file('prescription');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                $prescription = '/upload/orders/'.$filename;
+                // remove old image
+                $order = array_merge($order, ['prescription' => $prescription]);
             }
+
             $orderr->update($order);
 
             return redirect(route('orders.index'));

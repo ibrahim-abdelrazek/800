@@ -10,7 +10,7 @@
         @foreach($products as $product)
             <tr>
                 <td>{{ $product->name }}</td>
-                <td><img src="{!! URL::asset('upload'.'/'.$product->image) !!}"></td>
+                <td><img width="150" src="{!! URL::asset('upload'.'/'.$product->image) !!}"></td>
                 <td>{{ $product->price }}</td>
                 <td>
                     {!! Form::open(['route' => ['products.destroy', $product->id], 'method' => 'delete']) !!}

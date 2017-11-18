@@ -65,7 +65,7 @@
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner', 'partner') !!}</label>
         <div class="col-sm-10">
             @if(\App\Partner::count() > 0)
-                {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}
+                {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
             @else
                 <p>You don't have added partners yet, Please <a href="{{route('partners.index')}}"><b
                                 class="label-danger">Add

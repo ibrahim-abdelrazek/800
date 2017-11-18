@@ -17,6 +17,7 @@ class Order extends Model
          'partner_id',
          'products',
          'status_id',
+        'product_id',
          'user_id'
     ];
     public function partner (){

@@ -74,18 +74,17 @@ class OrderController extends Controller
                 'doctor_id' => 'required|numeric'
                 ]);
 
-
+            $prescription = '';
             // upload image
             if($request->hasFile('prescription')){
                 $avatar = $request->file('prescription');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
                 Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
-                $request['prescription'] = '/upload/orders/'.$filename;
+                $prescription = '/upload/orders/'.$filename;
                 // remove old image
             }
-            $request['user_id'] = auth()->user()->id;
-            $request['status_id'] = 1;
+
             if ($request->has('partner_id')) {
                 $order = $request->all();
             }else {
@@ -93,9 +92,11 @@ class OrderController extends Controller
                     $order = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
                 } else {
                     $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner->id]);
-                    $order = array_merge($order, ['user_id' => Auth::user()->id]);
                 }
             }
+            $order = array_merge($order, ['user_id' => Auth::user()->id,
+                'prescription' => $prescription,
+                'status_id' => 1]);
 
             if(Order::create($order))
                 return redirect(route('orders.index'));

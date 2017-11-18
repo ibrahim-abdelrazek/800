@@ -11,11 +11,17 @@
                     
                     <div class="panel-body">
 
-                        {!! Form::open(array('route' => 'products.store',
-                        'files'=>true
-                        )) !!}
+                        {!! Form::open(array('route' => 'products.store','files'=>true)) !!}
 
-                            @include('products.fields')
+                        @if (isset($repeat))
+                            <div class="alert alert-danger">
+                                <ul>
+                                    <li class="text-danger"><b>{{ $repeat }}</b></li>
+                                </ul>
+                            </div>
+                        @endif
+
+                        @include('products.fields')
 
                         {!! Form::close() !!}
 

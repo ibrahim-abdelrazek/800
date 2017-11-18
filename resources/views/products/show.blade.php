@@ -39,7 +39,7 @@
                         <br>
                         <a href="{!! route('products.index') !!}" class="btn btn-default pull-right">Back</a>
 
-
+                        <div class="clearfix"></div>
 
                     </div>
                 </div>

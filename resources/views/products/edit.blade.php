@@ -11,8 +11,14 @@
 
                     <div class="panel-body">
 
-                        {!! Form::model($product, ['route' => ['products.update', $product->id], 'method' => 'patch' , 'files' => true ] ) !!}
-
+                        {!! Form::model($product, ['route' => ['products.update', $product['id']], 'method' => 'patch' , 'files' => true ] ) !!}
+                        @if (isset($repeat))
+                            <div class="alert alert-danger">
+                                <ul>
+                                    <li class="text-danger"><b>{{ $repeat }}</b></li>
+                                </ul>
+                            </div>
+                        @endif
                         @include('products.fields')
 
                         {!! Form::close() !!}

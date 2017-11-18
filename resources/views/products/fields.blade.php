@@ -1,15 +1,15 @@
 <div>
-                    @if($errors->any())
-                       <div class="alert alert-danger">
-                           <ul>
-                            @foreach($errors->all() as $error)
-                            <li>{{$error}}</li>
-                            @endforeach
+@if($errors->any())
+   <div class="alert alert-danger">
+       <ul>
+        @foreach($errors->all() as $error)
+        <li>{{$error}}</li>
+        @endforeach
 
-                           </ul>
-                           </div>
-                           @endif
-                    </div>
+       </ul>
+       </div>
+       @endif
+</div>
 
 <!--  Name -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
@@ -20,24 +20,26 @@
 
 <!--  image -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('image', 'image:') !!}
-    {!! Form::file('image',null,  [  'class' => 'form-control']) !!}
+    {!! Form::label('image', 'Image:') !!}
+    {!! Form::file('image',  [  'class' => 'form-control']) !!}
 </div>
 
 
 
 <!--  price -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('price', 'price:') !!}
-    {!! Form::number('price',null, [  'class' => 'form-control']) !!}
+    {!! Form::label('price', 'Price:') !!}
+    {!! Form::number('price',null, [ 'step'=>"any", 'class' => 'form-control']) !!}
 </div>
 
 <!--  partner_id -->
-<div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('partner', 'partner') !!}
-   {!! form :: select ('partner_id',App\Partner::pluck('name','id'),null,['class' => 'from-controller'])!!}
- 
-</div>
+@if(Auth::user()->isAdmin())
+    <div class="form-group col-sm-8 col-sm-offset-2" >
+            {!! Form::label('partner_id', 'Partner:') !!}</label>
+            {!! Form::select('partner_id',  App\Partner::pluck('name', 'id') , null, ['class' => 'form-control' , 'required']) !!}
+
+    </div>
+@endif
 
 
 

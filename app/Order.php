@@ -11,13 +11,12 @@ class Order extends Model
     protected $fillable = [
         'id',
          'prescription',
-         'insurance_image',
-         'insurance_text',
          'notes',
          'patient_id',
          'doctor_id',
          'partner_id',
          'product_id',
+        'status_id',
          'user_id'
     ];
     public function partner (){

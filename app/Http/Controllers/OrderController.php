@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic as Image;
 
 
 class OrderController extends Controller
@@ -67,32 +68,35 @@ class OrderController extends Controller
         if(Auth::user()->ableTo('add',Order::$model)) {
 
             $this->validate($request, [
-                'prescription' => 'required|min:3',
-                'insurance_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'insurance_text' => 'required',
-                'notes' => 'required|min:5',
-
+                'prescription' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'notes' => 'string',
+                'patient_id' => 'required|numeric',
+                'doctor_id' => 'required|numeric'
                 ]);
 
 
             // upload image
-            $destinationPath = './upload/';
-            $file = $request->file('insurance_image');
-
-            $input['insurance_image'] = $file->getClientOriginalName();
-            $input['insurance_image']  =  rand(0,10000000)  . '_' .$input['insurance_image'] ;
-            $file->move($destinationPath, $file->getClientOriginalName());
-
+            if($request->hasFile('prescription')){
+                $avatar = $request->file('prescription');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                $request['prescription'] = '/upload/orders/'.$filename;
+                // remove old image
+            }
+            $request['user_id'] = auth()->user()->id;
+            $request['status_id'] = 1;
             if ($request->has('partner_id')) {
                 $order = $request->all();
             }else {
-                if (Auth::user()->user_group_id == 2) {
-                    $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
+                if (!Auth::user()->user_group_id == 2) {
+                    $order = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
                 } else {
-                    $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
+                    $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner->id]);
                     $order = array_merge($order, ['user_id' => Auth::user()->id]);
                 }
             }
+
             if(Order::create($order))
                 return redirect(route('orders.index'));
 

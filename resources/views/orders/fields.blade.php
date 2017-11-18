@@ -119,12 +119,7 @@
 
 <!-- Submit Field -->
 <div class="form-group row" id='submit'>
-@if(\App\Doctor::where('partner_id', Auth::user()->id)->count() > 0 && \App\Product::where('partner_id', Auth::user()->id)->count() > 0 &&
-        \App\Patient::where('partner_id', Auth::user()->id)->count() > 0)
-        {!! Form::submit('Save', ['class' => 'btn btn-danger']) !!}
-    @else
-        {!! Form::submit('Save', ['class' => 'btn btn-danger disabled', 'disabled' => 'disabled']) !!}
-    @endif
+    {!! Form::submit('Save', ['class' => 'btn btn-danger']) !!}
     <a href="{!! route('orders.index') !!} " class="btn btn-default"> Cancel</a>
 </div>
 

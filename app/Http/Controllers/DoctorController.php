@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Doctor;
 use App\Nurse;
+use App\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -250,6 +251,20 @@ class DoctorController extends Controller
         $nurses = Nurse::where("partner_id",$id)->pluck("name","id");
         if(!empty($nurses) && count($nurses) > 0)
             return response()->json(['success'=>true, 'data'=>$nurses], 200);
+        return response()->json(['success'=>false], 200);
+    }
+    public function getPatients($id) {
+
+        $patients = Patient::where("partner_id",$id)->pluck("name","id");
+        if(!empty($patients) && count($patients) > 0)
+            return response()->json(['success'=>true, 'data'=>$patients], 200);
+        return response()->json(['success'=>false], 200);
+    }
+    public function getDoctors($id) {
+
+        $doctors = Doctor::where("partner_id",$id)->pluck("name","id");
+        if(!empty($doctors) && count($doctors) > 0)
+            return response()->json(['success'=>true, 'data'=>$doctors], 200);
         return response()->json(['success'=>false], 200);
     }
 }

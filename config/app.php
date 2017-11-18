@@ -166,7 +166,7 @@ return [
 
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-
+        App\Messenger\MessengerServiceProvider::class,
         /*
          * Package Service Providers...
          */

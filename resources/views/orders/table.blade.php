@@ -1,7 +1,7 @@
 <div class="ks-nav-body">
     <div class="ks-nav-body-wrapper">
         <div class="container-fluid">
-            <table id="user-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <table id="orders-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th rowspan="1" colspan="1">#</th>
@@ -32,8 +32,10 @@
                         <td>{{ $order->patient->name }}</td>
                         <td>{{ $order->notes }}</td>
                         <td>{{ $order->owner->name }}</td>
-                        <td>{{ date('Y m d', $order->created_at) }}</td>
-                        <td>{{ $order->status }}</td>
+                        <td>{{ date('Y m d', strtotime($order->created_at)) }}</td>
+                        <td>
+                            <span class="badge ks-circle badge-{{$order->status->code}}">{{$order->status->message}}</span>
+                        </td>
                         <td>
                             {!! Form::open(['route' => ['orders.destroy', $order->id], 'method' => 'delete']) !!}
                             <div class='btn-group'>
@@ -70,14 +72,34 @@
     <script type="application/javascript">
         (function ($) {
             $(document).ready(function () {
-                var table = $('#user-datatable').DataTable({
+                var table = $('#orders-datatable').DataTable({
                     lengthChange: false,
                     buttons: [
-                        'copyHtml5',
-                        'excelHtml5',
-                        'csvHtml5',
-                        'pdfHtml5',
-                        'colvis'
+                        {
+                            extend: 'copyHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4,5]
+                            }
+                        },
+                        {
+                            extend : 'excelHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4,5]
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4,5]
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4,5]
+                            }
+                        }
+
                     ],
                     initComplete: function () {
                         $('.dataTables_wrapper select').select2({
@@ -86,9 +108,8 @@
                     }
                 });
 
-                table.buttons().container().appendTo('#user-datatable_wrapper .col-md-6:eq(0)');
-                $('#user-datatable_filter').addClass('pull-right');
-                $('#user-datatable_paginate').addClass('pull-right');
+                table.buttons().container().appendTo('#orders-datatable_wrapper .col-md-6:eq(0)');
+
             });
         })(jQuery);
     </script>

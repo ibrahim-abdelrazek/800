@@ -7,6 +7,7 @@ use App\Nurse;
 use App\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
 class DoctorController extends Controller
 {
@@ -255,7 +256,7 @@ class DoctorController extends Controller
     }
     public function getPatients($id) {
 
-        $patients = Patient::where("partner_id",$id)->pluck("name","id");
+        $patients = Patient::select(DB::raw("CONCAT(first_name,' ', last_name) AS full_name, id"))->where('partner_id', $id)->pluck('full_name','id');
         if(!empty($patients) && count($patients) > 0)
             return response()->json(['success'=>true, 'data'=>$patients], 200);
         return response()->json(['success'=>false], 200);

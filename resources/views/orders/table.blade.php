@@ -29,7 +29,7 @@
                 @foreach($orders as $order)
                     <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
                         <td>{{$order->id}}</td>
-                        <td>{{ $order->patient->name }}</td>
+                        <td>{{ $order->patient->first_name . " " . $order->patient->last_name }}</td>
                         <td>{{ $order->notes }}</td>
                         <td>{{ $order->owner->name }}</td>
                         <td>{{ date('Y m d', strtotime($order->created_at)) }}</td>

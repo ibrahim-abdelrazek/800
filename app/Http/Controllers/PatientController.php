@@ -83,8 +83,8 @@ class PatientController extends Controller
                 'area' => 'required|numeric',
                 'id_number' => 'string',
                 'notes' => 'max:200|min:0',
-                'insurance_file' => 'image|mimes:jpg,png|max:5000',
-                'id_file' => 'image|mimes:jpg,png|max:5000',
+                'insurance_file' => 'image|mimes:jpg,jpeg,png|max:5000',
+                'id_file' => 'image|mimes:jpg,png,jpeg|max:5000',
 
 
             ]);

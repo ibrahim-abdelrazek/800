@@ -16,23 +16,16 @@
                             <span class="value" >{{ $product->name }}</span>
                         </div>
 
-                        <div class="show">
-                            <span>image </span>
-                            <span class="value" ><img src="{!! URL::asset('upload'.'/'.$product->image) !!}"></span>
-                        </div>
+
                         <div class="show">
                             <span>price </span>
                             <span class="value" >{{ $product->price }}</span>
                         </div>
-                        <div class="show">
-                            <span>created at </span>
-                            <span class="value" >{{ $product->created_at }}</span>
-                        </div>
-                        <div class="show">
-                            <span>updated at </span>
-                            <span class="value" >{{ $product->updated_at }}</span>
-                        </div>
 
+                        <div class="show">
+                            <span>image </span>
+                            <span class="value" ><img style="width:100px" src="{!! URL::asset('upload'.'/'.$product->image) !!}"></span>
+                        </div>
                         
 
 

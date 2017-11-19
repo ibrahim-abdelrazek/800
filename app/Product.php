@@ -11,16 +11,12 @@ class Product extends Model
 
     protected $fillable = [
         'id',
-         'name',
-         'image',
-         'price',
-         'partner_id',
-         'user_id'
+        'name',
+        'image',
+        'price',
     ];
-    public function partner (){
-    	return $this->belongsTo( Partner::class);
-    }
+
     public function orders (){
-    	return $this->hasMany( Order::class);
+        return $this->hasMany( Order::class);
     }
 }

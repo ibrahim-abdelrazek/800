@@ -87,7 +87,7 @@
                             new User Group</b></a></p>
             @endif
         @else
-            {!! Form::select('user_group_id',App\UserGroup::pluck('group_name','id'),null,['class' => 'form-control'])!!}
+            {!! Form::select('user_group_id',App\UserGroup::where('partner_id',Auth::user()->id)->pluck('group_name','id'),null,['class' => 'form-control'])!!}
 
         @endif
 

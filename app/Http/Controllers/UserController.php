@@ -186,13 +186,14 @@ class UserController extends Controller
         $data['username'] = $request->username;
         $data['email'] = $request->email;
         $data['user_group_id'] = $request->user_group_id;
-        $data['partner_id'] = $request->partner_id;
-
+        if(Auth::user()->isAdmin())
+            $data['partner_id'] = $request->partner_id;
+        else
+            $data['partner_id'] = Auth::user()->partner_id;
 
         if (isset($request->password)) {
             $data['password'] = Hash::make($request->password);
         }
-
 
 
         $user->update($data);
@@ -208,15 +209,6 @@ class UserController extends Controller
 
     }
 
-
-    // to delete  all data of user
-    protected function deleteModel($model, $id)
-    {
-
-        $ids = $model::where('user_id', $id)->select("id")->get();
-        $del = $model::whereIn('id', $ids)->delete();
-
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -244,7 +236,12 @@ class UserController extends Controller
 
     public function getUserGroups($id) {
 
-        $usergroups = UserGroup::where("partner_id",$id)->pluck("group_name","id");
+        if(Auth::user()->isAdmin())
+            $usergroups = UserGroup::where("partner_id",$id)->pluck("group_name","id");
+        else
+            $usergroups = UserGroup::where("partner_id",Auth::user()->partner_id)->pluck("group_name","id");
+
+        dd($usergroups);
         if(!empty($usergroups) && count($usergroups) > 0)
             return response()->json(['success'=>true, 'data'=>$usergroups], 200);
         return response()->json(['success'=>false], 200);

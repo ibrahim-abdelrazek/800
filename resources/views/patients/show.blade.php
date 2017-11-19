@@ -57,7 +57,7 @@
                         </div>
                         <div class="show">
                             <span> Area:</span>
-                            <span class="value" >{{ $patient->area }}</span>
+                            <span class="value" >{{ $patient->area->neighborhood_name }}</span>
                         </div>
                         <div class="show">
                             <span> Street:</span>

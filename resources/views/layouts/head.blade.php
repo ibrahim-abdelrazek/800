@@ -40,6 +40,11 @@
                   href="{{ asset('assets/styles/themes/sidebar-black.min.css') }}">
             <!-- END THEME STYLES -->
             @stack('customcss')
+            <style>
+                .select2{
+                    width: 100% !important;
+                }
+            </style>
             <script>
                 window.Laravel = { csrfToken: '{{ csrf_token() }}' };
             </script>

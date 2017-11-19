@@ -63,7 +63,7 @@ class ProductController extends Controller
         //
         if(Auth::user()->isAdmin()) {
             $request->validate([
-                'name' => 'required|min:5|max:50|unique:products',
+                'name' => 'required|regex:/^[\pL\s]+$/u|min:5|max:50|unique:products',
                 'image' => 'required|image|mimes:jpg,png,jpeg|max:5000',
                 'price' => 'required|numeric',
             ]);
@@ -73,14 +73,12 @@ class ProductController extends Controller
             $destinationPath = './upload/';
             $file = $request->file('image');
             $input['image'] = $file->getClientOriginalName();
-
-
-            $file->move($destinationPath, $file->getClientOriginalName());
-
+            $input['image']     = rand(0, 10000000) . '_' . $input['image'];
+            $file->move($destinationPath, $input['image']);
 
             $products = Product::create($input);
-
             return redirect(route('products.index'));
+
         }else {
             return view('extra.404');
         }
@@ -148,7 +146,7 @@ class ProductController extends Controller
 
 
             $request->validate([
-                'name' => 'required|min:5|max:50|unique:products,name,' . $id ,
+                'name' => 'required|min:5|regex:/^[\pL\s]+$/u|max:50|unique:products,name,' . $id ,
                 'image' => 'image|mimes:jpg,png|max:5000',
                 'price' => 'required|numeric',
             ]);
@@ -164,7 +162,8 @@ class ProductController extends Controller
             if (isset($request->image)) {
                 $file = $request->file('image');
                 $input['image'] = $file->getClientOriginalName();
-                $file->move($destinationPath, $file->getClientOriginalName());
+                $input['image']     = rand(0, 10000000) . '_' . $input['image'];
+                $file->move($destinationPath, $input['image']);
 
             }
 

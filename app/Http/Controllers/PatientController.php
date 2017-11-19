@@ -78,14 +78,11 @@ class PatientController extends Controller
                 
                 'email' => 'required|unique:patients',
                 'insurance_provider' => 'required|numeric',
-                'card_number' => 'string',
+                'card_number' => 'required|string',
                 'city'=>'required|numeric',
                 'area' => 'required|numeric',
-                'id_number' => 'string',
-                'notes' => 'max:200|min:0',
-                'insurance_file' => 'image|mimes:jpg,jpeg,png|max:5000',
-                'id_file' => 'image|mimes:jpg,png,jpeg|max:5000',
-
+                'id_number' => 'required|string',
+                'notes' => 'max:200|min:0'
 
             ]);
 
@@ -327,7 +324,7 @@ class PatientController extends Controller
     public function destroy($id)
     {
         //
-        if(Auth::user()->ableTo('delelte',Patient::$model)) {
+        if(Auth::user()->ableTo('delete',Patient::$model)) {
 
             $patient = Patient::find($id);
             if (empty($patient)) {

@@ -23,27 +23,18 @@ class ProductController extends Controller
     public function index()
     {
         //
-        if(Auth::user()->ableTo('view',Product::$model)) {
+        if(Auth::user()->isAdmin()) {
 
-            if (Auth::user()->user_group_id == 1) {
 
-                $products = Product::get();
-
-            } elseif (Auth::user()->user_group_id == 2) {
-
-                $products = Product::where('partner_id', Auth::user()->partner_id)->get();
-
-            } else {
-
-                $products = Product::where('user_id', Auth::user()->id)->get();
-            }
+            $products = Product::get();
 
             return view('products.index')->with('products', $products);
+
         }else {
             return view('extra.404');
         }
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -53,7 +44,7 @@ class ProductController extends Controller
     public function create()
     {
         //
-        if(Auth::user()->ableTo('add',Product::$model)) {
+        if(Auth::user()->isAdmin()) {
 
             return view('products.create');
         }else {
@@ -70,25 +61,12 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
-        if(Auth::user()->ableTo('add',Product::$model)) {
-
-            if (Auth::user()->isAdmin())
-                $count = Product::where('name', $request->name)->where('partner_id', $request->partner_id)->count();
-            else
-                $count = Product::where('name', $request->name)->where('partner_id', Auth::user()->partner_id)->count();
-
-
-            if ($count > 0) {
-                $err = "The name has already been taken.";
-                return view('products.create')->with("repeat", $err);
-            }
-
+        if(Auth::user()->isAdmin()) {
             $request->validate([
-                'name' => 'required|min:5|max:50',
+                'name' => 'required|min:5|max:50|unique:products',
                 'image' => 'required|image|mimes:jpg,png,jpeg|max:5000',
                 'price' => 'required|numeric',
             ]);
-
 
             $input = $request->all();
 
@@ -99,7 +77,6 @@ class ProductController extends Controller
 
             $file->move($destinationPath, $file->getClientOriginalName());
 
-            $input['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id;
 
             $products = Product::create($input);
 
@@ -118,7 +95,7 @@ class ProductController extends Controller
     public function show($id)
     {
         //
-        if(Auth::user()->ableTo('view',Product::$model)) {
+        if(Auth::user()->isAdmin()) {
 
             $product = Product::find($id);
 
@@ -142,7 +119,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         //
-        if (Auth::user()->ableTo('view', Product::$model)) {
+        if(Auth::user()->isAdmin()) {
 
             $product = Product::find($id);
 
@@ -167,27 +144,11 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         //
-        if(Auth::user()->ableTo('view',Product::$model)) {
+        if(Auth::user()->isAdmin()) {
 
-            if (Auth::user()->isAdmin())
-                $count = Product::where('id', '!=', $id)->where('name', $request->name)->where('partner_id', $request->partner_id)->count();
-            else
-                $count = Product::where('id', '!=', $id)->where('name', $request->name)->where('partner_id', Auth::user()->partner_id)->count();
-
-
-            if ($count > 0) {
-                $err = "The name has already been taken.";
-                $data = array();
-                $data['id'] = $id;
-                if (Auth::user()->isAdmin())
-                    $data['partner_id'] = $request->partner_id;
-                else
-                    $data['partner_id'] = Auth::user()->partner_id;
-                return view('products.edit')->with('product', $data)->with('repeat', $err);
-            }
 
             $request->validate([
-                'name' => 'required|min:5|max:50',
+                'name' => 'required|min:5|max:50|unique:products,name,' . $id ,
                 'image' => 'image|mimes:jpg,png|max:5000',
                 'price' => 'required|numeric',
             ]);
@@ -207,16 +168,12 @@ class ProductController extends Controller
 
             }
 
-
-            $input['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id;
-
             if (!isset($request->image)) {
                 $product->update(
                     array(
                         'name' => request('name'),
                         'price' => request('price'),
                         'email' => request('email'),
-                        'partner_id'=>$input['partner_id']
                     )
                 );
             } else {
@@ -238,7 +195,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
-        if (Auth::user()->ableTo('view', Product::$model)) {
+        if(Auth::user()->isAdmin()) {
 
             $product = Product::find($id);
             if (empty($product)) {

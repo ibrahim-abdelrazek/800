@@ -69,12 +69,33 @@
                 var table = $('#partners-datatable').DataTable({
                     lengthChange: false,
                     buttons: [
-                        'copyHtml5',
-                        'excelHtml5',
-                        'csvHtml5',
-                        'pdfHtml5',
-                        'colvis'
+                        {
+                            extend: 'copyHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4]
+                            }
+                        },
+                        {
+                            extend : 'excelHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4]
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4]
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4]
+                            }
+                        }
+
                     ],
+
                     initComplete: function () {
                         $('.dataTables_wrapper select').select2({
                             minimumResultsForSearch: Infinity

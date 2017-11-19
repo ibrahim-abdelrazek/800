@@ -7,7 +7,6 @@
                     <th rowspan="1" colspan="1">Image</th>
                     <th rowspan="1" colspan="1">Name</th>
                     <th rowspan="1" colspan="1">Price</th>
-                    @if(Auth::user()->isAdmin())<th rowspan="1" colspan="1">Partner</th>@endif
                     <th rowspan="1" colspan="1">Actions</th>
                 </tr>
                 </thead>
@@ -16,7 +15,6 @@
                     <th rowspan="1" colspan="1">Image</th>
                     <th rowspan="1" colspan="1">Name</th>
                     <th rowspan="1" colspan="1">Price</th>
-                    @if(Auth::user()->isAdmin())<th rowspan="1" colspan="1">Partner</th>@endif
                     <th rowspan="1" colspan="1">Actions</th>
                 </tr>
                 </tfoot>
@@ -26,7 +24,6 @@
                         <td><img src="{!! URL::asset('upload'.'/'.$product->image) !!}" style="width:150px !important; height: 100px !important;"></td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
-                        @if(Auth::user()->isAdmin()) <td>{{ \App\Partner::where('id',$product->partner_id)->value('name') }}</td> @endif
 
                         <td>
                             {!! Form::open(['route' => ['products.destroy', $product->id], 'method' => 'delete']) !!}

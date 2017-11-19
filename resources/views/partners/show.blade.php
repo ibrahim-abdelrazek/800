@@ -103,7 +103,6 @@
                                         <div class="card panel panel-default ks-information ks-light">
                                             <h5 class="card-header">
                                                 <span class="ks-text">Contact Info</span>
-                                                <a href="#" class="btn btn-primary-outline ks-light ks-no-text"><span class="la la-pencil ks-icon"></span></a>
                                             </h5>
                                             <div class="card-block">
                                                 <table class="ks-table-description">

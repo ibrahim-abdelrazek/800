@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Doctor;
-use App\HotelGuest;
-use App\Nurse;
-use App\Partner;
 use App\PartnerType;
-use App\Patient;
-use App\Product;
-use App\Transaction;
-use App\User;
 use Illuminate\Http\Request;
 
 class PartnerTypesController extends Controller
 {
-  /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -24,7 +16,7 @@ class PartnerTypesController extends Controller
     {
         $partnerTypes = PartnerType::get();
 
-        return view('partnertypes.index')->with('partnertypes' , $partnerTypes );
+        return view('partnertypes.index')->with('partnertypes', $partnerTypes);
 
     }
 
@@ -43,7 +35,7 @@ class PartnerTypesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -55,8 +47,8 @@ class PartnerTypesController extends Controller
                 'min:5',
                 'max:50',
                 'unique:partner_types',
-                'regex:/^[\pL\s]+$/u'
-                ]
+                'alpha_dash'
+            ]
         ],
             ['name.regex' => 'The name may only contain letters and space .']);
 
@@ -71,74 +63,74 @@ class PartnerTypesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         //
-        $partnertype = PartnerType::find($id);
+        $partnerType = PartnerType::find($id);
 
-        if(empty($partnertype)){
+        if (empty($partnerType)) {
             return redirect(route('partnertypes.index'));
         }
 
-        return view('partnertypes.show')->with('partnertype' , $partnertype );
+        return view('partnertypes.show')->with('partnertype', $partnerType);
 
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         //
 
-        $partnertype = PartnerType::find($id);
+        $partnerType = PartnerType::find($id);
 
-        if(empty($partnertype)){
+        if (empty($partnerType)) {
             return redirect(route('partnertypes.index'));
         }
 
-        return view('partnertypes.edit')->with('partnertype' , $partnertype );
+        return view('partnertypes.edit')->with('partnertype', $partnerType);
 
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $partnertype = PartnerType::find($id);
+        $partnerType = PartnerType::find($id);
         $request->validate([
-            'name' => 'required|min:5|max:50|alpha_dash|unique:partner_types,name,'. $partnertype->name
+            'name' => 'required|min:5|max:50|alpha_dash|unique:partner_types,name,' . $partnerType->id
         ],
 
             ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']);
 
 
-
-        if(empty($partnertype)){
+        if (empty($partnerType)) {
             return redirect(route('partnertypes.index'));
         }
 
-        $partnertype->update($request->all());
+        $partnerType->update($request->all());
 
         return redirect(route('partnertypes.index'));
 
     }
 
     // to delete  all data of partner
-    protected function deleteModel($model ,$id){
+    protected function deleteModel($model, $id)
+    {
 
-        $ids = $model::where('user_id',$id)->select("id")->get();
+        $ids = $model::where('user_id', $id)->select("id")->get();
         $del = $model::whereIn('id', $ids)->delete();
 
     }
@@ -146,24 +138,19 @@ class PartnerTypesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
 
         //
-        $partnertype = PartnerType::find($id);
-        if(empty($partnertype)){
+        $partnerType = PartnerType::find($id);
+        if (empty($partnerType)) {
             return redirect(route('partnertypes.index'));
         }
 
-        $partnertype->delete($id);
-
-
-
+        $partnerType->delete($id);
         return redirect(route('partnertypes.index'));
-
-
     }
 }

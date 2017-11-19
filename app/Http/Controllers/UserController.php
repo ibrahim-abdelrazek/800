@@ -236,12 +236,9 @@ class UserController extends Controller
 
     public function getUserGroups($id) {
 
-        if(Auth::user()->isAdmin())
             $usergroups = UserGroup::where("partner_id",$id)->pluck("group_name","id");
-        else
-            $usergroups = UserGroup::where("partner_id",Auth::user()->partner_id)->pluck("group_name","id");
 
-        dd($usergroups);
+
         if(!empty($usergroups) && count($usergroups) > 0)
             return response()->json(['success'=>true, 'data'=>$usergroups], 200);
         return response()->json(['success'=>false], 200);

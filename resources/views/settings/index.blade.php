@@ -35,7 +35,7 @@
 
                                     @foreach($settings as $setting)
                                        <div class="form-group row">
-                                                {!! Form::label('', $setting->key, [  'class' => 'col-sm-4 form-control-label', 'readonly'=>'readonly']) !!}
+                                                {!! Form::label('', ucfirst(str_replace('_', ' ', $setting->key)), [  'class' => 'col-sm-4 form-control-label', 'readonly'=>'readonly']) !!}
                                                 {!! Form::hidden('key[]', $setting->key, [  'class' => 'col-sm-4 form-control-label', 'readonly'=>'readonly']) !!}
                                                 <div class="col-sm-8">
                                                     {!! Form::text('value[]', $setting->value, [  'class' => 'form-control']) !!}

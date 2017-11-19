@@ -18,7 +18,7 @@
     <div class="ks-page-content">
         <div class="ks-page-content-body">
             <div class="container-fluid">
-            {!! Form::model($patient, ['route' => ['patients.update', $patient->id], 'method' => 'patch']) !!}
+            {!! Form::model($patient, ['route' => ['patients.update', $patient->id], 'method' => 'patch', 'files' => true]) !!}
 
             @include('patients.fields')
 

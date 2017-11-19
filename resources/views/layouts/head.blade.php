@@ -26,7 +26,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/widgets/panels.min.css') }}">
     <!-- END GLOBAL MANDATORY STYLES -->
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/select2/css/select2.min.css') }}"> <!-- Original -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/select2/select2.min.css') }}"> <!-- Customization -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/select2/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('libs/fancybox/jquery.fancybox.css') }}">
+    <!-- Customization -->
 
     <!-- BEGIN THEME STYLES -->
     @guest
@@ -40,11 +42,6 @@
                   href="{{ asset('assets/styles/themes/sidebar-black.min.css') }}">
             <!-- END THEME STYLES -->
             @stack('customcss')
-            <style>
-                .select2{
-                    width: 100% !important;
-                }
-            </style>
             <script>
                 window.Laravel = { csrfToken: '{{ csrf_token() }}' };
             </script>

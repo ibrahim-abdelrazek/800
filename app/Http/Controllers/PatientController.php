@@ -263,17 +263,15 @@ class PatientController extends Controller
                 'date' => 'required',
                 'gender' => 'required',
                 'contact_number' => 'required|string',
-                'email' => 'required|unique:patients,email,'.$patientt->email,
-                'insurance_file' => 'image|mimes:jpg,png|max:5000',
-                'id_file' => 'image|mimes:jpg,png|max:5000',
+                'email' => 'required|unique:patients,email,'.$patientt->id,
+                'insurance_file' => 'image|mimes:jpg,png,jpeg|max:5000',
+                'id_file' => 'image|mimes:jpg,png,jpeg|max:5000',
                 'insurance_provider' => 'required|numeric',
                 'card_number' => 'string',
                 'id_number' => 'string',
                 'city' => 'numeric',
                 'area'=>'numeric',
                 'notes' => 'max:200|min:0',
-
-
             ]);
 
 

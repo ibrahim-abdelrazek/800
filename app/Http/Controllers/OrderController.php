@@ -71,7 +71,9 @@ class OrderController extends Controller
                 'prescription' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'notes' => 'string',
                 'patient_id' => 'required|numeric',
-                'doctor_id' => 'required|numeric'
+                'doctor_id' => 'required|numeric',
+                'quantities'=> 'required|array',
+                'quantities.*' => 'numeric'
                 ]);
 
             $prescription = '';
@@ -168,7 +170,9 @@ class OrderController extends Controller
                 'prescription' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'notes' => 'string',
                 'patient_id' => 'required|numeric',
-                'doctor_id' => 'required|numeric'
+                'doctor_id' => 'required|numeric',
+                'quantities'=> 'required|array',
+                'quantities.*' => 'numeric'
             ]);
 
 

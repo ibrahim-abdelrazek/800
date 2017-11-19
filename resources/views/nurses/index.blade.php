@@ -22,7 +22,7 @@
             <div class="container-fluid">
                 <ul class="nav ks-nav-tabs ks-tabs-page-default ks-tabs-full-page">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" data-toggle="tab" data-target="#nurses-list">
+                        <a class="nav-link @if(!$errors->any()) active @endif" href="#" data-toggle="tab" data-target="#nurses-list">
                             All Nurses
                             @if(Auth::user()->isAdmin())
                                 <span class="badge badge-info badge-pill">{{ App\Nurse::count()}}</span>
@@ -35,7 +35,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="tab" data-target="#new-nurse">
+                        <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new-nurse">
                             Create New Nurse
                             @if($errors->any())
                                 <span class="badge badge-danger badge-pill">{{ count($errors->all()) }}</span>
@@ -44,12 +44,12 @@
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active ks-column-section" id="nurses-list" role="tabpanel">
+                    <div class="tab-pane @if(!$errors->any()) active @endif ks-column-section" id="nurses-list" role="tabpanel">
                         <!-- Content Here -->
                         @include('nurses.table')
                     </div>
 
-                    <div class="tab-pane" id="new-nurse" role="tabpanel">
+                    <div class="tab-pane @if($errors->any()) active @endif" id="new-nurse" role="tabpanel">
                         <!-- Second Content -->
                         @include('nurses.create')
                     </div>

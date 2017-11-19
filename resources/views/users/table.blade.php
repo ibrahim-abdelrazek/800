@@ -77,12 +77,33 @@
                 var table = $('#user-datatable').DataTable({
                     lengthChange: false,
                     buttons: [
-                        'copyHtml5',
-                        'excelHtml5',
-                        'csvHtml5',
-                        'pdfHtml5',
-                        'colvis'
+                        {
+                            extend: 'copyHtml5',
+                            exportOptions:{
+                                columns: [1,2,3,4,5]
+                            }
+                        },
+                        {
+                            extend : 'excelHtml5',
+                            exportOptions:{
+                                columns: [1,2,3,4,5]
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            exportOptions:{
+                                columns: [1,2,3,4,5]
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions:{
+                                columns: [1,2,3,4,5]
+                            }
+                        }
+
                     ],
+
                     initComplete: function () {
                         $('.dataTables_wrapper select').select2({
                             minimumResultsForSearch: Infinity

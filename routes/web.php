@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('doctors', 'DoctorController');
     Route::get('doctors/viewCard/{id}', 'DoctorController@viewCard');
     Route::get('doctors/get-nurses/{id}', 'DoctorController@getNurses');
+    Route::get('users/get-userGroups/{id}', 'UserController@getUserGroups');
     Route::get('doctors/get-patients/{id}', 'DoctorController@getPatients');
     Route::get('doctors/get-doctors/{id}', 'DoctorController@getDoctors');
     Route::get('doctors/get-neighbors/{id}', 'PatientController@getNeighbors');

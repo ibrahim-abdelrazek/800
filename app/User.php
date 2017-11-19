@@ -23,7 +23,8 @@ class User extends Authenticatable
         'password',
         'name',
         'user_group_id',
-        'partner_id'
+        'partner_id',
+        'avatar '
     ];
 
 

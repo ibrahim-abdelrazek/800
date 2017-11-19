@@ -4,6 +4,7 @@
             <table id="user-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
+                    <th rowspan="1" colspan="1">Image</th>
                     <th rowspan="1" colspan="1">Name</th>
                     <th rowspan="1" colspan="1">User Name</th>
                     <th rowspan="1" colspan="1">Email</th>
@@ -16,6 +17,7 @@
                 </thead>
                 <tfoot>
                 <tr>
+                    <th rowspan="1" colspan="1">Image</th>
                     <th rowspan="1" colspan="1">Name</th>
                     <th rowspan="1" colspan="1">User Name</th>
                     <th rowspan="1" colspan="1">Email</th>
@@ -30,6 +32,7 @@
                 @php($i=1)
         @foreach($users as $user)
             <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
+                <td><img style="width:100px" src="{!! URL::asset($user->avatar) !!}"></td>
                 <td>{!! $user->name !!}</td>
                 <td>{!! $user->username !!}</td>
                 <td>{!! $user->email !!}</td>

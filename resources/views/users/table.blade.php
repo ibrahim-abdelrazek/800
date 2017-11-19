@@ -42,11 +42,11 @@
                 @endif
 
                     <td>
-                    {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete']) !!}
+
                     <div class='btn-group'>
                         <a href="{!! route('users.show', [$user->id]) !!}" class='btn btn-default btn-xs'>Show</a>
                         <a href="{!! route('users.edit', [$user->id]) !!}" class='btn btn-default btn-xs'>Edit</a>
-                        {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                        {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete']) !!} {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                     </div>
                     {!! Form::close() !!}
                 </td>

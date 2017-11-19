@@ -22,36 +22,36 @@
                 </a>
             </li>
             @if(Auth::user()->isAdmin())
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('partnertypes.index') }}" role="button" aria-haspopup="true"
-                   aria-expanded="false">
-                    <span class="ks-icon la la-flask"></span>
-                    <span>Partner Types</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('partners.index') }}" role="button" aria-haspopup="true"
-                   aria-expanded="false">
-                    <span class="ks-icon la la-cubes"></span>
-                    <span>Partner</span>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('partnertypes.index') }}" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="ks-icon la la-flask"></span>
+                        <span>Partner Types</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('partners.index') }}" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="ks-icon la la-cubes"></span>
+                        <span>Partner</span>
+                    </a>
+                </li>
             @endif
             @if(Auth::user()->isAdmin() || Auth::user()->isPartner())
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('usergroups.index') }}" role="button" aria-haspopup="true"
-                   aria-expanded="false">
-                    <span class="ks-icon la la-toggle-off"></span>
-                    <span>User Groups</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('users.index') }}" role="button" aria-haspopup="true"
-                   aria-expanded="false">
-                    <span class="ks-icon la la-user"></span>
-                    <span>Users</span>
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('usergroups.index') }}" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="ks-icon la la-toggle-off"></span>
+                        <span>User Groups</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('users.index') }}" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="ks-icon la la-user"></span>
+                        <span>Users</span>
+                    </a>
+                </li>
             @endif
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('hotelguest.index') }}" role="button" aria-haspopup="true"
@@ -81,13 +81,15 @@
                     <span>Patients</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('products.index') }}" role="button" aria-haspopup="true"
-                   aria-expanded="false">
-                    <span class="ks-icon la la-file-text-o"></span>
-                    <span>Products</span>
-                </a>
-            </li>
+            @if(Auth::user()->isAdmin())
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('products.index') }}" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="ks-icon la la-file-text-o"></span>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <@endif
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('orders.index') }}" role="button" aria-haspopup="true"
                    aria-expanded="false">

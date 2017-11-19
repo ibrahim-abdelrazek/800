@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <div class="container">
         <div class="row">
@@ -8,7 +7,7 @@
                     <div class="panel-heading">
                         <h3 > Create anew product</h3>
                     </div>
-                    
+
                     <div class="panel-body">
 
                         {!! Form::open(array('route' => 'products.store','files'=>true)) !!}

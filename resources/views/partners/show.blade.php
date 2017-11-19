@@ -8,6 +8,7 @@
         <div class="ks-page-header">
             <section class="ks-title">
                 <h3>{{$partner->name}}</h3>
+                <a href="{{ route('partners.index') }}" class="pull-right btn btn-info"><span>Return to Partners</span> </a>
             </section>
         </div>
 

@@ -75,7 +75,7 @@
                                 <div class="ks-footer">
                                     <div class="ks-column">
                                         @if($patient->villa_number)
-                                           <span>Villa : { $patient->villa_number }}</span>
+                                           <span>Villa : {{ $patient->villa_number }}</span>
                                         @endif
                                         @if($patient->apartment_number)
 

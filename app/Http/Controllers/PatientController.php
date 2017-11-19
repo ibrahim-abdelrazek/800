@@ -69,21 +69,24 @@ class PatientController extends Controller
         if(Auth::user()->ableTo('add',Patient::$model)) {
 
             $request->validate([
-                'first_name' => 'required|string|max:45|min:2|alpha_dash',
-                'last_name' => 'required|string|max:45|min:2|alpha_dash',
+                'first_name' => 'required|string|max:45|min:2|regex:/^[\pL\s]+$/u',
+                'last_name' => 'required|string|max:45|min:2|regex:/^[\pL\s]+$/u',
                 'date' => 'required',
                 'gender' => 'required',
                 'contact_number' => 'required|string',
-                'city_id'=>'city',
-                
-                'email' => 'required|unique:patients',
+                'email' => 'required|email|unique:patients',
+                'insurance_file' => 'required|image|mimes:jpg,png,jpeg|max:5000',
                 'insurance_provider' => 'required|numeric',
                 'card_number' => 'required|string',
+                'insurance_expiry' => 'required',
+                'id_file' => 'required|image|mimes:jpg,png,jpeg|max:5000',
+                'id_number' => 'required|string',
+                'id_expiry' => 'required',
+                'notes' => 'max:200|min:0',
                 'city'=>'required|numeric',
                 'area' => 'required|numeric',
-                'id_number' => 'required|string',
-                'notes' => 'max:200|min:0'
-
+                'street' => 'required|max:150',
+                'type1' => 'required',
             ]);
 
             //create address
@@ -123,7 +126,7 @@ class PatientController extends Controller
             }
             if($request->hasFile('insurance_file')){
                 $avatar = $request->file('insurance_file');
-                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                $filename = time(). '1.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
                 Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
                 $patient['insurance_file'] = '/upload/insurance/'.$filename;
@@ -254,24 +257,34 @@ class PatientController extends Controller
         //
         if (Auth::user()->ableTo('edit', Patient::$model)) {
             $patientt = Patient::find($id);
-            $request->validate([
-                'first_name' => 'required|string|max:45|min:2|alpha_dash',
-                'last_name' => 'required|string|max:45|min:2|alpha_dash',
+
+            $fieldsArr = [
+                'first_name' => 'required|string|max:45|min:2|regex:/^[\pL\s]+$/u',
+                'last_name' => 'required|string|max:45|min:2|regex:/^[\pL\s]+$/u',
                 'date' => 'required',
                 'gender' => 'required',
                 'contact_number' => 'required|string',
-                'email' => 'required|unique:patients,email,'.$patientt->id,
-                'insurance_file' => 'image|mimes:jpg,png,jpeg|max:5000',
-                'id_file' => 'image|mimes:jpg,png,jpeg|max:5000',
+                'email' => 'required|email|unique:patients,email,'.$patientt->id,
                 'insurance_provider' => 'required|numeric',
-                'card_number' => 'string',
-                'id_number' => 'string',
-                'city' => 'numeric',
-                'area'=>'numeric',
+                'card_number' => 'required|string',
+                'insurance_expiry' => 'required',
+                'id_number' => 'required|string',
+                'id_expiry' => 'required',
                 'notes' => 'max:200|min:0',
-            ]);
+                'city'=>'required|numeric',
+                'area' => 'required|numeric',
+                'street' => 'required|max:150',
+                'type1' => 'required',
+            ];
+//dd($request->all());
+            if($request->hasFile('insurance_file')){
+                $fieldsArr['insurance_file'] = 'required|image|mimes:jpg,png,jpeg|max:5000';
+            }
+            if($request->hasFile('id_file')){
+                $fieldsArr['id_file'] = 'required|image|mimes:jpg,png,jpeg|max:5000';
+            }
 
-
+            $request->validate($fieldsArr);
 
 
             if (empty($patientt)) {
@@ -307,6 +320,21 @@ class PatientController extends Controller
                 }
             }
 
+            if(isset($fieldsArr['insurance_file'])){
+                $avatar = $request->file('insurance_file');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
+                $patient['insurance_file'] = '/upload/insurance/'.$filename;
+            }
+            if(isset($fieldsArr['id_file'])){
+                $avatar = $request->file('id_file');
+                $filename = time(). '1.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
+                $patient['id_file'] = '/upload/insurance/'.$filename;
+            }
+
             $patientt->update($patient);
 
             return redirect(route('patients.index'));
@@ -324,7 +352,7 @@ class PatientController extends Controller
     public function destroy($id)
     {
         //
-        if(Auth::user()->ableTo('delete',Patient::$model)) {
+        if(Auth::user()->ableTo('delelte',Patient::$model)) {
 
             $patient = Patient::find($id);
             if (empty($patient)) {

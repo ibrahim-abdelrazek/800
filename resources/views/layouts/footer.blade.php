@@ -9,6 +9,7 @@
 <script src="{{ asset('libs/flexibility/flexibility.js') }}"></script>
 <script src="{{ asset('libs/noty/noty.min.js') }}"></script>
 <script src="{{ asset('libs/velocity/velocity.min.js') }}"></script>
+<script src="{{ asset('libs/fancybox/jquery.fancybox.js') }}"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <script src="{{ asset('assets/scripts/common.min.js') }}"></script>

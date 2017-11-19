@@ -35,7 +35,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="tab" data-target="#new-patient">
+                        <a class="nav-link" id="create_new" href="#" data-toggle="tab" data-target="#new-patient">
                             Create New Patient
                             @if($errors->any())
                                 <span class="badge badge-danger badge-pill">{{ count($errors->all()) }}</span>
@@ -78,7 +78,7 @@
                 var table = $('#patient-datatable').DataTable({
                     lengthChange: false,
                     buttons: [
-                        commisson                       {
+                        {
                             extend: 'copyHtml5',
                             exportOptions:{
                                 columns: [0,2,3]

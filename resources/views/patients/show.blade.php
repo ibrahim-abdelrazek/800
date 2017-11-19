@@ -111,8 +111,34 @@
                             <span>updated at </span>
                             <span class="value" >{{ $patient->updated_at }}</span>
                         </div>
-                        
 
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                @if($patient->insurance_file)
+                                    <div class="show">
+                                        <span style="float: left"> Insurance File:</span>
+                                        <span class="value" >
+                                            <a class="fancybox" href="<?= (empty($patient['insurance_file']))? '#' : $patient['insurance_file'];?>" data-fancybox-group="gallery" title="">
+                                            <img src="<?= (empty($patient['insurance_file']))? '/upload/doc.png' : $patient['insurance_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                                            </a>
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                @if($patient->id_file)
+                                    <div class="show">
+                                        <span style="float: left"> ID File:</span>
+                                        <span class="value" >
+                                            <a class="fancybox" href="<?= (empty($patient['id_file']))? '#' : $patient['id_file'];?>" data-fancybox-group="gallery" title="">
+                                                <img src="<?= (empty($patient['id_file']))? '/upload/doc.png' : $patient['id_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                                            </a>
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
 
                         <br>
                         <a href="{!! route('patients.index') !!}" class="btn btn-default pull-right">Back</a>
@@ -125,3 +151,11 @@
         </div>
     </div>
 @endsection
+
+
+@push('customjs')
+<script type="text/javascript" src="/assets/scripts/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+    $('.fancybox').fancybox();
+</script>
+@endpush

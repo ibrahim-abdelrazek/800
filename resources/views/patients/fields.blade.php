@@ -66,7 +66,7 @@
     <h4>Insurance Card Details</h4>
     <div class="form-group row" >
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('insurance_file', 'Upload Insurance File:') !!}</label>
-        <div class="col-sm-10">
+        <div class="col-sm-10"> <img src="<?= (empty($patient['insurance_file']))? '/upload/doc.png' : $patient['insurance_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
             {!! Form::file('insurance_file',null,  [  'class' => 'form-control']) !!}
         </div>
     </div>
@@ -98,6 +98,7 @@
     <div class="form-group row" >
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_file', 'Upload ID File:') !!}</label>
         <div class="col-sm-10">
+            <img src="<?= (empty($patient['id_file']))? '/upload/doc.png' : $patient['id_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
             {!! Form::file('id_file',null,  [  'class' => 'form-control']) !!}
         </div>
     </div>
@@ -145,7 +146,7 @@
 <div class="form-group row" >
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address street', 'Street:') !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('street',null, [  'class' => 'form-control','required' => 'required']) !!}
+        {!! Form::text('street',null, [  'class' => 'form-control']) !!}
     </div>
 </div>
 
@@ -217,6 +218,15 @@
 
 
 
+@push('customjs')
+    @if($errors->any())
+        <script>
+            $(document).ready(function(){
+                $("#create_new").click();
+            });
+        </script>
+    @endif
+@endpush
 
 
 

@@ -23,7 +23,7 @@
             <div class="container-fluid">
                 <ul class="nav ks-nav-tabs ks-tabs-page-default ks-tabs-full-page">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" data-toggle="tab" data-target="#doctors-list">
+                        <a class="nav-link @if(!$errors->any()) active @endif " href="#" data-toggle="tab" data-target="#doctors-list">
                             All Doctors
                             @if(Auth::user()->isAdmin())
                             <span class="badge badge-info badge-pill">{{ App\Doctor::count()}}</span>
@@ -34,7 +34,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="tab" data-target="#new_doctor">
+                        <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new_doctor">
                             Create New Doctor
                             @if($errors->any())
                                 <span class="badge badge-danger badge-pill">{{ count($errors->all()) }}</span>

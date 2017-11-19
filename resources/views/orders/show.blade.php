@@ -7,7 +7,7 @@
         <div class="ks-page-header">
             <section class="ks-title">
                 <h3>Order #{{$order->id}}</h3>
-                <a href="javascript:void(0);" class="printDiv btn btn-info pull-right"><i class="la la-print la-1x">Print Receipt</i></a>
+                <!--<a href="javascript:void(0);" class="printDiv btn btn-info pull-right"><i class="la la-print la-1x">Print Receipt</i></a>-->
             </section>
         </div>
 

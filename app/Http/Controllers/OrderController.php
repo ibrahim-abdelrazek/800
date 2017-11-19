@@ -68,7 +68,7 @@ class OrderController extends Controller
         if(Auth::user()->ableTo('add',Order::$model)) {
 
             $this->validate($request, [
-                'prescription' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'prescription' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
                 'notes' => 'string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
@@ -167,7 +167,7 @@ class OrderController extends Controller
 
             //|image|mimes:jpeg,png,jpg,gif,svg|max:2048
             $this->validate($request, [
-                'prescription' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'prescription' => 'image|mimes:jpeg,png,jpg,gif,svg',
                 'notes' => 'string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',

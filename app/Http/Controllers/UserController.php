@@ -70,7 +70,7 @@ class UserController extends Controller
             'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
             'password_confirmation'=>'',
             'user_group_id' => 'required',
-            'avatar' =>'required|image|mimes:jpeg,png,jpg,gif|max:5000',
+            'avatar' =>'required|image|mimes:jpeg,png,jpg,gif',
 
         ],
             ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
@@ -162,7 +162,7 @@ class UserController extends Controller
             'username' => 'required|min:5|max:50|regex:/^\S*$/',
             'email' => 'required|unique:users,email,' . $id ,
             'user_group_id' => 'required',
-            'avatar' =>'image|mimes:jpeg,png,jpg,gif|max:5000',
+            'avatar' =>'image|mimes:jpeg,png,jpg,gif',
         ]);
 
         if(Auth::user()->isAdmin())

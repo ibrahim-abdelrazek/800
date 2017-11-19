@@ -77,14 +77,14 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::user()->ableTo('add', Doctor::$model)) {
+       if (Auth::user()->ableTo('add', Doctor::$model)) {
 
             $request->validate([
                 'name' => 'required|string|max:100',
                 'specialty' => 'required|string',
                 'contact_email' => 'required|email|unique:doctors,contact_email',
                 'contact_number' => 'required|string',
-                'photo' => 'image|mimes:jpg,jpeg,png|max:5000'
+                'photo' => 'image|mimes:jpg,jpeg,png'
 
             ]);
 
@@ -178,7 +178,7 @@ class DoctorController extends Controller
                 'specialty' => 'required|string',
                 'contact_email' => 'required|email|unique:doctors,contact_email,'.$doc->id,
                 'contact_number' => 'required|string',
-                'photo' => 'image|mimes:jpg,jpeg,png|max:5000'
+                'photo' => 'image|mimes:jpg,jpeg,png'
 
             ]);
 

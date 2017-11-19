@@ -75,11 +75,11 @@ class PatientController extends Controller
                 'gender' => 'required',
                 'contact_number' => 'required|string',
                 'email' => 'required|email|unique:patients',
-                'insurance_file' => 'required|image|mimes:jpg,png,jpeg|max:5000',
+                'insurance_file' => 'required|image|mimes:jpg,png,jpeg',
                 'insurance_provider' => 'required|numeric',
                 'card_number' => 'required|string',
                 'insurance_expiry' => 'required',
-                'id_file' => 'required|image|mimes:jpg,png,jpeg|max:5000',
+                'id_file' => 'required|image|mimes:jpg,png,jpeg',
                 'id_number' => 'required|string',
                 'id_expiry' => 'required',
                 'notes' => 'max:200|min:0',
@@ -278,10 +278,10 @@ class PatientController extends Controller
             ];
 //dd($request->all());
             if($request->hasFile('insurance_file')){
-                $fieldsArr['insurance_file'] = 'required|image|mimes:jpg,png,jpeg|max:5000';
+                $fieldsArr['insurance_file'] = 'required|image|mimes:jpg,png,jpeg';
             }
             if($request->hasFile('id_file')){
-                $fieldsArr['id_file'] = 'required|image|mimes:jpg,png,jpeg|max:5000';
+                $fieldsArr['id_file'] = 'required|image|mimes:jpg,png,jpeg';
             }
 
             $request->validate($fieldsArr);

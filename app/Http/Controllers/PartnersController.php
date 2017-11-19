@@ -59,7 +59,7 @@ class PartnersController extends Controller
             $request->validate([
                 'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
                 'location' => 'required|max:100',
-                'logo' =>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'logo' =>'required|image|mimes:jpeg,png,jpg,gif,svg',
                 'phone' =>'required|numeric',
                 'fax' => 'numeric',
                 'partner_type_id' => 'required',
@@ -185,7 +185,7 @@ class PartnersController extends Controller
             ]);
 
             if($request->hasFile('logo'))
-                $request->validate(['logo' =>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                $request->validate(['logo' =>'image|mimes:jpeg,png,jpg,gif,svg',
                 ]);
             if($request->has('password') && !empty($request->password ))
                 $request->validate(['password' => 'min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',

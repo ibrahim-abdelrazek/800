@@ -1,4 +1,3 @@
-
 <div>
     @if($errors->any())
         <div class="alert alert-danger">
@@ -12,75 +11,76 @@
     @endif
 </div>
 <!--  Name -->
-<div class="form-group col-sm-8 col-sm-offset-2" id='name'>
-    {!! Form::label('name', 'Hotel name:') !!}
-    {!! Form::text('name', null, [  'class' => 'form-control']) !!}
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Hotel name:') !!}</label>
+    <div class="col-sm-10">
+        <div class="col-sm-10">{!! Form::text('name', null, [  'class' => 'form-control']) !!}</div>
+    </div>
 </div>
 
 
 <!-- Officer Name -->
-<div class="form-group col-sm-8 col-sm-offset-2" id='name'>
-    {!! Form::label('officer_name', 'Officer Name:') !!}
-    {!! Form::text('officer_name', null, [  'class' => 'form-control']) !!}
+<div class="form-group row">
+    <label for="default-input"
+           class="col-sm-2 form-control-label">{!! Form::label('officer_name', 'Officer Name:') !!}</label>
+    <div class="col-sm-10">{!! Form::text('officer_name', null, [  'class' => 'form-control']) !!}</div>
 </div>
 
 <!--  Name -->
-<div class="form-group col-sm-8 col-sm-offset-2" id='name'>
-    {!! Form::label('contact_number', 'Contact Number:') !!}
-    {!! Form::text('contact_number', null,  [  'placeholder'=>'Enter Doctor\'s Number', 'id'=>'', 'class' => 'form-control ks-phone-mask-input']) !!}
+<div class="form-group row">
+    <label for="default-input"
+           class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:') !!}</label>
+    <div class="col-sm-10">{!! Form::text('contact_number', null,  [  'placeholder'=>'Enter Doctor\'s Number', 'id'=>'', 'class' => 'form-control ks-phone-mask-input']) !!}</div>
 </div>
 
 <!--  Name -->
-<div class="form-group col-sm-8 col-sm-offset-2" id='name'>
-    {!! Form::label('guest_room_number', 'Guest Room Number:') !!}
-    {!! Form::text('guest_room_number', null, [  'class' => 'form-control']) !!}
+<div class="form-group row">
+    <label for="default-input"
+           class="col-sm-2 form-control-label">{!! Form::label('guest_room_number', 'Guest Room Number:') !!}</label>
+    <div class="col-sm-10">{!! Form::text('guest_room_number', null, [  'class' => 'form-control']) !!}</div>
 </div>
 
 <!--  Name -->
-<div class="form-group col-sm-8 col-sm-offset-2" id='name'>
-    {!! Form::label('guest_first_name', 'Guest First Name:') !!}
-    {!! Form::text('guest_first_name', null, [  'class' => 'form-control']) !!}
+<div class="form-group row">
+    <label for="default-input"
+           class="col-sm-2 form-control-label">{!! Form::label('guest_first_name', 'Guest First Name:') !!}</label>
+    <div class="col-sm-10">{!! Form::text('guest_first_name', null, [  'class' => 'form-control']) !!}</div>
 </div>
 
 <!--  Name -->
-<div class="form-group col-sm-8 col-sm-offset-2" id='name'>
-    {!! Form::label('guest_last_name', 'Guest Last Name:') !!}
-    {!! Form::text('guest_last_name', null, [  'class' => 'form-control']) !!}
+<div class="form-group row">
+    <label for="default-input"
+           class="col-sm-2 form-control-label">{!! Form::label('guest_last_name', 'Guest Last Name:') !!}</label>
+    <div class="col-sm-10">{!! Form::text('guest_last_name', null, [  'class' => 'form-control']) !!}</div>
 </div>
 
 <!--  Name -->
-<div class="form-group col-sm-8 col-sm-offset-2" id='name'>
-    {!! Form::label('items', 'Items:') !!}
-    {!! Form::text('items', null, [  'class' => 'form-control']) !!}
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('items', 'Items:') !!}</label>
+    <div class="col-sm-10">{!! Form::text('items', null, [  'class' => 'form-control']) !!}</div>
 </div>
 
 @if(Auth::user()->isAdmin())
-<!--  Partner -->
-<div class="form-group col-sm-8 col-sm-offset-2">
-   {!! Form::label('partner', 'partner') !!}
-    
-        @if(\App\Partner::count() > 0)
-            {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}
-        @else
-            <p>You don't have added partners yet, Please <a href="{{route('partners.index')}}"><b class="label-danger">Add
-                        new Partner</b></a></p>
-        @endif
-    
-</div>
-<!-- End Partner -->
+    <!--  Partner -->
+    <div class="form-group row">
+        <label for="default-input"
+               class="col-sm-2 form-control-label">{!! Form::label('partner', 'partner') !!}</label>
+        <div class="col-sm-10">
+            @if(\App\Partner::count() > 0)
+                {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}
+            @else
+                <p>You don't have added partners yet, Please <a href="{{route('partners.index')}}"><b
+                                class="label-danger">Add
+                            new Partner</b></a></p>
+            @endif
+        </div>
+    </div>
+    <!-- End Partner -->
 @endif
 
 <!-- Submit Field -->
-<div class="form-group col-sm-8 col-sm-offset-2" id='submit'>
+<div class="form-group row" id='submit'>
 
     {!! Form::submit('Save', ['class' => 'btn btn-danger']) !!}
-    <a href="{!! route('hotelguest.index') !!} " class="btn btn-default" > Cancel</a>
+        <a href="{!! route('hotelguest.index') !!}</div> " class="btn btn-default"> Cancel</a>
 </div>
-
-
-
-
-
-
-
-

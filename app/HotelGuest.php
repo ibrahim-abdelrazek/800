@@ -26,7 +26,7 @@ class HotelGuest extends Model
 
     public function partner()
     {
-        return $this->belongesTo(Partner::class);
+        return $this->belongsTo(Partner::class);
 
     }
 

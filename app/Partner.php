@@ -17,7 +17,8 @@ class Partner extends Model
          'logo',
          'phone',
          'email',
-         'fax'
+         'fax',
+         'commission'
     ];
 
 

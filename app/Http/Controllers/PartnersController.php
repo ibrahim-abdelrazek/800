@@ -65,7 +65,7 @@ class PartnersController extends Controller
                 'partner_type_id' => 'required',
                 'username' => 'required|min:5|max:50|alpha_dash',
                 'email' => 'required|unique:users',
-                'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',
+                'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
                 'password_confirmation'=>''
                 ],
                 ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
@@ -123,7 +123,6 @@ class PartnersController extends Controller
 
                 return redirect(route('partners.index'));
             }
-
             return view('partners.show')->with('partner', $partner);
 
         }
@@ -146,21 +145,14 @@ class PartnersController extends Controller
             $partner = Partner::where('id', $id)->first();
 
             $user = User::where('partner_id', $id)->first();
-            $p = collect([
-                'id' => $partner['id'],
-                'name' => $partner['name'],
-                'location' => array_search($partner['location'],$this->location),
-                'partner_type_id' => $partner->partnerType->id,
-                'username' => $user['username'],
-                'email' => $user['email'],
 
-            ]);
-
+            $partner->location = array_search($partner['location'],$this->location);
+            $partner->username = $user['username'];
             if (empty($partner)) {
 
                 return redirect(route("partners.index"));
             }
-            return view('partners.edit')->with("partner", $p);
+            return view('partners.edit')->with("partner", $partner);
         }
         return view('extra.404');
 
@@ -177,7 +169,7 @@ class PartnersController extends Controller
     {
         if (Auth::user()->ableTo('edit', Partner::$model)) {
 
-            $userID =User::where('partner_id', $id)->where('user_group_id',2)->value('id');
+            $userID = User::where('partner_id', $id)->where('user_group_id',2)->value('id');
 
             $request->validate([
                 'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
@@ -185,19 +177,33 @@ class PartnersController extends Controller
                 'partner_type_id' => 'required',
                 'username' => 'required|min:5|max:50|alpha_dash',
                 'email' => 'required|unique:users,email,' . $userID,
-                'logo' =>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'phone' =>'required|numeric',
-                'fax' => 'numeric',
-                'password' => 'min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',
-                'password_confirmation'=>''
-
+                'fax' => 'numeric'
             ],
             ['username.regex' => 'Username not allowing space' ,
                 'name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .'
             ]);
 
-            Partner::where('id', $id)->update($request->except('password'));
+            if($request->hasFile('logo'))
+                $request->validate(['logo' =>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ]);
+            if($request->has('password') && !empty($request->password ))
+                $request->validate(['password' => 'min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',
+                    'password_confirmation'=>''
+                ]);
+            $partner = Partner::where('id', $id)->first();
+            $request['location'] = $this->location[$request->location];
 
+            $partner->update($request->all());
+
+            if($request->hasFile('logo')){
+                $logo = $request->file('logo');
+                $filename = time(). '.' . $logo->getClientOriginalExtension();
+                Image::make($logo)->save( public_path('/upload/partners/'.$filename));
+                $partner->logo = '/upload/partners/'.$filename;
+                $partner->save();
+                // remove old image
+            }
             if (isset($request->password)) {
                 User::where('id', $userID)->update(array(
                     'name' => request('name'),

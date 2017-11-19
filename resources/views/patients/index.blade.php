@@ -78,7 +78,7 @@
                 var table = $('#patient-datatable').DataTable({
                     lengthChange: false,
                     buttons: [
-                        {
+                        commisson                       {
                             extend: 'copyHtml5',
                             exportOptions:{
                                 columns: [0,2,3]

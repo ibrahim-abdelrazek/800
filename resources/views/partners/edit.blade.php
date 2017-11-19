@@ -7,7 +7,7 @@
                 <div class="card-block">
                     <h5 class="card-title">Edit Partner</h5>
 
-                    {!! Form::model($partner, ['route' => ['partners.update', $partner['id']], 'method' => 'patch']) !!}
+                    {!! Form::model($partner, ['route' => ['partners.update', $partner['id']],'files'=>true, 'method' => 'patch']) !!}
 
                     @include('partners.fields')
 

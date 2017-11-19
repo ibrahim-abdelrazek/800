@@ -6,7 +6,7 @@ use App\Nighborhood;
 use App\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PatientController extends Controller
 {
@@ -79,8 +79,12 @@ class PatientController extends Controller
                 'email' => 'required|unique:patients',
                 'insurance_provider' => 'required|numeric',
                 'card_number' => 'string',
+                'city'=>'required|numeric',
+                'area' => 'required|numeric',
                 'id_number' => 'string',
                 'notes' => 'max:200|min:0',
+                'insurance_file' => 'image|mimes:jpg,png|max:5000',
+                'id_file' => 'image|mimes:jpg,png|max:5000',
 
 
             ]);
@@ -97,9 +101,10 @@ class PatientController extends Controller
             if($request->type1 == 'office')
                 $address = $request->office_number . "," .$request->building_name . "," . $request->company_name ."," . $address ;
 
-
+            $request['city_id'] = $request->city;
+            $request['nighborhood_id'] = $request->area;
             //validation of address
-            $patient = $request->except(['villa_number' ,'apartment_name' ,'apartment_number','city','area','street','type1','type2','company_name' ,'building_name' ,'office_number']);
+            $patient = $request->except(['villa_number' ,'apartment_name' ,'apartment_number','street','type1','type2','company_name' ,'building_name' ,'office_number']);
 
             $patient =  array_merge($patient , ['address' => $address]);
 
@@ -117,14 +122,14 @@ class PatientController extends Controller
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
                 Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
-                $patient['photo'] = '/upload/insurance/'.$filename;
+                $patient['id_file'] = '/upload/insurance/'.$filename;
             }
             if($request->hasFile('insurance_file')){
                 $avatar = $request->file('insurance_file');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
                 Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
-                $patient['photo'] = '/upload/insurance/'.$filename;
+                $patient['insurance_file'] = '/upload/insurance/'.$filename;
             }
 
             if(Patient::create($patient))
@@ -158,15 +163,13 @@ class PatientController extends Controller
             if($count == 4){
                 $patient->villa_number = $address[0];
                 $patient->street =$address[1];
-                $patient->area = $address[2];
-                $patient->city = $address[3];
+
 
             }elseif($count == 5) {
                 $patient->apartment_number = $address[0];
                 $patient->apartment_name = $address[1];
                 $patient->street =$address[2];
-                $patient->area = $address[3];
-                $patient->city = $address[4];
+
 
 
             }else {
@@ -174,8 +177,7 @@ class PatientController extends Controller
                 $patient->building_name = $address[1];
                 $patient->company_name = $address[2];
                 $patient->street =$address[3];
-                $patient->area = $address[4];
-                $patient->city = $address[5];
+
 
             }
 
@@ -209,8 +211,8 @@ class PatientController extends Controller
             if($count == 4){
                 $patient->villa_number = $address[0];
                 $patient->street =$address[1];
-                $patient->area = $address[2];
-                $patient->city = $address[3];
+                $patient->area = $patient->area->neighborhood_name;
+                $patient->city = $patient->city->city_name;
                 $patient->type1= 'home';
                 $patient->type2 = 'villa';
 
@@ -218,8 +220,8 @@ class PatientController extends Controller
                 $patient->apartment_number = $address[0];
                 $patient->apartment_name = $address[1];
                 $patient->street =$address[2];
-                $patient->area = $address[3];
-                $patient->city = $address[4];
+                $patient->area = $patient->area->neighborhood_name;
+                $patient->city = $patient->city->city_name;
                 $patient->type1= 'home';
                 $patient->type2 = 'apartment';
 
@@ -227,8 +229,8 @@ class PatientController extends Controller
                 $patient->office_number = $address[0];
                 $patient->building_name = $address[1];
                 $patient->company_name = $address[2];
-                $patient->street =$address[3];
-                $patient->area = $address[4];
+                $patient->area = $patient->area->neighborhood_name;
+                $patient->city = $patient->city->city_name;
                 $patient->city = $address[5];
                 $patient->type1 = 'office';
 
@@ -267,6 +269,8 @@ class PatientController extends Controller
                 'insurance_provider' => 'required|numeric',
                 'card_number' => 'string',
                 'id_number' => 'string',
+                'city' => 'numeric',
+                'area'=>'numeric',
                 'notes' => 'max:200|min:0',
 
 
@@ -292,7 +296,9 @@ class PatientController extends Controller
 
 
             //validation of address
-            $patient = $request->except(['villa_number' ,'apartment_name' ,'apartment_number','city','area','street','type1','type2','company_name' ,'building_name' ,'office_number']);
+            $patient = $request->except(['villa_number' ,'apartment_name' ,'apartment_number','street','type1','type2','company_name' ,'building_name' ,'office_number']);
+            $request['city_id'] = $request->city;
+            $request['nighborhood_id'] = $request->area;
 
             $patient =  array_merge($patient , ['address' => $address]);
 

@@ -43,12 +43,12 @@
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active ks-column-section" id="doctors-list" role="tabpanel">
+                    <div class="tab-pane @if(!$errors->any()) active @endif ks-column-section" id="doctors-list" role="tabpanel">
                      <!-- Content Here --> 
                      @include('doctors.table')
                      </div>
                   
-                    <div class="tab-pane" id="new_doctor" role="tabpanel">
+                    <div class="tab-pane @if($errors->any()) active @endif" id="new_doctor" role="tabpanel">
                         <!-- Second Content --> 
                         @include('doctors.create')
                     </div>

@@ -30,7 +30,7 @@
 <div class="form-group row">
     <label for="default-input"
            class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:') !!}</label>
-    <div class="col-sm-10">{!! Form::text('contact_number', null,  [  'placeholder'=>'Enter Doctor\'s Number', 'id'=>'', 'class' => 'form-control ks-phone-mask-input']) !!}</div>
+    <div class="col-sm-10">{!! Form::text('contact_number', null,  [  'placeholder'=>'Enter Number', 'id'=>'', 'class' => 'form-control ks-phone-mask-input']) !!}</div>
 </div>
 
 <!--  Name -->

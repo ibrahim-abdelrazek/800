@@ -84,7 +84,7 @@ class DoctorController extends Controller
                 'specialty' => 'required|string',
                 'contact_email' => 'required|email|unique:doctors,contact_email',
                 'contact_number' => 'required|string',
-                'photo' => 'image|mimes:jpg,png|max:5000'
+                'photo' => 'image|mimes:jpg,jpeg,png|max:5000'
 
             ]);
 
@@ -178,7 +178,7 @@ class DoctorController extends Controller
                 'specialty' => 'required|string',
                 'contact_email' => 'required|email|unique:doctors,contact_email,'.$doc->id,
                 'contact_number' => 'required|string',
-                'photo' => 'image|mimes:jpg,png|max:5000'
+                'photo' => 'image|mimes:jpg,jpeg,png|max:5000'
 
             ]);
 

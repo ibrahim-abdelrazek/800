@@ -75,6 +75,7 @@ class PatientController extends Controller
                 'gender' => 'required',
                 'contact_number' => 'required|string',
                 'city_id'=>'city',
+                
                 'email' => 'required|unique:patients',
                 'insurance_provider' => 'required|numeric',
                 'card_number' => 'string',

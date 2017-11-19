@@ -9,8 +9,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/datatables-net/media/css/dataTables.bootstrap4.min.css')}}"> <!-- original -->
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/datatables-net/extensions/buttons/css/buttons.bootstrap4.min.css')}}"> <!-- original -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/datatables-net/datatables.min.css')}}"> <!-- customization -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('libs/select2/css/select2.min.css')}}"> <!-- Original -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/select2/select2.min.css')}}"> <!-- Customization -->
 
 @endpush
 @section('content')
@@ -74,8 +72,7 @@
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('libs/select2/js/select2.min.js') }}"></script>
-    <script type="application/javascript">
+     <script type="application/javascript">
         (function ($) {
             $(document).ready(function () {
                 var table = $('#patient-datatable').DataTable({

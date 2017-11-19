@@ -40,9 +40,10 @@
                             {!! Form::open(['route' => ['orders.destroy', $order->id], 'method' => 'delete']) !!}
                             <div class='btn-group'>
                                 <a href="{!! url('orders/'. $order->id) !!}" class='btn btn-default btn-xs'>Show</a>
-
+                                @if(Auth::user()->id !== $order->owner->id && $order->status->code != 'success')
                                 <a href="{{ URL::to('orders/' . $order->id . '/edit') }}"
                                    class='btn btn-default btn-xs'>Edit</a>
+                                @endif
                                 {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                             </div>
                             {!! Form::close() !!}
@@ -68,7 +69,6 @@
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('libs/select2/js/select2.min.js') }}"></script>
     <script type="application/javascript">
         (function ($) {
             $(document).ready(function () {

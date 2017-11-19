@@ -18,6 +18,17 @@
         {!! Form::text('name', null, [  'placeholder'=>'Enter Partner\'s name', 'class' => 'form-control']) !!}
     </div>
 </div>
+<!-- Logo -->
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">
+        {!! Form::label('logo', 'Logo:') !!}
+    </label>
+
+    <div class="col-sm-10">
+        {!! Form::file('logo',null,  [  'class' => 'form-control']) !!}
+    </div>
+
+</div>
 
 <!--  location -->
 <div class="form-group row">
@@ -48,11 +59,35 @@
     </div>
 </div>
 
+
+<!-- Phone -->
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('phone', 'Phone:') !!}</label>
+    <div class="col-sm-10">
+        {!! Form::text('phone', null, [  'class' => 'form-control' , 'required']) !!}
+    </div>
+</div>
+<!-- FAX -->
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('fax', 'FAX:') !!}</label>
+    <div class="col-sm-10">
+        {!! Form::text('fax', null, [  'class' => 'form-control' , 'required']) !!}
+    </div>
+</div>
+
+<!-- Commission -->
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('commission', 'commission Percent:') !!}</label>
+    <div class="col-sm-10">
+        {!! Form::text('commission', null, [  'placeholder'=>'5', 'class' => 'form-control' , 'required']) !!}
+    </div>
+</div>
+
 <!--  email -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('email', 'Email:') !!}</label>
     <div class="col-sm-10">
-    {!! Form::email('email', null, [  'class' => 'form-control' , 'required']) !!}
+        {!! Form::email('email', null, [  'class' => 'form-control' , 'required']) !!}
     </div>
 </div>
 <!--  password -->
@@ -69,6 +104,12 @@
             <br>
             <b class="text-warning"> Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). </b>
         @endif
+    </div>
+</div>
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password_confirmation', 'Confirm Password:') !!}</label>
+    <div class="col-sm-10">
+        {!! Form::password('password_confirmation', ['class' => 'form-control'] ) !!}
     </div>
 </div>
 

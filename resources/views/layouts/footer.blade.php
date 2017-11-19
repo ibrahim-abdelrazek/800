@@ -13,7 +13,7 @@
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <script src="{{ asset('assets/scripts/common.min.js') }}"></script>
 <!-- END THEME LAYOUT SCRIPTS -->
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('libs/select2/js/select2.min.js') }}"></script>
 
 <div class="ks-mobile-overlay"></div>
 <script>
@@ -33,6 +33,7 @@
                 addMessages(data, "#messages");
             });
         }
+        $('select').select2();
     });
 
     function addNotifications(newNotifications, target) {
@@ -137,6 +138,8 @@
 
         return text;
     }
+
+
 
 </script>
 @stack('customjs')

@@ -25,7 +25,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/kosmo/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/widgets/panels.min.css') }}">
     <!-- END GLOBAL MANDATORY STYLES -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('libs/select2/css/select2.min.css') }}"> <!-- Original -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/select2/select2.min.css') }}"> <!-- Customization -->
 
     <!-- BEGIN THEME STYLES -->
     @guest
@@ -34,6 +35,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/themes/primary.min.css') }}">
 
     @endguest
+
     <link class="ks-sidebar-dark-style" rel="stylesheet" type="text/css"
                   href="{{ asset('assets/styles/themes/sidebar-black.min.css') }}">
             <!-- END THEME STYLES -->

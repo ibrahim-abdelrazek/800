@@ -7,7 +7,7 @@
             <div class="card-block">
                 <h5 class="card-title">Create new Partner</h5>
 
-                {!! Form::open(['route' => 'partners.store']) !!}
+                {!! Form::open(['route' => 'partners.store', 'files'=>true]) !!}
 
                 @include('partners.fields')
 

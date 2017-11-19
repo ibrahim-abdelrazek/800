@@ -63,7 +63,6 @@
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('libs/select2/js/select2.min.js') }}"></script>
     <script type="application/javascript">
         (function ($) {
             $(document).ready(function () {
@@ -84,8 +83,7 @@
                 });
 
                 table.buttons().container().appendTo('#partners-datatable_wrapper .col-md-6:eq(0)');
-                $('#partners-datatable_filter').addClass('pull-right');
-                $('#partners-datatable_paginate').addClass('pull-right');
+
             });
         })(jQuery);
     </script>

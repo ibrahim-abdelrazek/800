@@ -20,17 +20,27 @@ class Patient extends Model
         'card_number',
         'insurance_expiry',
         'id_file',
+        'partner_id',
+        'user_id',
+        'city_id',
+        'nighborhood_id',
         'id_expiry',
         'id_number',
         'notes',
         'address',
-        'partner_id',
-        'user_id'
     ];
+
+
     public function partner(){
     	return $this->belongsTo(Partner::class);
     }
     public function orders (){
     	return $this->hasMany(Order::class);
+    }
+    public function city(){
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+    public function area(){
+        return $this->belongsTo(Nighborhood::class, 'nighborhood_id', 'id');
     }
 }

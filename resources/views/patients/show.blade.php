@@ -53,11 +53,11 @@
 
                         <div class="show">
                             <span> City:</span>
-                            <span class="value" >{{ $patient->city }}</span>
+                            <span class="value" >{{ $patient->city->city_name }}</span>
                         </div>
                         <div class="show">
                             <span> Area:</span>
-                            <span class="value" >{{ $patient->area }}</span>
+                            <span class="value" >{{ $patient->area->neighborhood_name }}</span>
                         </div>
                         <div class="show">
                             <span> Street:</span>

@@ -61,12 +61,14 @@
     </div>
 </div>
 
-
 <!-- insurance_card_details-->
     <h4>Insurance Card Details</h4>
     <div class="form-group row" >
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('insurance_file', 'Upload Insurance File:') !!}</label>
-        <div class="col-sm-10"> <img src="<?= (empty($patient['insurance_file']))? '/upload/doc.png' : $patient['insurance_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+
+        <div class="col-sm-10">
+        @if(request()->route()->getAction()['as'] == "patients.edit") <img src="<?= (empty($patient['insurance_file']))? '/upload/doc.png' : $patient['insurance_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+        @endif
             {!! Form::file('insurance_file',null,  [  'class' => 'form-control']) !!}
         </div>
     </div>
@@ -98,7 +100,9 @@
     <div class="form-group row" >
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_file', 'Upload ID File:') !!}</label>
         <div class="col-sm-10">
+            @if(request()->route()->getAction()['as'] == "patients.edit")
             <img src="<?= (empty($patient['id_file']))? '/upload/doc.png' : $patient['id_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+            @endif
             {!! Form::file('id_file',null,  [  'class' => 'form-control']) !!}
         </div>
     </div>

@@ -117,7 +117,7 @@
                             <div class="col-md-6">
                                 @if($patient->insurance_file)
                                     <div class="show">
-                                        <span style="float: left"> Insurance File:</span>
+                                        <span style="float: left"> Insurance File:</span><br>
                                         <span class="value" >
                                             <a class="fancybox" href="<?= (empty($patient['insurance_file']))? '#' : $patient['insurance_file'];?>" data-fancybox-group="gallery" title="">
                                             <img src="<?= (empty($patient['insurance_file']))? '/upload/doc.png' : $patient['insurance_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
@@ -129,7 +129,7 @@
                             <div class="col-md-6">
                                 @if($patient->id_file)
                                     <div class="show">
-                                        <span style="float: left"> ID File:</span>
+                                        <span style="float: left"> ID File:</span><br>
                                         <span class="value" >
                                             <a class="fancybox" href="<?= (empty($patient['id_file']))? '#' : $patient['id_file'];?>" data-fancybox-group="gallery" title="">
                                                 <img src="<?= (empty($patient['id_file']))? '/upload/doc.png' : $patient['id_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">

@@ -30,6 +30,10 @@
                             <span class="value" >{!! $user->UserGroup->group_name !!}</span>
                         </div>
 
+                        <div class="show">
+                            <span>image </span>
+                            <span class="value" ><img style="width:100px" src="{!! URL::asset($user->avatar) !!}"></span>
+                        </div>
 
                         <br>
                         <a href="{!! route('users.index') !!}" class="btn btn-default pull-right">Back</a>

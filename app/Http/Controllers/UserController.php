@@ -16,7 +16,8 @@ use App\GetUserGroup;
 use App\UserGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Hash;
+use Intervention\Image\ImageManagerStatic as Image;
 class UserController extends Controller
 {
 
@@ -66,8 +67,11 @@ class UserController extends Controller
             'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
             'username' => 'required|min:5|max:50|regex:/^\S*$/',
             'email' => 'required|unique:users',
-            'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
+            'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
+            'password_confirmation'=>'',
             'user_group_id' => 'required',
+            'avatar' =>'required|image|mimes:jpeg,png,jpg,gif|max:5000',
+
         ],
             ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
                 'username.regex' => 'Username not allowing space',
@@ -81,9 +85,26 @@ class UserController extends Controller
             $user = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
         else $user = $request->all();
 
+        $user['password'] = Hash::make($user['password']);
 
-        if (User::create($user))
-            return redirect(route('users.index'));
+
+        //dd($user);
+
+        if ($userr = User::create($user)){
+            if($request->hasFile('avatar')){
+                $img = $request->file('avatar');
+                $filename = time(). '.' . $img->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($img)->save( public_path('/upload/users/'.$filename));
+                $userr->avatar = '/upload/users/'.$filename;
+                $userr->save();
+                return redirect(route('users.index'));
+
+            }
+
+
+            // remove old image
+        }
 
     }
 
@@ -121,6 +142,7 @@ class UserController extends Controller
             return redirect(route('users.index'));
         }
 
+        //dd($user);
         return view('users.edit')->with('user', $user);
 
     }
@@ -140,38 +162,48 @@ class UserController extends Controller
             'username' => 'required|min:5|max:50|regex:/^\S*$/',
             'email' => 'required|unique:users,email,' . $id ,
             'user_group_id' => 'required',
+            'avatar' =>'image|mimes:jpeg,png,jpg,gif|max:5000',
         ]);
 
         if(Auth::user()->isAdmin())
             $request->validate(['partner_id'=> 'required']);
 
-        if(isset($request->password)){
-            $request->validate([
-                'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
-            ],
-                ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ']);
-        }
+        if($request->has('password') && !empty($request->password ))
+            $request->validate(['password' => 'min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',
+                'password_confirmation'=>''
+            ],['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ']);
+
+
 
         $user = User::find($id);
 
         if (empty($user)) {
             return redirect(route('users.index'));
         }
-        if (!isset($request->password)) {
-            $user->update(
-                array(
-                    'name' => request('name'),
-                    'username' => request('username'),
-                    'email' => request('email'),
-                    'user_group_id' => request('user_group_id'),
-                    'partner_id'=> request('partner_id')
-                )
-            );
-        } else {
-            $user->update($request->all());
+
+        $data =array();
+        $data['name'] = $request->name;
+        $data['username'] = $request->username;
+        $data['email'] = $request->email;
+        $data['user_group_id'] = $request->user_group_id;
+        $data['partner_id'] = $request->partner_id;
+
+
+        if (isset($request->password)) {
+            $data['password'] = Hash::make($request->password);
         }
 
 
+
+        $user->update($data);
+        if($request->hasFile('avatar')){
+            $img = $request->file('avatar');
+            $filename = time(). '.' . $img->getClientOriginalExtension();
+            //Image::configure(array('driver' => 'imagick'));
+            Image::make($img)->save( public_path('/upload/users/'.$filename));
+            $user->avatar = '/upload/users/'.$filename;
+            $user->save();
+        }
         return redirect(route('users.index'));
 
     }
@@ -207,6 +239,15 @@ class UserController extends Controller
         return redirect(route('users.index'));
 
 
+    }
+
+
+    public function getUserGroups($id) {
+
+        $usergroups = UserGroup::where("partner_id",$id)->pluck("group_name","id");
+        if(!empty($usergroups) && count($usergroups) > 0)
+            return response()->json(['success'=>true, 'data'=>$usergroups], 200);
+        return response()->json(['success'=>false], 200);
     }
 
     public function notifications()

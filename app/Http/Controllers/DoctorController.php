@@ -205,7 +205,7 @@ class DoctorController extends Controller
                 Image::make($avatar)->resize(300, 300)->save( public_path('/upload/doctors/'.$filename));
                 $doctor['photo'] = '/upload/doctors/'.$filename;
                 // remove old image
-                unlink(asset($doc->photo));
+                //unlink(asset($doc->photo));
             }
 
             if ($doc->update($doctor))

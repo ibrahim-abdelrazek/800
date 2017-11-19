@@ -172,7 +172,7 @@ class NurseController extends Controller
                 return redirect(route('nurses.index'));
             $request->validate([
                 'name' => 'required|string|max:100',
-                'contact_email' => 'required|email|unique:doctors,contact_email,'. $nurse->contact_email,
+                'contact_email' => 'required|email|unique:doctors,contact_email,'. $nurse->id,
                 'contact_number' => 'required|string',
                 'photo' => 'image|mimes:jpg,png|max:5000'
             ]);
@@ -200,7 +200,7 @@ class NurseController extends Controller
                 Image::make($avatar)->resize(300, 300)->save( public_path('/upload/nurses/'.$filename));
                 $nurses['photo'] = '/upload/nurses/'.$filename;
                 // remove old image
-                unlink(asset($nurse->photo));
+                //unlink(asset($nurse->photo));
             }
 
             if ($nurse->update($nurses))

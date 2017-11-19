@@ -72,28 +72,30 @@
             @endif
         </div>
     </div>
-@endif
+
 
 <!--  user_group_id -->
 <div class="form-group row">
     <label for="default-input"
            class="col-sm-2 form-control-label">{!! Form::label('user_group_id', 'User Group:') !!}</label>
-    <div id="usergroups-holder" class="col-sm-10">
-        @if(!isset($user))
-            @if(\App\UserGroup::where('partner_id', Auth::user()->id)->count() > 0)
-                {!! Form::select('user_group_id',App\UserGroup::where('partner_id', Auth::user()->id)->pluck('group_name','id'),null,['class' => 'form-control'])!!}
-            @else
-                <p>You don't have added user groups yet, Please <a href="{{route('usergroups.index')}}"><b class="label-danger">Add
-                            new User Group</b></a></p>
-            @endif
+    <div id="usergroups-holder" class="col-sm-10"> </div>
+</div>
+@endif
+@if(Auth::user()->isPartner())
+<div class="form-group row">
+    <label for="default-input"
+           class="col-sm-2 form-control-label">{!! Form::label('user_group_id', 'User Group:') !!}</label>
+    <div class="col-sm-10">
+        @if(\App\Partner::count() > 0)
+            {!! Form::select('user_group_id',App\UserGroup::where("partner_id",Auth::user()->partner_id)->pluck('group_name','id'),null,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
         @else
-            {!! Form::select('user_group_id',App\UserGroup::where('partner_id',Auth::user()->id)->pluck('group_name','id'),null,['class' => 'form-control'])!!}
-
+            <p>You don't have added User Group yet, Please <a href="{{route('userfroups.index')}}"><b
+                            class="label-danger">Add
+                        new User Group</b></a></p>
         @endif
-
     </div>
 </div>
-
+@endif
 <!-- Submit Field -->
 <div class="form-group col-sm-8 col-sm-offset-2" id='submit'>
 

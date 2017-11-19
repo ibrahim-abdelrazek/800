@@ -78,7 +78,7 @@ class NurseController extends Controller
 
             $request->validate([
                 'name' => 'required|string|max:100',
-                'contact_email' => 'required|email|unique:doctors,contact_email',
+                'contact_email' => 'required|email|unique:nurses,contact_email',
                 'contact_number' => 'required|string',
                 'photo' => 'image|mimes:jpg,png|max:5000'
             ]);
@@ -172,7 +172,7 @@ class NurseController extends Controller
                 return redirect(route('nurses.index'));
             $request->validate([
                 'name' => 'required|string|max:100',
-                'contact_email' => 'required|email|unique:doctors,contact_email,'. $nurse->id,
+                'contact_email' => 'required|email|unique:nurses,contact_email,'. $nurse->id,
                 'contact_number' => 'required|string',
                 'photo' => 'image|mimes:jpg,png|max:5000'
             ]);

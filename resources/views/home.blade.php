@@ -7,7 +7,7 @@
     $doctorCount = (Auth::user()->isAdmin())? (\App\Doctor::count()):(\App\Doctor::where("partner_id",Auth::user()->partner_id)->count());
     $hotleGuestCount = (Auth::user()->isAdmin())? (\App\HotelGuest::count()):(\App\HotelGuest::where("partner_id",Auth::user()->partner_id)->count());
     $patientCount = (Auth::user()->isAdmin())? (\App\Patient::count()):(\App\Patient::where("partner_id",Auth::user()->partner_id)->count());
-    $productCount = (Auth::user()->isAdmin())? (\App\Product::count()):(\App\Product::where("partner_id",Auth::user()->partner_id)->count());
+    $productCount = (Auth::user()->isAdmin()) ? (\App\Product::count()) : 0;
     $orderCount = (Auth::user()->isAdmin())? (\App\Order::count()):(\App\Order::where("partner_id",Auth::user()->partner_id)->count());
 
 
@@ -160,6 +160,7 @@
                         </div>
                         </a>
                     </div>
+                    @if(Auth::user()->isAdmin())
                     <div class="col-xl-4">
                         <a href="{{url("/products")}}">
 
@@ -171,6 +172,7 @@
                         </div>
                         </a>
                     </div>
+                    @endif
                     <div class="col-xl-4">
                         <a href="{{url("/orders")}}">
 

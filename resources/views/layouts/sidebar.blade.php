@@ -53,6 +53,7 @@
                     </a>
                 </li>
             @endif
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\HotelGuest::$model))
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('hotelguest.index') }}" role="button" aria-haspopup="true"
                    aria-expanded="false">
@@ -60,6 +61,9 @@
                     <span>Hotel Guests</span>
                 </a>
             </li>
+            @endif
+
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Doctor::$model))
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('doctors.index') }}" role="button" aria-haspopup="true"
                    aria-expanded="false">
@@ -67,6 +71,9 @@
                     <span>Doctors</span>
                 </a>
             </li>
+            @endif
+
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Nurse::$model))
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('nurses.index') }}" role="button" aria-haspopup="true"
                    aria-expanded="false">
@@ -74,6 +81,9 @@
                     <span>Nurses</span>
                 </a>
             </li>
+            @endif
+
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Patient::$model))
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('patients.index') }}" role="button" aria-haspopup="true"
                    aria-expanded="false">
@@ -81,6 +91,7 @@
                     <span>Patients</span>
                 </a>
             </li>
+            @endif
             @if(Auth::user()->isAdmin())
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('products.index') }}" role="button" aria-haspopup="true"
@@ -90,6 +101,8 @@
                     </a>
                 </li>
                 <@endif
+
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Order::$model))
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('orders.index') }}" role="button" aria-haspopup="true"
                    aria-expanded="false">
@@ -97,6 +110,7 @@
                     <span>Orders</span>
                 </a>
             </li>
+                <@endif
             @if(Auth::user()->isAdmin())
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('settings.index') }}" role="button" aria-haspopup="true"

@@ -27,7 +27,7 @@ class HotelGuestController extends Controller
 
             } else {
 
-                $hotelguests = HotelGuest::where('user_id', Auth::user()->id)->get();
+                $hotelguests = HotelGuest::where('id', Auth::user()->id)->get();
             }
 
             return view('hotelguest.index')->with('hotelguests', $hotelguests);
@@ -64,13 +64,15 @@ class HotelGuestController extends Controller
         if (Auth::user()->ableTo('add', HotelGuest::$model)) {
 
             $request->validate([
-                'name' => 'required|string|max:100',
-                'officer_name' => 'required|string|max:100',
-                'contact_number' => 'required|string|max:100',
-                'guest_room_number' => 'required|string|max:100',
-                'guest_first_name' => 'required|string|max:100',
-                'guest_last_name' => 'required|string|max:100',
-                'items' => 'required|string|max:100',
+                'name' => 'required|max:100|regex:/^[\pL\s]+$/u',
+                'officer_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
+                'contact_number' => 'required|numeric',
+                
+                'guest_room_number' => 'required|numeric',
+                
+                'guest_first_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
+                'guest_last_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
+                'items' => 'string|max:200',
             ]);
 
             if ($request->has('partner_id')) {
@@ -80,7 +82,7 @@ class HotelGuestController extends Controller
                     $guest = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
                 } else {
                     $guest = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                    $guest = array_merge($guest, ['user_id' => Auth::user()->id]);
+                    $guest = array_merge($guest, ['id' => Auth::user()->id]);
                 }
             }
             if (HotelGuest::create($guest))
@@ -176,7 +178,7 @@ class HotelGuestController extends Controller
                     $guest = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
                 } else {
                     $guest = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                    $guest = array_merge($guest, ['user_id' => Auth::user()->id]);
+                    $guest = array_merge($guest, ['id' => Auth::user()->id]);
                 }
             }
 

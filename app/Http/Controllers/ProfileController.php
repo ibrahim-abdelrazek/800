@@ -14,6 +14,12 @@ use Intervention\Image\ImageManagerStatic as Image;
 class ProfileController extends Controller
 {
 
+    protected  $location ;
+
+    public function __construct()
+    {
+        $this->location =['Abu Dhabi' , 'Dubai' , 'Sharjah' , 'Ajman' ,'Umm Al Quwain','Ras Al Khaimah' ,'Fujairah' ];
+    }
 
 
     /**
@@ -30,7 +36,8 @@ class ProfileController extends Controller
 
             $profile =User::where('id',Auth::user()->id)->first();
 
-            $profile->location = $partner->location;
+            $profile->location = $partner->location = array_search($partner['location'],$this->location);
+            
 
         }else {
             $profile =User::where('id',Auth::user()->id)->first();
@@ -56,7 +63,7 @@ class ProfileController extends Controller
         if(Auth::user()->user_group_id = 2 ){
             Partner::where('id', $request->partner_id)->update(array(
                 'name' => request('name'),
-                'location' => request('location')
+                'location' => $this->location[$request->location],
             ));
         }
 

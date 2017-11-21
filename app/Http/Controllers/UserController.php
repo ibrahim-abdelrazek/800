@@ -28,17 +28,20 @@ class UserController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->user_group_id == 1) {
+        if (Auth::user()->ableTo('view', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
+            if (Auth::user()->user_group_id == 1) {
+    
+                $users = User::where('user_group_id', '!=', 1)->where('user_group_id', '!=', 2)->get();
+    
+            } elseif (Auth::user()->user_group_id == 2) {
+    
+                $users = User::where('partner_id', Auth::user()->id)->where('user_group_id', '!=', 2)->get();
+            }
 
-            $users = User::where('user_group_id', '!=', 1)->where('user_group_id', '!=', 2)->get();
-
-        } elseif (Auth::user()->user_group_id == 2) {
-
-            $users = User::where('partner_id', Auth::user()->partner_id)->where('user_group_id', '!=', 2)->get();
+             return view('users.index')->with('users', $users);
+        }else{
+               return view('extra.404');
         }
-
-
-        return view('users.index')->with('users', $users);
 
     }
 
@@ -50,8 +53,12 @@ class UserController extends Controller
     public function create()
     {
         //
+      if (Auth::user()->ableTo('create', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
 
         return view('users.create');
+      }else{
+               return view('extra.404');
+        }
     }
 
     /**
@@ -62,48 +69,51 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $request->validate([
-            'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
-            'username' => 'required|min:5|max:50|regex:/^\S*$/',
-            'email' => 'required|unique:users',
+        if (Auth::user()->ableTo('create', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
+            $request->validate([
+            'name' => 'required|min:5|max:50',
+            'username' => 'required|min:5|max:50|regex:/^\S*$/|unique:users,username',
+            'email' => 'required|unique:users,email',
             'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
             'password_confirmation'=>'',
             'user_group_id' => 'required',
             'avatar' =>'required|image|mimes:jpeg,png,jpg,gif',
 
-        ],
-            ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
-                'username.regex' => 'Username not allowing space',
-            ]);
-
-        if(Auth::user()->isAdmin())
-            $request->validate(['partner_id'=> 'required']);
-
-
-        if (!$request->has('partner_id'))
-            $user = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
-        else $user = $request->all();
-
-        $user['password'] = Hash::make($user['password']);
-
-
-        //dd($user);
-
-        if ($userr = User::create($user)){
-            if($request->hasFile('avatar')){
-                $img = $request->file('avatar');
-                $filename = time(). '.' . $img->getClientOriginalExtension();
-                //Image::configure(array('driver' => 'imagick'));
-                Image::make($img)->save( public_path('/upload/users/'.$filename));
-                $userr->avatar = '/upload/users/'.$filename;
-                $userr->save();
-                return redirect(route('users.index'));
-
+            ],
+                ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
+                    'username.regex' => 'Username not allowing space',
+                ]);
+    
+            if(Auth::user()->isAdmin())
+                $request->validate(['partner_id'=> 'required']);
+    
+    
+            if (!$request->has('partner_id'))
+                $user = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
+            else $user = $request->all();
+    
+            $user['password'] = Hash::make($user['password']);
+    
+    
+            //dd($user);
+    
+            if ($userr = User::create($user)){
+                if($request->hasFile('avatar')){
+                    $img = $request->file('avatar');
+                    $filename = time(). '.' . $img->getClientOriginalExtension();
+                    //Image::configure(array('driver' => 'imagick'));
+                    Image::make($img)->save( public_path('/upload/users/'.$filename));
+                    $userr->avatar = '/upload/users/'.$filename;
+                    $userr->save();
+                    return redirect(route('users.index'));
+    
+                }
+    
+    
+                // remove old image
             }
-
-
-            // remove old image
+        }else{
+               return view('extra.404');
         }
 
     }
@@ -116,7 +126,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+       if (Auth::user()->ableTo('view', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
+
         $user = User::find($id);
 
         if (empty($user)) {
@@ -124,7 +135,9 @@ class UserController extends Controller
         }
 
         return view('users.show')->with('user', $user);
-
+       }else{
+           return view('extra.404');
+       }
     }
 
     /**
@@ -135,7 +148,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        if (Auth::user()->ableTo('edit', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
+
         $user = User::find($id);
 
         if (empty($user)) {
@@ -144,7 +158,9 @@ class UserController extends Controller
 
         //dd($user);
         return view('users.edit')->with('user', $user);
-
+        }else{
+           return view('extra.404');
+       }
     }
 
     /**
@@ -156,10 +172,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (Auth::user()->ableTo('edit', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
+        $user = User::find($id);
 
+        if (empty($user)) {
+            return redirect(route('users.index'));
+        }
         $request->validate([
-            'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
-            'username' => 'required|min:5|max:50|regex:/^\S*$/',
+            'name' => 'required|min:5|max:50',
+            'username' => 'required|min:5|max:50|regex:/^\S*$/|unique:users,username,'.$id,
             'email' => 'required|unique:users,email,' . $id ,
             'user_group_id' => 'required',
             'avatar' =>'image|mimes:jpeg,png,jpg,gif',
@@ -175,11 +196,7 @@ class UserController extends Controller
 
 
 
-        $user = User::find($id);
-
-        if (empty($user)) {
-            return redirect(route('users.index'));
-        }
+      
 
         $data =array();
         $data['name'] = $request->name;
@@ -206,7 +223,10 @@ class UserController extends Controller
             $user->save();
         }
         return redirect(route('users.index'));
+        }else{
+            return view('extra.404');
 
+        }
     }
 
 
@@ -218,7 +238,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (Auth::user()->ableTo('delete', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
+
         $user = User::find($id);
 
         if (empty($user)) {
@@ -229,7 +250,10 @@ class UserController extends Controller
         $user->delete($id);
 
         return redirect(route('users.index'));
-
+        }else{
+          return view('extra.404');
+ 
+        }
 
     }
 

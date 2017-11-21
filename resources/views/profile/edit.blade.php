@@ -65,7 +65,7 @@
                            class="col-sm-2 form-control-label">{!! Form::label('location', 'Location:') !!}</label>
                     <div class="col-sm-10">
 
-                        {!! Form::text('location', null, [  'class' => 'form-control' ]) !!}
+                        {!! Form::select('location', ['Abu Dhabi' , 'Dubai' , 'Sharjah' , 'Ajman' ,'Umm Al Quwain','Ras Al Khaimah' ,'Fujairah' ] , null, [  'class' => 'form-control' , 'required']) !!}
                     </div>
                 </div>
         @endif

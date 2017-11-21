@@ -32,7 +32,7 @@
                 @php($i=1)
         @foreach($users as $user)
             <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
-                <td><img style="width:100px" src="{!! URL::asset($user->avatar) !!}"></td>
+                <td><img style="width:100px" src="{{asset($user->avatar)}}"></td>
                 <td>{!! $user->name !!}</td>
                 <td>{!! $user->username !!}</td>
                 <td>{!! $user->email !!}</td>

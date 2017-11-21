@@ -4,7 +4,7 @@
         <ul class="nav nav-pills nav-stacked">
             <li class="nav-item ks-user dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?= (empty(Auth::user()->avatar))? asset('upload/avatars/default.jpg') : asset('upload/avatars/'.Auth::user()->avatar);?>" width="36" height="36" class="ks-avatar rounded-circle">
+                    <img src="<?= (empty(Auth::user()->avatar))? asset('upload/avatars/default.jpg') : asset(Auth::user()->avatar);?>" width="36" height="36" class="ks-avatar rounded-circle">
                     <div class="ks-info">
                         <div class="ks-name">{{ Auth::user()->name }}</div>
                         <div class="ks-text">{{ Auth::user()->usergroup->group_name }}</div>
@@ -97,7 +97,7 @@
                     <span>Orders</span>
                 </a>
             </li>
-
+            @if(Auth::user()->isAdmin())
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('settings.index') }}" role="button" aria-haspopup="true"
                    aria-expanded="false">
@@ -105,6 +105,7 @@
                     <span>Settings</span>
                 </a>
             </li>
+            @endif
         </ul>
         <div class="ks-sidebar-extras-block">
             <div class="ks-sidebar-copyright">© {{ date('Y') }} 800Pharmacy. All right reserved</div>

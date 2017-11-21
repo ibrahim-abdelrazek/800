@@ -48,11 +48,12 @@
                         <!-- Content Here -->
                         @include('nurses.table')
                     </div>
-
+                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('create', App\Doctor::$model))
                     <div class="tab-pane @if($errors->any()) active @endif" id="new-nurse" role="tabpanel">
                         <!-- Second Content -->
                         @include('nurses.create')
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

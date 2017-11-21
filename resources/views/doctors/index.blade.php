@@ -33,6 +33,7 @@
                             
                         </a>
                     </li>
+                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('create', App\Doctor::$model))
                     <li class="nav-item">
                         <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new_doctor">
                             Create New Doctor
@@ -41,6 +42,7 @@
                             @endif
                         </a>
                     </li>
+                    @endif
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane @if(!$errors->any()) active @endif ks-column-section" id="doctors-list" role="tabpanel">

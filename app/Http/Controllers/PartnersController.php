@@ -66,7 +66,8 @@ class PartnersController extends Controller
                 'username' => 'required|min:5|max:50|alpha_dash',
                 'email' => 'required|unique:users',
                 'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
-                'password_confirmation'=>''
+                'password_confirmation'=>'',
+                'commission' => 'numeric|min:0|max:100'
                 ],
                 ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
                     'username.regex' => 'Username not allowing space',
@@ -79,7 +80,7 @@ class PartnersController extends Controller
             $partner->partner_type_id = $request->partner_type_id;
             $partner->phone = $request->phone;
             $partner->email = $request->email;
-            $partner->commission = $request->commission;
+            $partner->commission = $request->has('commission') ? $request->commission : 0;
             $partner->fax = $request->fax;
             if($request->hasFile('logo')){
                 $logo = $request->file('logo');
@@ -175,7 +176,7 @@ class PartnersController extends Controller
                 'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
                 'location' => 'required|max:100',
                 'partner_type_id' => 'required',
-                'username' => 'required|min:5|max:50|alpha_dash',
+                'username' => 'required|min:5|max:50|unique:users,username,'.$userID.'alpha_dash',
                 'email' => 'required|unique:users,email,' . $userID,
                 'phone' =>'required|numeric',
                 'fax' => 'numeric'

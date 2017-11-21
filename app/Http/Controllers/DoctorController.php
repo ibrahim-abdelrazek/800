@@ -38,13 +38,10 @@ class DoctorController extends Controller
 
                 $doctors = Doctor::all();
 
-            } elseif (Auth::user()->user_group_id == 2) {
+            } else{
 
                 $doctors = Doctor::where('partner_id', Auth::user()->partner_id)->get();
 
-            } else {
-
-                $doctors = Doctor::where('user_id', Auth::user()->id)->get();
             }
             $specialities = Doctor::select('specialty')->pluck('specialty');
             return view('doctors.index')->with('doctors', $doctors)->with('specialites', array_unique($specialities->toArray()));
@@ -92,12 +89,9 @@ class DoctorController extends Controller
             if ($request->has('partner_id')) {
                 $doctor = $request->all();
             } else {
-                if (Auth::user()->user_group_id == 2) {
+                
                     $doctor = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                } else {
-                    $doctor = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                    $doctor = array_merge($doctor, ['user_id' => Auth::user()->id]);
-                }
+                    
             }
 
             if($request->hasFile('photo')){
@@ -191,12 +185,8 @@ class DoctorController extends Controller
             if ($request->has('partner_id')) {
                 $doctor = $request->all();
             } else {
-                if (Auth::user()->user_group_id == 2) {
-                    $doctor = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                } else {
-                    $doctor = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                    $doctor = array_merge($doctor, ['user_id' => Auth::user()->id]);
-                }
+                     $doctor = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
+                   
             }
             if($request->hasFile('photo')){
                 $avatar = $request->file('photo');

@@ -91,7 +91,7 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false">
                         <span class="ks-avatar">
-                            <img src="<?= (empty(Auth::user()->avatar))? asset('upload/avatars/default.jpg') : asset('upload/avatars/'.Auth::user()->avatar);?>" width="36" height="36">
+                            <img src="<?= (empty(Auth::user()->avatar))? asset('upload/avatars/default.jpg') : asset(Auth::user()->avatar);?>" width="36" height="36">
                         </span>
                         <span class="ks-info">
                             <span class="ks-name">{{ Auth::user()->name }}</span>
@@ -103,10 +103,12 @@
                             <span class="la la-user ks-icon"></span>
                             <span>Profile</span>
                         </a>
-                        <a class="dropdown-item" href="{{ url('/settings') }}">
+                       @if(Auth::user()->isAdmin())
+                       <a class="dropdown-item" href="{{ url('/settings') }}">
                             <span class="la la-wrench ks-icon" aria-hidden="true"></span>
                             <span>Settings</span>
                         </a>
+                        @endif
                         <form method="POST" action="{{route('logout')}}">
                             {{csrf_field()}}
                             <button style="cursor:pointer;" type="submit" class="dropdown-item">

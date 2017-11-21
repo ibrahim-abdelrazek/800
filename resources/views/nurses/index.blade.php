@@ -27,13 +27,14 @@
                             @if(Auth::user()->isAdmin())
                                 <span class="badge badge-info badge-pill">{{ App\Nurse::count()}}</span>
                             @elseif(Auth::user()->isPartner())
-                                <span class="badge badge-info badge-pill">{{ App\Doctor::where('partner_id', Auth::user()->id)->count()}}</span>
+                                <span class="badge badge-info badge-pill">{{ App\Nurse::where('partner_id', Auth::user()->id)->count()}}</span>
                             @else
-                                <span class="badge badge-info badge-pill">{{ App\Doctor::where('partner_id', Auth::user()->partner->id)->count()}}</span>
+                                <span class="badge badge-info badge-pill">{{ App\Nurse::where('partner_id', Auth::user()->partner_id)->count()}}</span>
                             @endif
 
                         </a>
                     </li>
+                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Nurse::$model))
                     <li class="nav-item">
                         <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new-nurse">
                             Create New Nurse
@@ -42,6 +43,7 @@
                             @endif
                         </a>
                     </li>
+                    @endif
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane @if(!$errors->any()) active @endif ks-column-section" id="nurses-list" role="tabpanel">
@@ -49,10 +51,15 @@
                         @include('nurses.table')
                     </div>
 
+                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Nurse::$model))
+ 
                     <div class="tab-pane @if($errors->any()) active @endif" id="new-nurse" role="tabpanel">
                         <!-- Second Content -->
+
                         @include('nurses.create')
                     </div>
+                    @endif
+                
                 </div>
             </div>
         </div>

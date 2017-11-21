@@ -54,9 +54,14 @@
                     <a data-id="{{$nurse->id}}" href="#" class="btn view-card btn-default btn-xs">
                         <i class="la la-eye">Show</i>
                     </a>
+
+                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('edit', App\Nurse::$model))
                     <a href="{{ URL::to('nurses/' . $nurse->id . '/edit') }}"
                        class='btn btn-default btn-xs'>Edit</a>
-                    {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                       @endif
+                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('delete', App\Nurse::$model))
+                         {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                     @endif
                 </div>
                 {!! Form::close() !!}
             </td>

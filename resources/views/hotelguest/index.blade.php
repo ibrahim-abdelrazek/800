@@ -9,8 +9,11 @@
     <div class="ks-page-header">
         <section class="ks-title">
             <h3>Guests</h3>
+
+                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\HotelGuest::$model))
             <a href="{{ route('hotelguest.create') }} " class="pull-right btn btn-default create"> Create Hotel
                 Guest</a>
+                @endif
         </section>
     </div>
     <div class="ks-page-content">

@@ -26,14 +26,11 @@ class PatientController extends Controller
 
                 $patients = Patient::all();
 
-            } elseif (Auth::user()->user_group_id == 2) {
+            } else{
 
                 $patients = Patient::where('partner_id', Auth::user()->partner_id)->get();
 
-            } else {
-
-                $patients = Patient::where('user_id', Auth::user()->id)->get();
-            }
+            } 
 
             return view('patients.index')->with('patients', $patients);
         }else{
@@ -69,12 +66,12 @@ class PatientController extends Controller
         if(Auth::user()->ableTo('add',Patient::$model)) {
 
             $request->validate([
-                'first_name' => 'required|string|max:45|min:2|regex:/^[\pL\s]+$/u',
-                'last_name' => 'required|string|max:45|min:2|regex:/^[\pL\s]+$/u',
+                'first_name' => 'required|string|max:45|min:2',
+                'last_name' => 'required|string|max:100|min:2',
                 'date' => 'required',
                 'gender' => 'required',
                 'contact_number' => 'required|string',
-                'email' => 'required|email|unique:patients',
+                'email' => 'required|email|unique:patients,email',
                 'insurance_file' => 'required|image|mimes:jpg,png,jpeg',
                 'insurance_provider' => 'required|numeric',
                 'card_number' => 'required|string',
@@ -110,12 +107,8 @@ class PatientController extends Controller
 
             if (!$request->has('partner_id')) {
 
-                if (Auth::user()->user_group_id == 2) {
                     $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
-                } else {
-                    $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
-                    $patient = array_merge($patient, ['user_id' => Auth::user()->id]);
-                }
+                   
             }
             if($request->hasFile('id_file')){
                 $avatar = $request->file('id_file');
@@ -259,8 +252,8 @@ class PatientController extends Controller
             $patientt = Patient::find($id);
 
             $fieldsArr = [
-                'first_name' => 'required|string|max:45|min:2|regex:/^[\pL\s]+$/u',
-                'last_name' => 'required|string|max:45|min:2|regex:/^[\pL\s]+$/u',
+                'first_name' => 'required|string|max:45|min:2',
+                'last_name' => 'required|string|max:100|min:2',
                 'date' => 'required',
                 'gender' => 'required',
                 'contact_number' => 'required|string',
@@ -276,7 +269,6 @@ class PatientController extends Controller
                 'street' => 'required|max:150',
                 'type1' => 'required',
             ];
-//dd($request->all());
             if($request->hasFile('insurance_file')){
                 $fieldsArr['insurance_file'] = 'required|image|mimes:jpg,png,jpeg';
             }
@@ -312,12 +304,8 @@ class PatientController extends Controller
 
             if (!$request->has('partner_id')) {
 
-                if (Auth::user()->user_group_id == 2) {
-                    $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
-                } else {
-                    $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
-                    $patient = array_merge($patient, ['user_id' => Auth::user()->id]);
-                }
+                   $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
+                   
             }
 
             if(isset($fieldsArr['insurance_file'])){
@@ -352,7 +340,7 @@ class PatientController extends Controller
     public function destroy($id)
     {
         //
-        if(Auth::user()->ableTo('delelte',Patient::$model)) {
+        if(Auth::user()->ableTo('delete',Patient::$model)) {
 
             $patient = Patient::find($id);
             if (empty($patient)) {

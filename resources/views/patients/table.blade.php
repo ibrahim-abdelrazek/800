@@ -32,9 +32,14 @@
                     {!! Form::open(['route' => ['patients.destroy', $patient->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
                         <a href="{!! url('patients/'. $patient->id) !!}" class='btn btn-default btn-xs'>Show</a>
-
+                         @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('edit', App\Patient::$model))
+                  
                         <a href="{{ URL::to('patients/' . $patient->id . '/edit') }}" class='btn btn-default btn-xs'>Edit</a>
+                        @endif
+                         @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('delete', App\Nurse::$model))
+                  
                         {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                        @endif
                     </div>
                     {!! Form::close() !!}
                 </td>

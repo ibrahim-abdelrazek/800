@@ -340,7 +340,7 @@ class PatientController extends Controller
     public function destroy($id)
     {
         //
-        if(Auth::user()->ableTo('delelte',Patient::$model)) {
+        if(Auth::user()->ableTo('delete',Patient::$model)) {
 
             $patient = Patient::find($id);
             if (empty($patient)) {

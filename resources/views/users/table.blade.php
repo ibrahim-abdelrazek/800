@@ -1,7 +1,4 @@
-<div class="ks-nav-body">
-    <div class="ks-nav-body-wrapper">
-        <div class="container-fluid">
-            <table id="user-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <table id="user-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th rowspan="1" colspan="1">Image</th>
@@ -33,9 +30,9 @@
         @foreach($users as $user)
             <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
                 <td><img style="width:100px" src="{{asset($user->avatar)}}"></td>
-                <td>{!! $user->name !!}</td>
-                <td>{!! $user->username !!}</td>
-                <td>{!! $user->email !!}</td>
+                <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->name !!}" data-original-title="{!! $user->name !!}">{!! substr($user->name,0,20) !!}</span></td>
+                <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->username !!}" data-original-title="{!! $user->username !!}">{!! substr($user->username,0,20) !!}</span></td>
+                <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->email !!}" data-original-title="{!! $user->email !!}">{!! strlen($user->email) > 20 ? substr($user->email,0,20) . '...' : $user->email !!}</span></td>
                 <td>{!! $user->userGroup->group_name !!}</td>
                 @if(Auth::user()->isAdmin())
                     <td>{!! \App\Partner::where('id',$user->partner_id)->value('name')!!}</td>
@@ -56,10 +53,7 @@
 
                 </tbody>
             </table>
-        </div>
-    </div>
-</div>
-
+        
 @push('customjs')
     <script src="{{ asset('libs/datatables-net/media/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/media/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -75,7 +69,9 @@
         (function ($) {
             $(document).ready(function () {
                 var table = $('#user-datatable').DataTable({
-                    lengthChange: false,
+                    columnDefs: [
+                        { width: '20%', targets: 3 }
+                    ],
                     buttons: [
                         {
                             extend: 'copyHtml5',
@@ -112,6 +108,7 @@
                 });
 
                 table.buttons().container().appendTo('#user-datatable_wrapper .col-md-6:eq(0)');
+                table.columns.adjust().draw();
 
             });
         })(jQuery);

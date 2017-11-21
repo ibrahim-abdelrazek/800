@@ -91,9 +91,7 @@ class UserGroupController extends Controller
                 \App\HotelGuest::$model,
                 \App\Nurse::$model,
                 \App\Order::$model,
-                \App\Product::$model,
-                \App\Transaction::$model
-            ];
+                    ];
             $actions = ['view', 'add', 'edit', 'delete'];
             $data = array();
 
@@ -171,9 +169,7 @@ class UserGroupController extends Controller
                 \App\HotelGuest::$model,
                 \App\Nurse::$model,
                 \App\Order::$model,
-                \App\Product::$model,
-                \App\Transaction::$model
-            ];
+                ];
             $actions = ['view', 'add', 'edit', 'delete'];
 
             $data = unserialize($usergroup['action']);
@@ -247,9 +243,7 @@ class UserGroupController extends Controller
                 \App\HotelGuest::$model,
                 \App\Nurse::$model,
                 \App\Order::$model,
-                \App\Product::$model,
-                \App\Transaction::$model
-            ];
+                     ];
             $actions = ['view', 'add', 'edit', 'delete'];
             $data = array();
             foreach ($models as $model) {

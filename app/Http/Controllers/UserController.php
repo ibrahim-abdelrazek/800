@@ -34,8 +34,8 @@ class UserController extends Controller
                 $users = User::where('user_group_id', '!=', 1)->where('user_group_id', '!=', 2)->get();
     
             } elseif (Auth::user()->user_group_id == 2) {
-    
-                $users = User::where('partner_id', Auth::user()->id)->where('user_group_id', '!=', 2)->get();
+             
+                $users = User::where('partner_id', Auth::user()->partner_id)->where('user_group_id', '!=', 2)->get();
             }
 
              return view('users.index')->with('users', $users);
@@ -85,11 +85,11 @@ class UserController extends Controller
                 ]);
     
             if(Auth::user()->isAdmin())
-                $request->validate(['partner_id'=> 'required']);
+                $request->validate(['partner_id'=> 'required|numeric']);
     
     
             if (!$request->has('partner_id'))
-                $user = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
+                $user = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
             else $user = $request->all();
     
             $user['password'] = Hash::make($user['password']);
@@ -103,7 +103,8 @@ class UserController extends Controller
                     $filename = time(). '.' . $img->getClientOriginalExtension();
                     //Image::configure(array('driver' => 'imagick'));
                     Image::make($img)->save( public_path('/upload/users/'.$filename));
-                    $userr->avatar = '/upload/users/'.$filename;
+                    Image::make($img)->save( public_path('/upload/avatars/'.$filename));
+                    $userr->avatar = '/upload/avatars/'.$filename;
                     $userr->save();
                     return redirect(route('users.index'));
     
@@ -219,7 +220,8 @@ class UserController extends Controller
             $filename = time(). '.' . $img->getClientOriginalExtension();
             //Image::configure(array('driver' => 'imagick'));
             Image::make($img)->save( public_path('/upload/users/'.$filename));
-            $user->avatar = '/upload/users/'.$filename;
+            Image::make($img)->save( public_path('/upload/avatars/'.$filename));
+            $user->avatar = '/upload/avatars/'.$filename;
             $user->save();
         }
         return redirect(route('users.index'));

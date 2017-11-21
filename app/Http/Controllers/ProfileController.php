@@ -60,8 +60,8 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(Auth::user()->user_group_id = 2 ){
-            Partner::where('id', $request->partner_id)->update(array(
+        if(Auth::user()->user_group_id == 2 ){
+            Partner::where('id', Auth::user()->partner_id)->update(array(
                 'name' => request('name'),
                 'location' => $this->location[$request->location],
             ));
@@ -78,7 +78,12 @@ class ProfileController extends Controller
             $filename = time(). '.' . $avatar->getClientOriginalExtension();
             //Image::configure(array('driver' => 'imagick'));
             Image::make($avatar)->resize(300, 300)->save( public_path('/upload/avatars/'.$filename));
-            $data['avatar'] = $filename;
+            
+            if(Auth::user()->isPartner()){
+                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/partners/'.$filename));
+                Partner::where('id', Auth::user()->partner->id)->update(['logo'=> '/upload/partners/' . $filename]);
+            }
+            $data['avatar'] = 'upload/avatars/' . $filename;
         }
         if(isset($request->password)){
             $data['password'] = bcrypt(request('password'));

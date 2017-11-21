@@ -98,7 +98,8 @@ class PartnersController extends Controller
                 'email' => request('email'),
                 'password' => Hash::make(request('password')),
                 'user_group_id' => 2,
-                'partner_id' => $partner->id
+                'partner_id' => $partner->id,
+                'avatar' => $partner->logo
             ]);
 
             return redirect(route('partners.index'));
@@ -203,6 +204,7 @@ class PartnersController extends Controller
                 Image::make($logo)->save( public_path('/upload/partners/'.$filename));
                 $partner->logo = '/upload/partners/'.$filename;
                 $partner->save();
+                $partner->user->update(['avatar'=>$partner->logo]);
                 // remove old image
             }
             if (isset($request->password)) {

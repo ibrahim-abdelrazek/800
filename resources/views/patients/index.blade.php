@@ -34,6 +34,7 @@
 
                         </a>
                     </li>
+                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Patient::$model))
                     <li class="nav-item">
                         <a class="nav-link" id="create_new" href="#" data-toggle="tab" data-target="#new-patient">
                             Create New Patient
@@ -42,17 +43,20 @@
                             @endif
                         </a>
                     </li>
+                    @endif
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active ks-column-section" id="nurses-list" role="tabpanel">
                         <!-- Content Here -->
                         @include('patients.table')
                     </div>
-
-                    <div class="tab-pane" id="new-patient" role="tabpanel">
+                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Patient::$model))
+                                      
+                        <div class="tab-pane" id="new-patient" role="tabpanel">
                         <!-- Second Content -->
                         @include('patients.create')
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

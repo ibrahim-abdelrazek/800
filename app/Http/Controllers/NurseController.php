@@ -33,13 +33,9 @@ class NurseController extends Controller
 
                 $nurses = Nurse::all();
 
-            } elseif (Auth::user()->user_group_id == 2) {
-
-                $nurses = Nurse::where('partner_id', Auth::user()->partner_id)->get();
-
             } else {
 
-                $nurses = Nurse::where('user_id', Auth::user()->id)->get();
+                $nurses = Nurse::where('partner_id', Auth::user()->partner_id)->get();
             }
 
 
@@ -82,7 +78,6 @@ class NurseController extends Controller
                 'contact_number' => 'required|string',
                 'photo' => 'image|mimes:jpg,jpeg,png'
             ]);
-dd(Auth::user());
             if ($request->has('partner_id')) {
                 $nurses = $request->all();
             } else {
@@ -90,7 +85,6 @@ dd(Auth::user());
                     $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
                 } else {
                     $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                    $nurses = array_merge($nurses, ['user_id' => Auth::user()->id]);
                 }
             }
             if($request->hasFile('photo')){
@@ -170,6 +164,7 @@ dd(Auth::user());
             $nurse = Nurse::find($id);
             if(empty($nurse))
                 return redirect(route('nurses.index'));
+
             $request->validate([
                 'name' => 'required|string|max:100',
                 'contact_email' => 'required|email|unique:nurses,contact_email,'. $nurse->id,
@@ -186,12 +181,8 @@ dd(Auth::user());
             if ($request->has('partner_id')) {
                 $nurses = $request->all();
             } else {
-                if (Auth::user()->user_group_id == 2) {
-                    $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                } else {
                     $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
                     $nurses = array_merge($nurses, ['id' => Auth::user()->id]);
-                }
             }
             if($request->hasFile('photo')){
                 $avatar = $request->file('photo');

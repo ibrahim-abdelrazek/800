@@ -39,9 +39,7 @@
     \App\HotelGuest::$model,
     \App\Nurse::$model,
     \App\Order::$model,
-    \App\Product::$model,
-    \App\Transaction::$model
-    ] ;
+      ] ;
     $actions = ['view', 'add' ,'edit' ,'delete'];
 
 

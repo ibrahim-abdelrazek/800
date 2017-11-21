@@ -72,7 +72,7 @@ class HotelGuestController extends Controller
                 
                 'guest_first_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
                 'guest_last_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
-                'items' => 'string|max:200',
+                'items' => 'max:200',
             ]);
 
             if ($request->has('partner_id')) {
@@ -154,13 +154,13 @@ class HotelGuestController extends Controller
         if (Auth::user()->ableTo('edit', HotelGuest::$model)) {
 
             $request->validate([
-                'name' => 'required|string|max:100',
-                'officer_name' => 'required|string|max:100',
-                'contact_number' => 'required|string|max:100',
-                'guest_room_number' => 'required|string|max:100',
-                'guest_first_name' => 'required|string|max:100',
-                'guest_last_name' => 'required|string|max:100',
-                'items' => 'required|string|max:100',
+                'name' => 'required|max:100|regex:/^[\pL\s]+$/u',
+                'officer_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
+                'contact_number' => 'required|numeric',      
+                'guest_room_number' => 'required|numeric',
+                'guest_first_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
+                'guest_last_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
+                'items' => 'max:200',
             ]);
 
 

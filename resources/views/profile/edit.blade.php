@@ -14,7 +14,7 @@
         {!! Form::model($profile, ['route' => ['profile.update', $profile['id']], 'method' => 'patch', 'files' => true]) !!}
             <div class="row">
                 <div class="col-md-12">
-                    <img src="/upload/avatars/<?= (empty($profile['avatar']))? 'default.jpg' : $profile['avatar'];?>" style="width:150px; height:150px; float: left; border-radius:50%;margin-right:25px;">
+                    <img src="<?= (empty($profile['avatar'])) ? asset('/upload/avatars/default.jpg') : asset($profile['avatar']) ;?>" style="width:150px; height:150px; float: left; border-radius:50%;margin-right:25px;">
                     <h2>{{ $profile['name'] }}'s Profile</h2>
                     {!! Form::label('avatar', 'Update Profile Image') !!}<br>
                     {!! Form::file('avatar',null,  [  'class' => 'form-control']) !!}

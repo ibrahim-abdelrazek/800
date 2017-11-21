@@ -50,7 +50,9 @@
                         <!-- Content Here -->
                         @include('nurses.table')
                     </div>
+
                      @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Nurse::$model))
+ 
                     <div class="tab-pane @if($errors->any()) active @endif" id="new-nurse" role="tabpanel">
                         <!-- Second Content -->
 

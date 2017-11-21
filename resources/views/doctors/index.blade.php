@@ -33,7 +33,7 @@
                             
                         </a>
                     </li>
-                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('create', App\Doctor::$model))
+                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Doctor::$model))
                     <li class="nav-item">
                         <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new_doctor">
                             Create New Doctor
@@ -49,11 +49,13 @@
                      <!-- Content Here --> 
                      @include('doctors.table')
                      </div>
+                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Doctor::$model))
                   
                     <div class="tab-pane @if($errors->any()) active @endif" id="new_doctor" role="tabpanel">
                         <!-- Second Content --> 
                         @include('doctors.create')
                     </div>
+                    @endif
                       </div>
                 </div>
             </div>
@@ -168,6 +170,38 @@
                        var partner_id = $(this).val();
                         loadNurses(partner_id);
                     });
+                });
+                function loadNurses(partner_id)
+                {
+                    $.getJSON("{{url('/doctors/get-nurses')}}/" + partner_id, [], function (data) {
+                        var html = '';
+                        if(data.success){
+                            html = '<select class="form-control ks-select" name="nurse_id">';
+                            $.each(data.data , function (key, value) {
+                                html += '<option value="'+key+'">'+value+'</option>';
+                            });
+                            html += '</select>';
+                            $('input[type=submit]').prop('disabled', function(i, v) { return false; });
+                        }else{
+                            html = "<p>You don't have added nurses yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add " +
+                                "new Nurse</b></a></p>";
+                            $('input[type=submit]').prop('disabled', function(i, v) { return true; });
+                        }
+                        $('#nurses-holder').html(html);
+
+                    })
+                }
+
+            })(jQuery);
+
+        </script>
+    @else
+        <script type="application/javascript">
+            // asynchronous content
+            (function ($) {
+                $(document).ready(function () {
+                    loadNurses({{Auth::user()->partner_id}});
+                
                 });
                 function loadNurses(partner_id)
                 {

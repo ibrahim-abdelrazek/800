@@ -83,7 +83,40 @@
                         if(data.success){
                             html = '<select class="form-control" name="nurse_id">';
                             $.each(data.data , function (key, value) {
-                                html += '<option value="'+key+'">'+value+'</option>';
+                                html += '<option '+ selected +' value="'+key+'">'+value+'</option>';
+                            });
+                            html += '</select>';
+                            $('input[type=submit]').prop('disabled', function(i, v) { return false; });
+                        }else{
+                            html = "<p>You don't have added nurses yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add " +
+                                "new Nurse</b></a></p>";
+                            $('input[type=submit]').prop('disabled', function(i, v) { return true; });
+                        }
+                        $('#nurses-holder').html(html);
+
+                    })
+                }
+            })(jQuery);
+
+        </script>
+    @else
+        <script type="application/javascript">
+            // asynchronous content
+            (function ($) {
+                $(document).ready(function () {
+                    loadNurses({{Auth::user()->partner_id}});
+                 
+                });
+                function loadNurses(partner_id)
+                {
+                    $.getJSON("{{url('/doctors/get-nurses')}}/" + partner_id, [], function (data) {
+                        var html = '';
+                        if(data.success){
+                            html = '<select class="form-control" name="nurse_id">';
+                            $.each(data.data , function (key, value) {
+                                var nurseId = "{{$doctor->nurse_id}}";
+                                var selected = (nurseId == key) ? 'selected' : '';
+                                html += '<option '+ selected +' value="'+key+'">'+value+'</option>';
                             });
                             html += '</select>';
                             $('input[type=submit]').prop('disabled', function(i, v) { return false; });

@@ -77,7 +77,8 @@
 @endif
 <!-- Nurse -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('Nurse', 'Nurse:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">
+        {!! Form::label('Nurse', 'Nurse:') !!}</label>
     <div id="nurses-holder" class="col-sm-10">
 
         @if(\App\Nurse::where('partner_id', Auth::user()->id)->count() > 0)

@@ -80,7 +80,7 @@ class UserGroupController extends Controller
         if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
 
             $request->validate([
-                'group_name' => 'required|min:5|max:50|alpha_dash'],
+                'group_name' => 'required|min:5|max:50|string'],
                 ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']
             );
 
@@ -224,7 +224,7 @@ class UserGroupController extends Controller
                 $err = "The name has already been taken.";
                 $data = array();
                 $data['id']= $id;
-                if(Auth::user()->isAdmin())
+                    if(Auth::user()->isAdmin())
                     $data['partner_id']=$request->partner_id ;
                 else
                     $data['partner_id']= Auth::user()->partner_id ;
@@ -234,7 +234,7 @@ class UserGroupController extends Controller
 
 
             $request->validate([
-                'group_name' => 'required|min:5|max:50|alpha_dash',
+                'group_name' => 'required|min:5|max:50|string',
             ], ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']);
 
 

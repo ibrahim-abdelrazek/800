@@ -47,7 +47,7 @@
                             {!! Form::open(['route' => ['orders.destroy', $order->id], 'method' => 'delete']) !!}
                             <div class='btn-group'>
                                 <a href="{!! url('orders/'. $order->id) !!}" class='btn btn-default btn-xs'>Show</a>
-                                @if(Auth::user()->id !== $order->owner->id && $order->status->code != 'success')
+                                @if(Auth::user()->id == $order->owner->id && $order->status->code != 'success')
                                 <a href="{{ URL::to('orders/' . $order->id . '/edit') }}"
                                    class='btn btn-default btn-xs'>Edit</a>
                                 @endif

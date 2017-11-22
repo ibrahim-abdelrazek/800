@@ -80,13 +80,6 @@
     <label for="default-input" class="col-sm-2 form-control-label">
         {!! Form::label('Nurse', 'Nurse:') !!}</label>
     <div id="nurses-holder" class="col-sm-10">
-
-        @if(\App\Nurse::where('partner_id', Auth::user()->id)->count() > 0)
-            {!! Form::select('nurse_id',App\Nurse::where('partner_id', Auth::user()->id)->pluck('name','id'),null,['class' => 'form-control'])!!}
-        @else
-            <p>You don't have added nurses yet, Please <a href="{{route('nurses.index')}}"><b class="label-danger">Add
-                        new Nurse</b></a></p>
-        @endif
     </div>
 </div>
 
@@ -105,8 +98,6 @@
     @endif
 
 </div>
-
-
 
 
 

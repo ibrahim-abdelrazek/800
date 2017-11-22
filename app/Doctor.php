@@ -18,7 +18,6 @@ class Doctor extends Model
         'contact_number',
         'photo',
         'partner_id',
-        'nurse_id',
         'user_id'
     ];
 
@@ -30,7 +29,7 @@ class Doctor extends Model
 
     public function nurse()
     {
-        return $this->belongsTo(Nurse::class);
+        return $this->belongsToMany(Nurse::class, 'doctor_nurse');
     }
 
     public function orders()

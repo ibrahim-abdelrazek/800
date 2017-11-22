@@ -13,7 +13,7 @@
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{{ route('profile.index') }}">Profile</a>
                                @if(Auth::user()->isAdmin())
-                             <a class="dropdown-item" href="{{ url('/') }}">Settings</a>
+                             <a class="dropdown-item" href="{{ url('/settings') }}">Settings</a>
                              @endif
                 </div>
             </li>

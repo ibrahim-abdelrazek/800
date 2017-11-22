@@ -43,8 +43,9 @@
         })(jQuery);
         </script>
 @endpush
-@if(Auth::user()->isAdmin())
     @push('customjs')
+    @if(Auth::user()->isAdmin())
+
         <script type="application/javascript">
             // asynchronous content
             (function ($) {
@@ -100,6 +101,7 @@
             })(jQuery);
 
         </script>
+         @endif
+
     @endpush
-@endif
 

@@ -92,9 +92,14 @@ class OrderController extends Controller
             $order = array_merge($order, ['user_id' => Auth::user()->id,
                 'prescription' => $prescription,
                 'status_id' => getConfig('order_default_status'),
-                'products'=>array_combine($request->products, $request->quantities)]);
+                'products'=>array_combine($request->products, $request->quantities),
+                'status_id' =>  getConfig('order_default_status')]
+                );
             if(Order::create($order))
-                return redirect(route('orders.index'));
+               
+                 return redirect(route('orders.index'));
+            
+               
 
         }else {
             return view('extra.404');

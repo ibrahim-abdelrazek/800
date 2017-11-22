@@ -25,12 +25,7 @@
                 </tr>
                 </tfoot>
                 <tbody>
-                @php
-                 $statusid = \App\Settings::where('key','order_default_status')->value('value');
-                 $code = \App\Status::where('id',$statusid)->value('code');
-                 $message = \App\Status::where('id',$statusid)->value('message');
-                echo  $message .$code;
-                @endphp
+                
                 @php($i=1)
                 @foreach($orders as $order)
                     <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
@@ -40,7 +35,7 @@
                         <td>{{ $order->owner->name }}</td>
                         <td>{{ date('Y m d', strtotime($order->created_at)) }}</td>
                         <td>
-                            <span class="badge ks-circle badge-{{$code}}"> {{$message}} </span>
+                            <span class="badge ks-circle badge-{{$order->status->code}}"> {{$order->status->message}} </span>
 
                         </td>
                         <td>

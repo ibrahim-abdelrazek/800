@@ -40,9 +40,9 @@
         </label>
 
         <div class="col-sm-10">
-            @if(\App\Patient::where('partner_id', Auth::user()->id)->count() > 0)
+            @if(\App\Patient::where('partner_id', Auth::user()->partner_id)->count() > 0)
 
-                {!! form::select ('patient_id',App\Patient::select(DB::raw("CONCAT(first_name,' ', last_name) AS full_name, id"))->pluck('full_name','id'),null,['class' => 'form-control'])!!}
+                {!! form::select ('patient_id',App\Patient::select(DB::raw("CONCAT(first_name,' ', last_name) AS full_name, id"))->where('partner_id', Auth::user()->partner_id)->pluck('full_name','id'),null,['class' => 'form-control'])!!}
             @else
                 <p>You don't have added patients yet, Please <a href="{{route('patients.index')}}"><b class="label-danger">Add
                             new Patient</b></a></p>
@@ -56,9 +56,9 @@
         </label>
 
         <div class="col-sm-10">
-            @if(\App\Doctor::where('partner_id', Auth::user()->id)->count() > 0)
+            @if(\App\Doctor::where('partner_id', Auth::user()->partner_id)->count() > 0)
 
-                {!! form::select ('doctor_id',App\Doctor::where('partner_id', Auth::user()->id)->pluck('name','id'),null,['class' => 'form-control'])!!}
+                {!! form::select ('doctor_id',App\Doctor::where('partner_id', Auth::user()->partner_id)->pluck('name','id'),null,['class' => 'form-control'])!!}
             @else
                 <p>You don't have added doctors yet, Please <a href="{{route('doctors.index')}}"><b class="label-danger">Add
                             new Doctor</b></a></p>

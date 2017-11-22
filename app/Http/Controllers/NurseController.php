@@ -81,11 +81,8 @@ class NurseController extends Controller
             if ($request->has('partner_id')) {
                 $nurses = $request->all();
             } else {
-                if (Auth::user()->user_group_id == 2) {
-                    $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
-                } else {
-                    $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                }
+
+                $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
             }
             if($request->hasFile('photo')){
                 $avatar = $request->file('photo');
@@ -182,7 +179,6 @@ class NurseController extends Controller
                 $nurses = $request->all();
             } else {
                     $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                    $nurses = array_merge($nurses, ['id' => Auth::user()->id]);
             }
             if($request->hasFile('photo')){
                 $avatar = $request->file('photo');

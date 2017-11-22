@@ -50,6 +50,8 @@
         // asynchronous content
         (function ($) {
             $(document).ready(function () {
+                $('label[for="photo"]').removeClass('required');
+
                 $('a[data-toggle="tab"]').click(function (e) {
                     e.preventDefault();
                     $(this).tab('show');

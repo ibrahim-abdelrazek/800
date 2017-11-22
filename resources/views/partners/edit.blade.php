@@ -19,3 +19,15 @@
         </div>
     </div>
 @endsection
+
+@push('customjs')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('label[for="logo"]').removeClass('required');
+            $('label[for="password"]').removeClass('required');
+            $('label[for="password_confirmation"]').removeClass('required');
+
+        });
+    </script>
+@endpush
+

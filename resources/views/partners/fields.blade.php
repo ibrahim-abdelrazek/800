@@ -13,7 +13,7 @@
 
 <!--  Name -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('name', null, [  'placeholder'=>'Enter Partner\'s name', 'class' => 'form-control']) !!}
     </div>
@@ -21,7 +21,7 @@
 <!-- Logo -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('logo', 'Logo:') !!}
+        {!! Form::label('logo', 'Logo:',['class'=> 'required']) !!}
     </label>
 
     <div class="col-sm-10">
@@ -32,7 +32,7 @@
 
 <!--  location -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('location', 'Location:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('location', 'Location:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::select('location', ['Abu Dhabi' , 'Dubai' , 'Sharjah' , 'Ajman' ,'Umm Al Quwain','Ras Al Khaimah' ,'Fujairah' ] , null, [  'class' => 'form-control' , 'required']) !!}
     </div>
@@ -40,7 +40,7 @@
 
 <!--  partner type -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner_type_id', 'Partner Type:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner_type_id', 'Partner Type:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         @if(\App\PartnerType::count() > 0)
             {!! Form::select('partner_type_id',  App\PartnerType::pluck('name', 'id') , null, ['class' => 'form-control' , 'required']) !!}
@@ -53,7 +53,7 @@
 
 <!--  username -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('username', 'Username:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('username', 'Username:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('username', null, [  'class' => 'form-control' , 'required']) !!}
     </div>
@@ -62,14 +62,14 @@
 
 <!-- Phone -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('phone', 'Phone:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('phone', 'Phone:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('phone', null, [  'class' => 'form-control' , 'required']) !!}
     </div>
 </div>
 <!-- FAX -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('fax', 'FAX:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('fax', 'FAX:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('fax', null, [  'class' => 'form-control' , 'required']) !!}
     </div>
@@ -77,7 +77,7 @@
 
 <!-- Commission -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('commission', 'commission Percent:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('commission', 'commission Percent:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('commission', null, [  'placeholder'=>'5', 'class' => 'form-control' , 'required']) !!}
     </div>
@@ -85,7 +85,7 @@
 
 <!--  email -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('email', 'Email:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('email', 'Email:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::email('email', null, [  'class' => 'form-control' , 'required']) !!}
     </div>
@@ -93,7 +93,7 @@
 <!--  password -->
 
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password', 'Password:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password', 'Password:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         @if(!isset($partner))
         {!! Form::password('password', ['class' => 'form-control' , 'required']) !!}
@@ -107,7 +107,7 @@
     </div>
 </div>
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password_confirmation', 'Confirm Password:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password_confirmation', 'Confirm Password:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::password('password_confirmation', ['class' => 'form-control'] ) !!}
     </div>

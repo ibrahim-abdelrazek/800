@@ -10,14 +10,14 @@
 
 <!--  Name -->
 <div class="form-group col-sm-8 col-sm-offset-2" id='name'>
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('name', 'Name:',['class'=> 'required']) !!}
     {!! Form::text('name', null, [  'class' => 'form-control', 'required'=> 'required']) !!}
 </div>
 
 
 <!--  Status -->
 <div class="form-group col-sm-8 col-sm-offset-2" id='status'>
-    {!! Form::label('status', 'Status:') !!}
+    {!! Form::label('status', 'Status:',['class'=> 'required']) !!}
     {!! Form::select('status', ['1' => 'active' , '0' => 'not active'] , null, [  'class' => 'form-control']) !!}
 </div>
 

@@ -12,7 +12,7 @@
 </div>
 <!--  first-Name -->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('first_name', 'First Name:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('first_name', 'First Name:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('first_name', null, [  'class' => 'form-control']) !!}
     </div>
@@ -21,7 +21,7 @@
 
 <!--  last-Name -->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('last_name', 'Last Name:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('last_name', 'Last Name:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('last_name', null, [  'class' => 'form-control']) !!}
     </div>
@@ -30,14 +30,14 @@
 
 <!--  date -->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('date', 'Date:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('date', 'Date:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::date('date',null,  [  'class' => 'form-control']) !!}</div>
 </div>
 
 <!-- gender-->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('gender', 'Gender:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('gender', 'Gender:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::select('gender',['male' => 'male','female'=>'female' ],null, [  'class' => 'form-control']) !!}
     </div>
@@ -46,7 +46,7 @@
 
 <!--  contact_number-->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('contact_number',null, [  'class' => 'form-control']) !!}
     </div>
@@ -55,7 +55,7 @@
 
 <!--  email-->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('email', 'Email:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('email', 'Email:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::email('email',null, [  'class' => 'form-control']) !!}
     </div>
@@ -64,7 +64,7 @@
 <!-- insurance_card_details-->
     <h4>Insurance Card Details</h4>
     <div class="form-group row" >
-        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('insurance_file', 'Upload Insurance File:') !!}</label>
+        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('insurance_file', 'Upload Insurance File:',['class'=> 'required']) !!}</label>
 
         <div class="col-sm-10">
         @if(request()->route()->getAction()['as'] == "patients.edit") <img src="<?= (empty($patient['insurance_file']))? '/upload/doc.png' : $patient['insurance_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
@@ -74,21 +74,21 @@
     </div>
     <div class="form-group row" >
 
-        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('insurance card details', 'Insurance Provider:') !!}</label>
+        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('insurance card details', 'Insurance Provider:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             {!! Form::select('insurance_provider',App\InsuranceProvider::pluck('insurance_company','id'),null,['class' => 'form-control ks-select'])!!}
         </div>
     </div>
 
     <div class="form-group row" >
-        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('card_number', 'Card Number:') !!}</label>
+        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('card_number', 'Card Number:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             {!! Form::text('card_number',null, [  'class' => 'form-control']) !!}
         </div>
     </div>
 
     <div class="form-group row" >
-        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('emirates id details', 'Insurance Expiry date:') !!}</label>
+        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('emirates id details', 'Insurance Expiry date:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             {!! Form::date('insurance_expiry',null, [  'class' => 'form-control']) !!}
         </div>
@@ -98,7 +98,7 @@
 <br />
 <h4> Emirate ID Details</h4>
     <div class="form-group row" >
-        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_file', 'Upload ID File:') !!}</label>
+        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_file', 'Upload ID File:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             @if(request()->route()->getAction()['as'] == "patients.edit")
             <img src="<?= (empty($patient['id_file']))? '/upload/doc.png' : $patient['id_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
@@ -107,14 +107,14 @@
         </div>
     </div>
     <div class="form-group row" >
-        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_number', 'ID Number:') !!}</label>
+        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_number', 'ID Number:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             {!! Form::text('id_number',null, [  'class' => 'form-control']) !!}
         </div>
     </div>
 
     <div class="form-group row" >
-        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_expiry', 'ID Expiry Date:') !!}</label>
+        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_expiry', 'ID Expiry Date:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             {!! Form::date('id_expiry',null, [  'class' => 'form-control']) !!}
         </div>
@@ -124,7 +124,7 @@
 <!-- notes-->
 
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('notes', 'Notes:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('notes', 'Notes:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::textarea('notes',null, [  'class' => 'form-control']) !!}
     </div>
@@ -134,7 +134,7 @@
 <!-- address -->
 <!-- address city-->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address city', 'City:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address city', 'City:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::select('city',App\City::pluck('city_name','id'),null,['class' => 'form-control'])!!}
     </div>
@@ -142,20 +142,20 @@
 
 <!-- address area-->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address area', 'Area:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address area', 'Area:',['class'=> 'required']) !!}</label>
     <div id="neighbors-holder" class="col-sm-10"></div>
 </div>
 
 <!-- address street-->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address street', 'Street:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address street', 'Street:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('street',null, [  'class' => 'form-control']) !!}
     </div>
 </div>
 
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address details', 'Address Details:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address details', 'Address Details:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
 
     {{ Form::radio('type1','home',false , ['class' => 'home' ]) }} Home

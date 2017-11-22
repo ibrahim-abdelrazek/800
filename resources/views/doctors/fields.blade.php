@@ -12,7 +12,7 @@
 </div>
 <!--  Name -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('name', null, [  'placeholder'=>'Enter Doctor\'s name', 'class' => 'form-control']) !!}
     </div>
@@ -20,13 +20,13 @@
 <div class="form-group row">
 
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('photo', 'Upload Doctor\'s Photo (Optional):') !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('photo', 'Upload Doctor\'s Photo (Optional):',['class'=> 'required']) !!}</label>
     {!! Form::file('photo',null,  [  'class' => 'form-control']) !!}
 </div>
 <!--  specialty -->
 <div class="form-group row">
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('specialty', 'specialty:') !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('specialty', 'specialty:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('specialty', null, [
         'placeholder'=>'Enter Doctor Specialities',
@@ -46,14 +46,14 @@
 <!--  contact -->
 <div class="form-group row">
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('contact_email', 'Contact Email:') !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('contact_email', 'Contact Email:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::email('contact_email', null, [  'placeholder'=>'Enter Doctor\'s Contact Email', 'class' => 'form-control']) !!}
     </div>
 </div>
 <div class="form-group row">
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:') !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('contact_number', null, [  'placeholder'=>'Enter Doctor\'s Number', 'id'=>'', 'class' => 'form-control ks-phone-mask-input']) !!}
     </div>
@@ -62,7 +62,7 @@
 @if(Auth::user()->isAdmin())
     <!--  Partner -->
     <div class="form-group row">
-        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner', 'partner') !!}</label>
+        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner', 'partner',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             @if(\App\Partner::count() > 0)
                 {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
@@ -78,7 +78,7 @@
 <!-- Nurse -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('Nurse', 'Nurse:') !!}</label>
+        {!! Form::label('Nurse', 'Nurse:',['class'=> 'required']) !!}</label>
     <div id="nurses-holder" class="col-sm-10">
     </div>
 </div>

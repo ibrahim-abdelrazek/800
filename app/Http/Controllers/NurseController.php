@@ -73,16 +73,19 @@ class NurseController extends Controller
         if (Auth::user()->ableTo('add', Nurse::$model)) {
 
             $request->validate([
-                'name' => 'required|string|max:100',
+                'name' => 'required|string|max:100|regex:/^[\pL\s]+$/u',
                 'contact_email' => 'required|email|unique:nurses,contact_email',
                 'contact_number' => 'required|string',
                 'photo' => 'image|mimes:jpg,jpeg,png'
             ]);
-
             if ($request->has('partner_id')) {
                 $nurses = $request->all();
             } else {
+                if (Auth::user()->user_group_id == 2) {
+                    $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
+                } else {
                     $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
+                }
             }
             if($request->hasFile('photo')){
                 $avatar = $request->file('photo');
@@ -161,6 +164,7 @@ class NurseController extends Controller
             $nurse = Nurse::find($id);
             if(empty($nurse))
                 return redirect(route('nurses.index'));
+
             $request->validate([
                 'name' => 'required|string|max:100',
                 'contact_email' => 'required|email|unique:nurses,contact_email,'. $nurse->id,
@@ -178,7 +182,7 @@ class NurseController extends Controller
                 $nurses = $request->all();
             } else {
                     $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-            
+                    $nurses = array_merge($nurses, ['id' => Auth::user()->id]);
             }
             if($request->hasFile('photo')){
                 $avatar = $request->file('photo');

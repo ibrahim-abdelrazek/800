@@ -18,7 +18,7 @@
                         <div class="ks-order-page ks-compact">
                             <div class="ks-info">
                                 <div class="ks-header">
-                                    <img class="ks-logo" src="{{asset($order->partner->logo)}}" height="60">
+                                    <img class="ks-logo" src="{{asset($order->prescription)}}" height="60">
                                     @php
                                         $color = '';
                                         switch($order->status->code){

@@ -25,13 +25,10 @@ class OrderController extends Controller
 
                 $orders = Order::get();
 
-            } elseif (Auth::user()->user_group_id == 2) {
+            } else {
 
                 $orders = Order::where('partner_id', Auth::user()->partner_id)->get();
 
-            } else {
-
-                $orders = Order::where('user_id', Auth::user()->id)->get();
             }
 
             return view('orders.index')->with('orders', $orders);
@@ -89,11 +86,8 @@ class OrderController extends Controller
             if ($request->has('partner_id')) {
                 $order = $request->all();
             }else {
-                if (!Auth::user()->user_group_id == 2) {
-                    $order = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
-                } else {
-                    $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner->id]);
-                }
+
+                $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner->id]);
             }
             $order = array_merge($order, ['user_id' => Auth::user()->id,
                 'prescription' => $prescription,

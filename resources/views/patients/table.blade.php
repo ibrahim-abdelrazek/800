@@ -36,7 +36,7 @@
                   
                         <a href="{{ URL::to('patients/' . $patient->id . '/edit') }}" class='btn btn-default btn-xs'>Edit</a>
                         @endif
-                         @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('delete', App\Nurse::$model))
+                         @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('delete', App\Patient::$model))
                   
                         {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                         @endif

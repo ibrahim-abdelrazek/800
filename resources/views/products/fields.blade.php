@@ -13,14 +13,14 @@
 
 <!--  Name -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('name', 'Name:',['class'=> 'required']) !!}
     {!! Form::text('name', null, [  'class' => 'form-control']) !!}
 </div>
 
 
 <!--  image -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('image', 'Image:') !!}
+    {!! Form::label('image', 'Image:',['class'=> 'required']) !!}
     {!! Form::file('image',  [  'class' => 'form-control']) !!}
 </div>
 
@@ -28,7 +28,7 @@
 
 <!--  price -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('price', 'Price:') !!}
+    {!! Form::label('price', 'Price:',['class'=> 'required']) !!}
     {!! Form::number('price',null, [ 'step'=>"any", 'class' => 'form-control']) !!}
 </div>
 

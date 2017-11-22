@@ -12,14 +12,14 @@
 
 <!--  message -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('message', 'Message:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('message', 'Message:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('message', null, [  'class' => 'form-control' , 'required']) !!}
     </div>
 </div>
 <!--  code -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('code', 'Code:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('code', 'Code:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::select('code', ['success', 'info','danger','warning'], [  'class' => 'form-control' , 'required']) !!}
     </div>

@@ -12,37 +12,37 @@
 </div>
 <!--  Name -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:' ,['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('name', null, [  'placeholder'=>'Enter Nurse\'s name', 'class' => 'form-control']) !!}
+        {!! Form::text('name', null, [  'placeholder'=>'Enter Nurse\'s name', 'class' => 'form-control', 'required']) !!}
     </div>
 </div>
 <div class="form-group row">
 
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('photo', 'Upload Nurse\'s Photo (Optional):') !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('photo', 'Upload Nurse\'s Photo (Optional):',['class'=> 'required']) !!}</label>
     {!! Form::file('photo',null,  [  'class' => 'form-control']) !!}
 </div>
 <!--  contact -->
 <div class="form-group row">
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('contact_email', 'Contact Email:') !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('contact_email', 'Contact Email:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::email('contact_email', null, [  'placeholder'=>'Enter Nurse\'s Contact Email', 'class' => 'form-control']) !!}
+        {!! Form::email('contact_email', null, [  'placeholder'=>'Enter Nurse\'s Contact Email', 'class' => 'form-control', 'required']) !!}
     </div>
 </div>
 <div class="form-group row">
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:') !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('contact_number', null, [  'placeholder'=>'Enter Nurse\'s Number', 'id'=>'', 'class' => 'form-control ks-phone-mask-input']) !!}
+        {!! Form::text('contact_number', null, [  'placeholder'=>'Enter Nurse\'s Number', 'id'=>'', 'class' => 'form-control ks-phone-mask-input' , 'required']) !!}
     </div>
 </div>
 
 @if(Auth::user()->isAdmin())
     <!--  Partner -->
     <div class="form-group row">
-        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner', 'partner') !!}</label>
+        <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner', 'partner',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             @if(\App\Partner::count() > 0)
                 {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}

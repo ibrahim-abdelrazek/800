@@ -54,6 +54,11 @@
             //request user permission for notification and messaging
             window.Notification.requestPermission();
         </script>
+
+            <style>
+                .required:after { content:" *"; color: #f31e1e;  font-weight: bold;  font-size: 16px;
+                    position: absolute;}
+            </style>
 </head>
 
 <!-- END HEAD -->

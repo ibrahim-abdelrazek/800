@@ -34,8 +34,11 @@
 @push('customjs')
     <script type="text/javascript">
         $(document).ready(function() {
+            $('label[for="insurance_file"]').removeClass('required');
+            $('label[for="id_file"]').removeClass('required');
 
             $(".office").on("click", function () {
+
 
                 $('#office').css("display", 'block');
                 $('#home').css("display", 'none');

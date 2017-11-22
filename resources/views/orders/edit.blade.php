@@ -50,6 +50,9 @@
             // asynchronous content
             (function ($) {
                 $(document).ready(function () {
+                    $('label[for="prescription"]').removeClass('required');
+
+
                     loadDoctors($('select[name=partner_id]').val());
                     loadPatients($('select[name=partner_id]').val());
                     $('select[name=partner_id]').on('change', function(e){

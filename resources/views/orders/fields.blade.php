@@ -13,7 +13,7 @@
 <!--  prescription -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('prescription', 'prescription:') !!}
+        {!! Form::label('prescription', 'prescription:',['class'=> 'required']) !!}
     </label>
 
     <div class="col-sm-10">
@@ -24,7 +24,7 @@
 <!-- notes -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('notes', 'notes:') !!}
+        {!! Form::label('notes', 'notes:',['class'=> 'required']) !!}
     </label>
     <div class="col-sm-10">
         {!! Form::textarea('notes',null, [  'class' => 'form-control']) !!}
@@ -36,7 +36,7 @@
     <!--  patient_id -->
     <div class="form-group row">
         <label for="default-input" class="col-sm-2 form-control-label">
-            {!! Form::label('patient', 'Patient:') !!}
+            {!! Form::label('patient', 'Patient:',['class'=> 'required']) !!}
         </label>
 
         <div class="col-sm-10">
@@ -52,7 +52,7 @@
     <!-- Doctor -->
     <div class="form-group row">
         <label for="default-input" class="col-sm-2 form-control-label">
-            {!! Form::label('doctor', 'doctor') !!}
+            {!! Form::label('doctor', 'doctor',['class'=> 'required']) !!}
         </label>
 
         <div class="col-sm-10">
@@ -71,7 +71,7 @@
     <!--  partner_id -->
     <div class="form-group row">
         <label for="default-input" class="col-sm-2 form-control-label">
-            {!! Form::label('partner', 'Partner') !!}
+            {!! Form::label('partner', 'Partner',['class'=> 'required']) !!}
         </label>
 
         <div class="col-sm-10">
@@ -81,7 +81,7 @@
     <!-- Patients Holder -->
     <div class="form-group row">
         <label for="default-input" class="col-sm-2 form-control-label">
-            {!! Form::label('patient', 'Patient') !!}
+            {!! Form::label('patient', 'Patient',['class'=> 'required']) !!}
         </label>
 
         <div id="patients-holder" class="col-sm-10">
@@ -90,7 +90,7 @@
     <!--  doctor_id -->
     <div class="form-group row">
         <label for="default-input" class="col-sm-2 form-control-label">
-            {!! Form::label('doctor', 'doctor') !!}
+            {!! Form::label('doctor', 'doctor',['class'=> 'required']) !!}
         </label>
         <div id="doctors-holder" class="col-sm-10">
         </div>
@@ -99,7 +99,7 @@
 <!--  product_id -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('product', 'Product') !!}
+        {!! Form::label('product', 'Product',['class'=> 'required']) !!}
     </label>
 
     <div id="products_wrapper" class="col-sm-10">

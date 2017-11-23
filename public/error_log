@@ -19,3 +19,5 @@
 [19-Nov-2017 20:43:24 UTC] PHP Fatal error:  Allowed memory size of 2097152 bytes exhausted (tried to allocate 4096 bytes) in /home/pharmacy/public_html/vendor/symfony/var-dumper/Dumper/HtmlDumper.php on line 131
 [19-Nov-2017 20:47:30 UTC] PHP Fatal error:  Allowed memory size of 2097152 bytes exhausted (tried to allocate 1052672 bytes) in /home/pharmacy/public_html/vendor/symfony/http-foundation/File/MimeType/FileinfoMimeTypeGuesser.php on line 67
 [19-Nov-2017 20:47:30 UTC] PHP Fatal error:  Allowed memory size of 2097152 bytes exhausted (tried to allocate 4096 bytes) in /home/pharmacy/public_html/vendor/symfony/var-dumper/Dumper/HtmlDumper.php on line 131
+[23-Nov-2017 09:40:24 UTC] PHP Fatal error:  Interface 'Illuminate\Database\Eloquent\ScopeInterface' not found in /home/pharmacy/public_html/app/OrderScope.php on line 11
+[23-Nov-2017 09:40:51 UTC] PHP Fatal error:  Interface 'Illuminate\Database\Eloquent\ScopeInterface' not found in /home/pharmacy/public_html/app/OrderScope.php on line 10

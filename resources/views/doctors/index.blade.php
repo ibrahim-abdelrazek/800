@@ -165,31 +165,76 @@
             // asynchronous content
             (function ($) {
                 $(document).ready(function () {
-                    loadNurses($('select[name=partner_id]').val());
+                     var i = 1;
+                     var partner_id = $('select[name=partner_id]').val();
+                    var html = loadNurses(i, partner_id);
+                     
+                      if(i == 1){
+                            $('#nurses-holder').html(html);
+    
+                      }
                     $('select[name=partner_id]').on('change', function(e){
-                       var partner_id = $(this).val();
-                        loadNurses(partner_id);
+                        i = 1;
+                       partner_id = $(this).val();
+                       html = loadNurses(i, partner_id);
+                      if(i == 1){
+                            $('#nurses-holder').html(html);
+    
+                      }
+                       var addButton = $('.add_button'); //Add button selector
+                    $(addButton).on('click', function(){ //Once add button is clicked
+                    i++;
+                         $('#nurses-holder').append(loadNurses(i, partner_id)); // Add field html
+                        
                     });
+                    $('#nurses-holder').on('click', '.remove_button', function(e){ //Once remove button is clicked
+                    e.preventDefault();
+                    $(this).parent().parent().remove(); //Remove field html
+                     });
+                    });
+                    
+                    var addButton = $('.add_button'); //Add button selector
+                    $(addButton).on('click', function(){ //Once add button is clicked
+                    i++;
+                         $('#nurses-holder').append(loadNurses(i, partner_id)); // Add field html
+                        
+                    });
+                    $('#nurses-holder').on('click', '.remove_button', function(e){ //Once remove button is clicked
+                    e.preventDefault();
+                    $(this).parent().parent().remove(); //Remove field html
+                     });
                 });
-                function loadNurses(partner_id)
-                {
-                    $.getJSON("{{url('/doctors/get-nurses')}}/" + partner_id, [], function (data) {
-                        var html = '';
-                        if(data.success){
-                            html = '<select class="form-control ks-select" name="nurse[]">';
+                   function loadNurses(i, partner_id)
+                { 
+                    var re = '';
+                    $.ajax({
+                          url: "{{url('/doctors/get-nurses')}}/" + partner_id,
+                          dataType: 'json',
+                          async: false,
+                          success: function(data) {
+                         if(data.success){
+                            html = '<div class="row"><div class="col-md-10"><select class="form-control ks-select" name="nurses[]">';
                             $.each(data.data , function (key, value) {
                                 html += '<option value="'+key+'">'+value+'</option>';
                             });
-                            html += '</select>';
+                            html += '</select></div>';
+                            if(i == 1){
+                               html+=' <div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a></div>'; 
+                            }else{
+                                html += '<div class="col-sm-1"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div>';
+                            }
+                            html+= '</div>';
                             $('input[type=submit]').prop('disabled', function(i, v) { return false; });
                         }else{
                             html = "<p>You don't have added nurses yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add " +
                                 "new Nurse</b></a></p>";
                             $('input[type=submit]').prop('disabled', function(i, v) { return true; });
                         }
-                        $('#nurses-holder').html(html);
-
-                    })
+                        re = html;
+                    }
+                    
+                    }); 
+                    return re;  
                 }
 
             })(jQuery);

@@ -20,7 +20,7 @@
 <div class="form-group row">
 
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('photo', 'Upload Doctor\'s Photo (Optional):',['class'=> 'required']) !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('photo', 'Upload Doctor\'s Photo (Optional):') !!}</label>
     {!! Form::file('photo',null,  [  'class' => 'form-control']) !!}
 </div>
 <!--  specialty -->
@@ -80,6 +80,26 @@
     <label for="default-input" class="col-sm-2 form-control-label">
         {!! Form::label('Nurse', 'Nurse:',['class'=> 'required']) !!}</label>
     <div id="nurses-holder" class="col-sm-10">
+        @if(isset($doctor))
+            @php $i=1; $nurses = $doctor->nurses; @endphp
+            @foreach($nurses as $nurse)
+            <div class="row">
+                <div class="col-md-10">
+                      {!! Form::select('nurses[]',App\Nurse::pluck('name','id'),$nurse->id,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
+                </div> 
+                <div class="col-sm-2">
+                    @if($i == 1 )
+                    <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field">
+                        <span class="la la-plus-circle la-2x"></span> 
+                    </a>
+                    @else
+                    <a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a>
+                    @endif
+                    @php($i++)
+                    </div>
+                </div> 
+            @endforeach
+        @endif
     </div>
 </div>
 

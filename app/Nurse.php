@@ -21,4 +21,9 @@ class Nurse extends Model
     {
         return $this->belongsTo(Partner::class);
     }
+    public function doctors()
+    {
+        return $this->belongsToMany(Doctor::class, 'doctor_nurse');
+    }
+    
 }

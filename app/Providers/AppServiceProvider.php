@@ -5,7 +5,6 @@ use DB;
 use View;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -20,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
 
         $AppName = DB::table('settings')->where('key' , 'Application Name')->first();
         View()->share('AppName',$AppName->value);
+        
     }
 
     /**

@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
+use App\OrderScope;
+
 class DoctorController extends Controller
 {
     /**
@@ -25,6 +27,7 @@ class DoctorController extends Controller
         $person->email = $doctor->contact_email;
         $person->phone = $doctor->contact_number;
         $person->photo = $doctor->photo;
+        $person->nurses = $doctor->nurses;
         if (!empty($doctor))
             return view('extras.card')->with('person', $person);
     }
@@ -75,13 +78,14 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
        if (Auth::user()->ableTo('add', Doctor::$model)) {
-
             $request->validate([
                 'name' => 'required|string|max:100',
                 'specialty' => 'required|string',
                 'contact_email' => 'required|email|unique:doctors,contact_email',
                 'contact_number' => 'required|string',
-                'photo' => 'image|mimes:jpg,jpeg,png'
+                'photo' => 'image|mimes:jpg,jpeg,png',
+                'nurses' => 'required|array',
+                'nurses.*' => 'numeric'
 
             ]);
 
@@ -102,8 +106,13 @@ class DoctorController extends Controller
                 $doctor['photo'] = '/upload/doctors/'.$filename;
             }
 
-            if (Doctor::create($doctor))
-            return redirect(route('doctors.index'));
+            if ($doc = Doctor::create($doctor)){
+                // Assign new nurses to doctor
+                $nurses = $request->nurses;
+                $doc->nurses()->attach(array_unique($nurses));
+                return redirect(route('doctors.index'));
+            }
+            
 
         } else {
             return view('extra.404');
@@ -197,7 +206,8 @@ class DoctorController extends Controller
                 // remove old image
                 //unlink(asset($doc->photo));
             }
-
+            $nurses = $request->nurses;
+            $doc->nurses()->sync(array_unique($nurses));
             if ($doc->update($doctor))
                 return redirect(route('doctors.index'));
 

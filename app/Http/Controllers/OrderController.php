@@ -66,6 +66,7 @@ class OrderController extends Controller
 
             $this->validate($request, [
                 'prescription' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+                'insurance_claim'=> 'required|image|mimes:jpeg,png,jpg,gif,svg',
                 'notes' => 'string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
@@ -177,6 +178,7 @@ class OrderController extends Controller
             //|image|mimes:jpeg,png,jpg,gif,svg|max:2048
             $this->validate($request, [
                 'prescription' => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'insurance_claim' => 'image|mimes:jpeg,png,jpg,gif,svg',
                 'notes' => 'string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',

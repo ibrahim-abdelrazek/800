@@ -71,7 +71,7 @@
                             $('input[type=submit]').prop('disabled', function(i, v) { return false; });
                         }else{
                             html = "<p>You don't have added patients yet, Please <a href='{{route("patients.index")}}'><b class='label-danger'>Add " +
-                                "new Nurse</b></a></p>";
+                                "new Patient</b></a></p>";
                             $('input[type=submit]').prop('disabled', function(i, v) { return true; });
                         }
                         $('#patients-holder').html(html);
@@ -90,7 +90,7 @@
                             html += '</select>';
                             $('input[type=submit]').prop('disabled', function(i, v) { return false; });
                         }else{
-                            html = "<p>You don't have added doctors yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add " +
+                            html = "<p>You don't have added doctors yet, Please <a href='{{route("doctors.index")}}'><b class='label-danger'>Add " +
                                 "new doctor</b></a></p>";
                             $('input[type=submit]').prop('disabled', function(i, v) { return true; });
                         }

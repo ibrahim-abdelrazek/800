@@ -10,7 +10,7 @@ use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
-
+use Barryvdh\DomPDF\Facade as PDF;
 
 class OrderController extends Controller
 {
@@ -66,6 +66,7 @@ class OrderController extends Controller
 
             $this->validate($request, [
                 'prescription' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+                'insurance_claim'=> 'required|image|mimes:jpeg,png,jpg,gif,svg',
                 'notes' => 'string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
@@ -74,6 +75,7 @@ class OrderController extends Controller
                 ]);
 
             $prescription = '';
+            $insurance_claim='';
             // upload image
             if($request->hasFile('prescription')){
                 $avatar = $request->file('prescription');
@@ -83,6 +85,15 @@ class OrderController extends Controller
                 $prescription = '/upload/orders/'.$filename;
                 // remove old image
             }
+            if($request->hasFile('insurance_claim')){
+                $avatar = $request->file('insurance_claim');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                $insurance_claim = '/upload/orders/'.$filename;
+                // remove old image
+            }
+
             if ($request->has('partner_id')) {
                 $order = $request->all();
             }else {
@@ -91,7 +102,7 @@ class OrderController extends Controller
             }
             $order = array_merge($order, ['user_id' => Auth::user()->id,
                 'prescription' => $prescription,
-                'status_id' => getConfig('order_default_status'),
+                'insurance_claim' => $insurance_claim,
                 'products'=>array_combine($request->products, $request->quantities),
                 'status_id' =>  getConfig('order_default_status')]
                 );
@@ -167,6 +178,7 @@ class OrderController extends Controller
             //|image|mimes:jpeg,png,jpg,gif,svg|max:2048
             $this->validate($request, [
                 'prescription' => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'insurance_claim' => 'image|mimes:jpeg,png,jpg,gif,svg',
                 'notes' => 'string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
@@ -177,7 +189,7 @@ class OrderController extends Controller
 
             $orderr = Order::find($id);
 
-            if (empty($order)) {
+            if (empty($orderr)) {
                 return redirect(route('orders.index'));
             }
 
@@ -194,7 +206,21 @@ class OrderController extends Controller
                 // remove old image
                 $order = array_merge($order, ['prescription' => $prescription]);
             }
+            if($request->hasFile('insurance_claim')){
+                $avatar = $request->file('insurance_claim');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                $insurance_claim = '/upload/orders/'.$filename;
+                // remove old image
+                $order = array_merge($order, ['insurance_claim' => $insurance_claim]);
+            }
 
+            $order = array_merge($order, ['products'=>array_combine($request->products, $request->quantities)]);
+
+
+
+            //dd($orderr);
             $orderr->update($order);
 
             return redirect(route('orders.index'));
@@ -238,6 +264,15 @@ class OrderController extends Controller
 
         return json_encode($all) ;
 
+    }
+    public function download($id){
+
+        $order = Order::find($id);
+
+        $pdf = PDF::loadView('orders.print',['order'=>$order]);
+        $filename = 'Order Id: #' .$order->id .'.pdf';
+
+        return $pdf->download($filename);
     }
 
 }

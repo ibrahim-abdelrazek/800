@@ -69,7 +69,7 @@
 </div>
 <!-- FAX -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('fax', 'FAX:',['class'=> 'required']) !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('fax', 'FAX:') !!}</label>
     <div class="col-sm-10">
         {!! Form::text('fax', null, [  'class' => 'form-control' , 'required']) !!}
     </div>

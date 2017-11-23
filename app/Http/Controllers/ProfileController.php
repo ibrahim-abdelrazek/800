@@ -63,8 +63,8 @@ class ProfileController extends Controller
 
         $request->validate([
             'name' => 'required|min:5|max:50',
-            'username' => 'required|min:5|max:50|regex:/^\S*$/|unique:users,username',
-            'email' => 'required|unique:users,email',
+            'username' => 'required|min:5|max:50|regex:/^\S*$/|unique:users,username,'.$id,
+            'email' => 'required|email|unique:users,email,'.$id,
             'avatar' =>'image|mimes:jpeg,png,jpg,gif',
 
             ],

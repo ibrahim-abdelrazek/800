@@ -11,13 +11,15 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/datatables-net/datatables.min.css')}}"> <!-- customization -->
 
 @endpush
+
 @section('content')
     <div class="ks-page-header">
         <section class="ks-title">
             <h3>Orders</h3>
 
-            <a href="{{ route('orders.create') }} " class="pull-right btn btn-default create"> Create new order </a>
-
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Order::$model))
+                <a href="{{ route('orders.create') }} " class="pull-right btn btn-default create"> Create new order </a>
+            @endif
         </section>
     </div>
     <div class="ks-page-content">

@@ -12,7 +12,7 @@
 
                     {!! Form::close() !!}
 
-                    </div>
+                </div>
             </div>
 
         </div>
@@ -23,21 +23,20 @@
     <script type="text/javascript">
         (function($){
             $(document).ready(function(){
-                var maxField = 10; //Input fields increment limitation
                 var addButton = $('.add_button'); //Add button selector
                 var wrapper = $('#products_wrapper'); //Input field wrapper
-                var productSelector = "{!! form :: select ('products[]',App\Product::pluck('name','id'),null,['class' => 'form-control'])!!}";
-                var quantitiesSelector = "{!! Form::text('quantities[]', null, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}";
+                var productSelector = '{!! form :: select ('products[]',App\Product::pluck('name','id'),null,['class' => 'form-control'])!!}';
+                var quantitiesSelector = '{!! Form::text('quantities[]', null, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}';
                 var fieldHTML = '<div class="form-group row"><div class="col-sm-3">' + productSelector + '</div><div class="col-sm-1 text-center"><span>X</span></div>';
-                fieldHTML += '<div class="col-sm-3">'+quantitiesSelector+'</div><div class="col-sm-2"><a href="javascript:void(0);" class="btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div></div>'; //New input field html
+                fieldHTML += '<div class="col-sm-3">'+quantitiesSelector+'</div><div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div></div>'; //New input field html
                 $(addButton).click(function(){ //Once add button is clicked
                     $(wrapper).append(fieldHTML); // Add field html
                 });
                 $(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
                     e.preventDefault();
-                    $(this).parent('div').remove(); //Remove field html
-                    x--; //Decrement field counter
+                    $(this).parent().parent().remove(); //Remove field html
                 });
+
             });
 
         })(jQuery);
@@ -51,6 +50,8 @@
             (function ($) {
                 $(document).ready(function () {
                     $('label[for="prescription"]').removeClass('required');
+                    $('label[for="insurance_claim"]').removeClass('required');
+
 
 
                     loadDoctors($('select[name=partner_id]').val());
@@ -106,4 +107,3 @@
         </script>
     @endpush
 @endif
-

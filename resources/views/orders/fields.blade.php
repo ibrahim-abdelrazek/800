@@ -21,6 +21,17 @@
     </div>
 
 </div>
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">
+        {!! Form::label('insurance_claim', 'Insurance Claim:',['class'=> 'required']) !!}
+    </label>
+
+    <div class="col-sm-10">
+        {!! Form::file('insurance_claim',null,  [  'class' => 'form-control']) !!}
+    </div>
+
+</div>
+
 <!-- notes -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
@@ -103,21 +114,49 @@
     </label>
 
     <div id="products_wrapper" class="col-sm-10">
-     <div class="form-group row">
-         <div class="col-sm-3">
-             {!! form :: select ('products[]',App\Product::pluck('name','id'),null,['class' => 'form-control'])!!}
+        @if(isset($order))
+            @php $i=1; $products = $order->products; @endphp
+            @foreach($products as $key => $val)
 
-         </div>
-         <div class="text-center col-sm-1">
-             <span class="label label-danger">X</span>
-         </div>
-         <div class="col-sm-3">
-             {!! Form::text('quantities[]', null, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}
-         </div>
-         <div class="col-sm-2">
-             <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
-         </div>
-     </div>
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        {!! form :: select ('products[]',App\Product::pluck('name','id'),$key,['class' => 'form-control'])!!}
+
+                    </div>
+                    <div class="text-center col-sm-1">
+                        <span class="label label-danger">X</span>
+                    </div>
+                    <div class="col-sm-3">
+                        {!! Form::text('quantities[]', $val, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}
+                    </div>
+                    <div class="col-sm-2">
+                        @if($i == 1 )
+                        <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
+                        @else
+                            <a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a>
+                        @endif
+                            @php($i++)
+
+                    </div>
+                </div>
+            @endforeach
+        @else
+             <div class="form-group row">
+                 <div class="col-sm-3">
+                     {!! form :: select ('products[]',App\Product::pluck('name','id'),null,['class' => 'form-control'])!!}
+
+                 </div>
+                 <div class="text-center col-sm-1">
+                     <span class="label label-danger">X</span>
+                 </div>
+                 <div class="col-sm-3">
+                     {!! Form::text('quantities[]', null, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}
+                 </div>
+                 <div class="col-sm-2">
+                     <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
+                 </div>
+             </div>
+            @endif
     </div>
 </div>
 <!-- Submit Field -->

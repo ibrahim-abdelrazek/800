@@ -41,12 +41,17 @@
                         <td>
                             {!! Form::open(['route' => ['orders.destroy', $order->id], 'method' => 'delete']) !!}
                             <div class='btn-group'>
+                                @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Order::$model))
                                 <a href="{!! url('orders/'. $order->id) !!}" class='btn btn-default btn-xs'>Show</a>
-                                @if(Auth::user()->id == $order->owner->id && $order->status->code != 'success')
-                                <a href="{{ URL::to('orders/' . $order->id . '/edit') }}"
-                                   class='btn btn-default btn-xs'>Edit</a>
+                               @endif
+                                @if(Auth::user()->id == $order->owner->id && $order->status->code != 'success' && Auth::user()->ableTo('edit', App\Order::$model ))
+                                   <a href="{{ URL::to('orders/' . $order->id . '/edit') }}"
+                                      class='btn btn-default btn-xs'>Edit</a>
                                 @endif
-                                {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('delete', App\Order::$model))
+
+                                    {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                     @endif
                             </div>
                             {!! Form::close() !!}
                         </td>

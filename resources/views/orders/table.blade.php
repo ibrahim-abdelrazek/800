@@ -44,7 +44,7 @@
                                 @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Order::$model))
                                 <a href="{!! url('orders/'. $order->id) !!}" class='btn btn-default btn-xs'>Show</a>
                                @endif
-                                @if(Auth::user()->id == $order->owner->id && $order->status->code != 'success' && Auth::user()->ableTo('edit', App\Order::$model ))
+                                @if( $order->status->code != 'success' && Auth::user()->ableTo('edit', App\Order::$model ))
                                    <a href="{{ URL::to('orders/' . $order->id . '/edit') }}"
                                       class='btn btn-default btn-xs'>Edit</a>
                                 @endif

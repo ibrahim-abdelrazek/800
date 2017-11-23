@@ -13,17 +13,16 @@
 <!--  Name -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Hotel name:',['class'=> 'required']) !!}</label>
-    <div class="col-sm-10">
         <div class="col-sm-10">{!! Form::text('name', null, [  'class' => 'form-control']) !!}</div>
-    </div>
+    
 </div>
 
 
 <!-- Officer Name -->
 <div class="form-group row">
-    <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('officer_name', 'Officer Name:',['class'=> 'required']) !!}</label>
-    <div class="col-sm-10">{!! Form::text('officer_name', null, [  'class' => 'form-control']) !!}</div>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('officer_name', 'Officer Name:',['class'=> 'required']) !!}</label>
+    <div class="col-sm-10">{!! Form::text('officer_name', null, [  'class' => 'form-control']) !!}
+    </div>
 </div>
 
 <!--  Name -->

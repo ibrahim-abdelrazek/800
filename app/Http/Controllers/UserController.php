@@ -179,6 +179,7 @@ class UserController extends Controller
         if (empty($user)) {
             return redirect(route('users.index'));
         }
+        
         $request->validate([
             'name' => 'required|min:5|max:50',
             'username' => 'required|min:5|max:50|regex:/^\S*$/|unique:users,username,'.$id,
@@ -191,7 +192,9 @@ class UserController extends Controller
             $request->validate(['partner_id'=> 'required']);
 
         if($request->has('password') && !empty($request->password ))
-            $request->validate(['password' => 'min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',
+
+            $request->validate([
+                'password' => 'min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
                 'password_confirmation'=>''
             ],['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ']);
 

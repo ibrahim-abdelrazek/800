@@ -35,7 +35,7 @@
 <!-- notes -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('notes', 'notes:',['class'=> 'required']) !!}
+        {!! Form::label('notes', 'notes:') !!}
     </label>
     <div class="col-sm-10">
         {!! Form::textarea('notes',null, [  'class' => 'form-control']) !!}
@@ -159,6 +159,20 @@
             @endif
     </div>
 </div>
+
+@if(isset($order))
+    <div class="form-group row">
+        <label for="default-input" class="col-sm-2 form-control-label">
+            {!! Form::label('status_id', 'Status:') !!}
+        </label>
+
+        <div class="col-sm-10">
+            {!! Form::select('status_id', \App\Status::pluck('message','id'), $order->status_id,  [  'class' => 'form-control']) !!}
+        </div>
+
+    </div>
+@endif
+
 <!-- Submit Field -->
 <div class="form-group row" id='submit'>
     {!! Form::submit('Save', ['class' => 'btn btn-danger']) !!}

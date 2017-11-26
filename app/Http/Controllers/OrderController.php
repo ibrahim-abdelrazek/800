@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Intervention\Image\ImageManagerStatic as Image;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -67,7 +68,7 @@ class OrderController extends Controller
             $this->validate($request, [
                 'prescription' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
                 'insurance_claim'=> 'required|image|mimes:jpeg,png,jpg,gif,svg',
-                'notes' => 'string',
+                'notes' => 'nullable|string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
                 'quantities'=> 'required|array',
@@ -179,11 +180,12 @@ class OrderController extends Controller
             $this->validate($request, [
                 'prescription' => 'image|mimes:jpeg,png,jpg,gif,svg',
                 'insurance_claim' => 'image|mimes:jpeg,png,jpg,gif,svg',
-                'notes' => 'string',
+                'notes' => 'nullable|string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
                 'quantities'=> 'required|array',
-                'quantities.*' => 'numeric'
+                'quantities.*' => 'numeric',
+                'status_id' => 'required'
             ]);
 
 

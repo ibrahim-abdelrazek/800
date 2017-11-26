@@ -71,3 +71,16 @@
     @endif
 
 </div>
+
+@push('customjs')
+<script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script>
+<script type="application/javascript">
+    // asynchronous content
+    (function ($) {
+        $(document).ready(function () {
+            $('.ks-phone-mask-input').mask('(+971) 000-0000#');
+        });
+    })(jQuery);
+
+</script>
+@endpush

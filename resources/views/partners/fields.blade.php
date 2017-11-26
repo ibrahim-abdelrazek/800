@@ -21,7 +21,7 @@
 <!-- Logo -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('logo', 'Logo:',['class'=> 'required']) !!}
+        {!! Form::label('logo', 'Logo:',['class'=> '']) !!}
     </label>
 
     <div class="col-sm-10">
@@ -34,7 +34,9 @@
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('location', 'Location:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::select('location', ['Abu Dhabi' , 'Dubai' , 'Sharjah' , 'Ajman' ,'Umm Al Quwain','Ras Al Khaimah' ,'Fujairah' ] , null, [  'class' => 'form-control' , 'required']) !!}
+        {!! Form::select('location', ['Dubai'] , null, [  'class' => 'form-control' , 'required']) !!}
+
+        {{--['Abu Dhabi' , 'Dubai' , 'Sharjah' , 'Ajman' ,'Umm Al Quwain','Ras Al Khaimah' ,'Fujairah' ]--}}
     </div>
 </div>
 
@@ -64,14 +66,14 @@
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('phone', 'Phone:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('phone', null, [  'class' => 'form-control' , 'required']) !!}
+        {!! Form::text('phone', null, [  'class' => 'form-control ks-phone-mask-input' , 'required']) !!}
     </div>
 </div>
 <!-- FAX -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('fax', 'FAX:') !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('fax', null, [  'class' => 'form-control' , 'required']) !!}
+        {!! Form::text('fax', null, [  'class' => 'form-control']) !!}
     </div>
 </div>
 
@@ -122,10 +124,15 @@
 
 </div>
 
+@push('customjs')
+<script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script>
+<script type="application/javascript">
+    // asynchronous content
+    (function ($) {
+        $(document).ready(function () {
+            $('.ks-phone-mask-input').mask('(+971) 000-0000#');
+        });
+    })(jQuery);
 
-
-
-
-
-
-
+</script>
+@endpush

@@ -26,7 +26,7 @@
 <!--  specialty -->
 <div class="form-group row">
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('specialty', 'specialty:',['class'=> 'required']) !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('specialty', 'Specialty:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('specialty', null, [
         'placeholder'=>'Enter Doctor Specialities',

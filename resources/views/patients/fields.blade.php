@@ -48,7 +48,7 @@
 <div class="form-group row" >
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('contact_number',null, [  'class' => 'form-control']) !!}
+        {!! Form::text('contact_number',null, [  'class' => 'form-control ks-phone-mask-input']) !!}
     </div>
 </div>
 
@@ -230,9 +230,17 @@
             });
         </script>
     @endif
+
+<script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script>
+<script type="application/javascript">
+    // asynchronous content
+    (function ($) {
+        $(document).ready(function () {
+            $('.ks-phone-mask-input').mask('(+971) 000-0000#');
+        });
+    })(jQuery);
+
+</script>
 @endpush
-
-
-
 
 

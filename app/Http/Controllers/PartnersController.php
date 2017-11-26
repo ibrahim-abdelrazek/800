@@ -57,11 +57,11 @@ class PartnersController extends Controller
         if (Auth::user()->ableTo('add', Partner::$model)) {
             //
             $request->validate([
-                'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
+                'name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
                 'location' => 'required|max:100',
-                'logo' =>'required|image|mimes:jpeg,png,jpg,gif,svg',
-                'phone' =>'required|numeric',
-                'fax' => 'numeric',
+                'logo' =>'image|mimes:jpeg,png,jpg,gif,svg',
+                'phone' =>'required',
+                'fax' => '',
                 'partner_type_id' => 'required',
                 'username' => 'required|min:5|max:50|alpha_dash',
                 'email' => 'required|unique:users',
@@ -174,13 +174,13 @@ class PartnersController extends Controller
             $userID = User::where('partner_id', $id)->where('user_group_id',2)->value('id');
 
             $request->validate([
-                'name' => 'required|min:5|max:50|regex:/^[\pL\s]+$/u',
+                'name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
                 'location' => 'required|max:100',
                 'partner_type_id' => 'required',
                 'username' => 'required|min:5|max:50|unique:users,username,'.$userID.'alpha_dash',
                 'email' => 'required|unique:users,email,' . $userID,
-                'phone' =>'required|numeric',
-                'fax' => 'numeric'
+                'phone' =>'required',
+//                'fax' => 'numeric'
             ],
             ['username.regex' => 'Username not allowing space' ,
                 'name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .'

@@ -44,7 +44,6 @@
 @endsection
 @push('customjs')
     <script src="{{ asset('libs/jquery-confirm/jquery-confirm.min.js') }}"></script>
-    <script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('libs/flexdatalist/jquery.flexdatalist.min.js')}}"></script>
     <script type="application/javascript">
         // asynchronous content
@@ -56,7 +55,6 @@
                     e.preventDefault();
                     $(this).tab('show');
                 });
-                $('.ks-phone-mask-input').mask('(000)000-0000#');
                 $('#reset').click(function(){
                     $(this).closest('form').find("input[type=text], textarea").val("");
                 });

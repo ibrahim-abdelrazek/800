@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->string('prescription');
             $table->string('insurance_image');
             $table->string('insurance_text');
-            $table->string('notes');
+            $table->string('notes')->nullable();
             $table->integer('patient_id')->unsigned();
             $table->integer('doctor_id')->unsigned();
             $table->integer('partner_id')->unsigned();

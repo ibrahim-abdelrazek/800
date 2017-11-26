@@ -20,7 +20,7 @@
 <div class="form-group row">
 
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('photo', 'Upload Nurse\'s Photo (Optional):',['class'=> 'required']) !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('photo', 'Upload Nurse\'s Photo (Optional):') !!}</label>
     {!! Form::file('photo',null,  [  'class' => 'form-control']) !!}
 </div>
 <!--  contact -->

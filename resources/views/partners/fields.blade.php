@@ -70,7 +70,9 @@
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('phone', 'Phone:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('phone', null, [  'class' => 'form-control ks-phone-mask-input' , 'required']) !!}
+        {!! Form::text('phone', null, [ 'style'=> 'padding-left:50px', 'maxlength'=> '10','class' => 'form-control ks-phone-mask-input1' , 'required']) !!}
+        <span style="position: absolute;top: 10px;font-weight: bold;left: 23px;">(+971)</span>
+
     </div>
 </div>
 <!-- FAX -->
@@ -134,7 +136,7 @@
     // asynchronous content
     (function ($) {
         $(document).ready(function () {
-            $('.ks-phone-mask-input').mask('(+971) 000-0000#');
+            $('.ks-phone-mask-input1').mask('000-0000#');
         });
     })(jQuery);
 

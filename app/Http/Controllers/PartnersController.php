@@ -61,7 +61,7 @@ class PartnersController extends Controller
                 'last_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
                 'location' => 'required|max:100',
                 'logo' =>'image|mimes:jpeg,png,jpg,gif,svg',
-                'phone' =>'required',
+                'contact_number' => 'required|string|max:10',
                 'fax' => '',
                 'partner_type_id' => 'required',
                 'email' => 'required|unique:users',
@@ -176,8 +176,8 @@ class PartnersController extends Controller
                 'last_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u','location' => 'required|max:100',
                 'partner_type_id' => 'required',
                 'email' => 'required|unique:users,email,' . $userID,
-                'phone' =>'required',
-//                'fax' => 'numeric'
+                'contact_number' => 'required|string|max:10',
+                //'fax' => 'numeric'
             ]);
 
 

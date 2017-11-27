@@ -29,7 +29,11 @@
 <div class="form-group row">
     <label for="default-input"
            class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:',['class'=> 'required']) !!}</label>
-    <div class="col-sm-10">{!! Form::text('contact_number', null,  [  'id'=>'', 'class' => 'form-control ks-phone-mask-input']) !!}</div>
+    <div class="col-sm-10">
+        {!! Form::text('contact_number', null,  [  'style'=> 'padding-left:50px', 'maxlength'=> '10',  'class' => 'form-control ks-phone-mask-input1']) !!}
+        <span style="position: absolute;top: 10px;font-weight: bold;left: 23px;">(+971)</span>
+    </div>
+
 </div>
 
 <!--  Name -->
@@ -83,3 +87,15 @@
     {!! Form::submit('Save', ['class' => 'btn btn-danger']) !!}
         <a href="{!! route('hotelguest.index') !!}</div> " class="btn btn-default"> Cancel</a>
 </div>
+@push('customjs')
+    <script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script>
+    <script type="application/javascript">
+        // asynchronous content
+        (function ($) {
+            $(document).ready(function () {
+                $('.ks-phone-mask-input1').mask('000-0000#');
+            });
+        })(jQuery);
+
+    </script>
+@endpush

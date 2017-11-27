@@ -18,7 +18,7 @@ class NurseController extends Controller
         $person->name = $nurse->first_name. ' ' .$nurse->last_name;
         $person->job_title = 'Nurse at ' . $nurse->partner->first_name . ' '.$nurse->partner->last_name;
         $person->email = $nurse->contact_email;
-        $person->phone = $nurse->contact_number;
+        $person->phone = '(+971)' .$nurse->contact_number;
         $person->photo = $nurse->photo;
         if (!empty($nurse))
             return view('extras.card')->with('person', $person);
@@ -76,15 +76,17 @@ class NurseController extends Controller
                 'first_name' => 'required|string|max:100',
                 'last_name' => 'required|string|max:100',
                 'contact_email' => 'required|email|unique:nurses,contact_email',
-                'contact_number' => 'required|string',
+                'contact_number' => 'required|string|max:10',
                 'photo' => 'image|mimes:jpg,jpeg,png'
             ]);
+
             if ($request->has('partner_id')) {
                 $nurses = $request->all();
             } else {
 
                 $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
             }
+
             if($request->hasFile('photo')){
                 $avatar = $request->file('photo');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
@@ -92,6 +94,7 @@ class NurseController extends Controller
                 Image::make($avatar)->resize(300, 300)->save( public_path('/upload/nurses/'.$filename));
                 $nurses['photo'] = '/upload/nurses/'.$filename;
             }
+
             if (Nurse::create($nurses))
                 return redirect(route('nurses.index'));
 

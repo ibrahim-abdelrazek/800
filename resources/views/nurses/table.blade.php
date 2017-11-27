@@ -41,7 +41,7 @@
                     <img style="width: 50px; height: 50px;" class="media-object img-circle profile-img" src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png">
                 @endif
             </td>
-            <td>{{ $nurse->name }}</td>
+            <td>{{ $nurse->first_name ." " .$nurse->last_name }}</td>
             <td>{{$nurse->contact_email}}</td>
             <td>{{ $nurse->contact_number }}</td>
             @if(Auth::user()->isAdmin())

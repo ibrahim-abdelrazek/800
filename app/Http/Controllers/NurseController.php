@@ -73,7 +73,8 @@ class NurseController extends Controller
         if (Auth::user()->ableTo('add', Nurse::$model)) {
 
             $request->validate([
-                'name' => 'required|string|max:100|regex:/^[\pL\s]+$/u',
+                'first_name' => 'required|string|max:100',
+                'last_name' => 'required|string|max:100',
                 'contact_email' => 'required|email|unique:nurses,contact_email',
                 'contact_number' => 'required|string',
                 'photo' => 'image|mimes:jpg,jpeg,png'
@@ -163,7 +164,8 @@ class NurseController extends Controller
                 return redirect(route('nurses.index'));
 
             $request->validate([
-                'name' => 'required|string|max:100',
+                'first_name' => 'required|string|max:100',
+                'last_name' => 'required|string|max:100',
                 'contact_email' => 'required|email|unique:nurses,contact_email,'. $nurse->id,
                 'contact_number' => 'required|string',
                 'photo' => 'image|mimes:jpg,jpeg,png'

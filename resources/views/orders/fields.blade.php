@@ -202,7 +202,6 @@
 </div>
 
 @push('customjs')
-<script type="text/javascript" src="/assets/scripts/fancybox/jquery.fancybox.pack.js"></script>
 <script type="text/javascript">
     $('.fancybox').fancybox();
 </script>

@@ -31,7 +31,18 @@
 
     <label for="default-input"
            class="col-sm-2 form-control-label">{!! Form::label('photo', 'Upload Doctor\'s Photo (Optional):') !!}</label>
-    {!! Form::file('photo',null,  [  'class' => 'form-control']) !!}
+    <div class="col-sm-10">
+        @if(request()->route()->getAction()['as'] == "doctors.edit")
+            <a class="fancybox" href="<?= (empty($doctor['photo']))? '#' : $doctor['photo'];?>" target="_blank" data-fancybox-group="gallery" title="">
+                @if(!empty($doctor['photo']))
+                    <img src="<?= $doctor['photo'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                @else
+                    <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                @endif
+            </a>
+        @endif
+        {!! Form::file('photo',null,  [  'class' => 'form-control']) !!}
+    </div>
 </div>
 <!--  specialty -->
 <div class="form-group row">
@@ -128,6 +139,13 @@
     @endif
 
 </div>
+
+@push('customjs')
+<script type="text/javascript">
+    $('.fancybox').fancybox();
+</script>
+@endpush
+
 
 
 

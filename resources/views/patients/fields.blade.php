@@ -248,7 +248,7 @@
         </script>
     @endif
 
-<script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script><script type="text/javascript" src="/assets/scripts/fancybox/jquery.fancybox.pack.js"></script>
+<script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script>
 <script type="application/javascript">
     // asynchronous content
     (function ($) {

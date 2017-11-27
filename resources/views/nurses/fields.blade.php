@@ -33,7 +33,18 @@
 
     <label for="default-input"
            class="col-sm-2 form-control-label">{!! Form::label('photo', 'Upload Nurse\'s Photo (Optional):') !!}</label>
-    {!! Form::file('photo',null,  [  'class' => 'form-control']) !!}
+    <div class="col-sm-10">
+        @if(request()->route()->getAction()['as'] == "nurses.edit")
+            <a class="fancybox" href="<?= (empty($nurse['photo']))? '#' : $nurse['photo'];?>" target="_blank" data-fancybox-group="gallery" title="">
+                @if(!empty($nurse['photo']))
+                    <img src="<?= $nurse['photo'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                @else
+                    <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                @endif
+            </a>
+        @endif
+        {!! Form::file('photo',null,  [  'class' => 'form-control']) !!}
+    </div>
 </div>
 <!--  contact -->
 <div class="form-group row">
@@ -94,7 +105,9 @@
         $(document).ready(function () {
             $('.ks-phone-mask-input').mask('(+971) 000-0000#');
         });
+        $('.fancybox').fancybox();
     })(jQuery);
+
 
 </script>
 @endpush

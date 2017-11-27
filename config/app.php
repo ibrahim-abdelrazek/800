@@ -237,6 +237,7 @@ return [
 
 
         'Input' => Illuminate\Support\Facades\Input::class,
+        'Carbon' => 'Carbon\Carbon'
     ],
 
 ];

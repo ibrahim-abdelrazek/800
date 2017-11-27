@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Nighborhood;
 use App\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManagerStatic as Image;
-
+use Carbon;
 class PatientController extends Controller
 {
 
@@ -76,7 +77,7 @@ class PatientController extends Controller
                 'insurance_provider' => 'required|numeric',
                 'card_number' => 'required|string',
                 'insurance_expiry' => 'required',
-                'id_file' => 'required|image|mimes:jpg,png,jpeg',
+                'id_file' => 'required|mimes:jpg,png,jpeg,pdf',
                 'id_number' => 'required|string',
                 'id_expiry' => 'required',
                 'notes' => 'max:200|min:0',
@@ -105,17 +106,20 @@ class PatientController extends Controller
 
             $patient =  array_merge($patient , ['address' => $address]);
 
+            $patient['date'] = Carbon::parse($request->date)->format('Y-m-d');
+            $patient['insurance_expiry'] = Carbon::parse($request->insurance_expiry)->format('Y-m-d');
+            $patient['id_expiry'] = Carbon::parse($request->id_expiry)->format('Y-m-d');
+
             if (!$request->has('partner_id')) {
 
                     $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
                    
             }
             if($request->hasFile('id_file')){
-                $avatar = $request->file('id_file');
-                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                
                 //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
-                $patient['id_file'] = '/upload/insurance/'.$filename;
+                Input::file('id_file')->move( public_path('/upload/insurance/my.pdf'));
+                $patient['id_file'] = '/upload/insurance/my.pdf';
             }
             if($request->hasFile('insurance_file')){
                 $avatar = $request->file('insurance_file');
@@ -299,8 +303,11 @@ class PatientController extends Controller
             $patient = $request->except(['villa_number' ,'apartment_name' ,'apartment_number','street','type1','type2','company_name' ,'building_name' ,'office_number']);
             $request['city_id'] = $request->city;
             $request['nighborhood_id'] = $request->area;
-
+            $patient['date'] = Carbon::parse($request->date)->format('Y-m-d');
+            $patient['insurance_expiry'] = Carbon::parse($request->insurance_expiry)->format('Y-m-d');
+            $patient['id_expiry'] = Carbon::parse($request->id_expiry)->format('Y-m-d');
             $patient =  array_merge($patient , ['address' => $address]);
+
 
             if (!$request->has('partner_id')) {
 

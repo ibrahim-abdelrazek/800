@@ -29,10 +29,11 @@
 
 
 <!--  date -->
-<div class="form-group row" >
+<div class="form-group row"  >
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('date', 'Date:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::date('date',null,  [  'class' => 'form-control']) !!}</div>
+        {!! Form::text('date',null,  [  'class' => 'date form-control' ,'id'=>'datetimepicker1' ,'data-date-format'=>"d-m-Y"]) !!}
+    </div>
 </div>
 
 <!-- gender-->
@@ -90,7 +91,7 @@
     <div class="form-group row" >
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('emirates id details', 'Insurance Expiry date:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
-            {!! Form::date('insurance_expiry',null, [  'class' => 'form-control']) !!}
+            {!! Form::text('insurance_expiry',null, [  'class' => 'form-control' ,'id'=>'datetimepicker2','data-date-format'=>"d-m-Y"]) !!}
         </div>
     </div>
 
@@ -116,7 +117,7 @@
     <div class="form-group row" >
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_expiry', 'ID Expiry Date:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
-            {!! Form::date('id_expiry',null, [  'class' => 'form-control']) !!}
+            {!! Form::text('id_expiry',null, [  'class' => 'form-control','id'=>'datetimepicker3','data-date-format'=>"d-m-Y"]) !!}
         </div>
     </div>
 <br />
@@ -241,6 +242,11 @@
     })(jQuery);
 
 </script>
+<script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1,#datetimepicker2,#datetimepicker3').flatpickr();
+            });
+        </script>
 @endpush
 
 

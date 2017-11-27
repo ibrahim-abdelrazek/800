@@ -57,25 +57,24 @@ class PartnersController extends Controller
         if (Auth::user()->ableTo('add', Partner::$model)) {
             //
             $request->validate([
-                'name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
+                'first_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
+                'last_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
                 'location' => 'required|max:100',
                 'logo' =>'image|mimes:jpeg,png,jpg,gif,svg',
                 'phone' =>'required',
                 'fax' => '',
                 'partner_type_id' => 'required',
-                'username' => 'required|min:5|max:50|alpha_dash',
                 'email' => 'required|unique:users',
                 'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
                 'password_confirmation'=>'',
                 'commission' => 'numeric|min:0|max:100'
                 ],
                 ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
-                    'username.regex' => 'Username not allowing space',
-                    'name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .'
                 ]);
 
             $partner  = new Partner();
-            $partner->name = $request->name;
+            $partner->first_name = $request->first_name;
+            $partner->last_name = $request->last_name;
             $partner->location = $this->location[$request->location];
             $partner->partner_type_id = $request->partner_type_id;
             $partner->phone = $request->phone;
@@ -93,8 +92,8 @@ class PartnersController extends Controller
             $partner->save();
 
             $users = User::create([
-                'name' => request('name'),
-                'username' => request('username'),
+                'first_name' => request('first_name'),
+                'last_name' => request('last_name'),
                 'email' => request('email'),
                 'password' => Hash::make(request('password')),
                 'user_group_id' => 2,
@@ -149,7 +148,6 @@ class PartnersController extends Controller
             $user = User::where('partner_id', $id)->first();
 
             $partner->location = array_search($partner['location'],$this->location);
-            $partner->username = $user['username'];
             if (empty($partner)) {
 
                 return redirect(route("partners.index"));
@@ -174,17 +172,14 @@ class PartnersController extends Controller
             $userID = User::where('partner_id', $id)->where('user_group_id',2)->value('id');
 
             $request->validate([
-                'name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
-                'location' => 'required|max:100',
+                'first_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
+                'last_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u','location' => 'required|max:100',
                 'partner_type_id' => 'required',
-                'username' => 'required|min:5|max:50|unique:users,username,'.$userID.'alpha_dash',
                 'email' => 'required|unique:users,email,' . $userID,
                 'phone' =>'required',
 //                'fax' => 'numeric'
-            ],
-            ['username.regex' => 'Username not allowing space' ,
-                'name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .'
             ]);
+
 
             if($request->hasFile('logo'))
                 $request->validate(['logo' =>'image|mimes:jpeg,png,jpg,gif,svg',
@@ -209,16 +204,16 @@ class PartnersController extends Controller
             }
             if (isset($request->password)) {
                 User::where('id', $userID)->update(array(
-                    'name' => request('name'),
-                    'username' => request('username'),
+                    'first_name' => request('first_name'),
+                    'last_name' => request('last_name'),
                     'email' => request('email'),
                     'password' => Hash::make(request('password')),
                     'user_group_id' => 2,
                 ));
             } else {
                 User::where('id', $userID)->update(array(
-                    'name' => request('name'),
-                    'username' => request('username'),
+                    'first_name' => request('first_name'),
+                    'last_name' => request('last_name'),
                     'email' => request('email'),
                     'user_group_id' => 2,
                 ));

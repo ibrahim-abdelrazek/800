@@ -15,15 +15,11 @@
 
                         <div class="show">
                             <span>Name: </span>
-                            <span class="value" >{!! $profile['name'] !!}</span>
+                            <span class="value" >{!! $profile['first_name'] .' ' . $profile['last_name'] !!}</span>
                         </div>
                         <br>
 
-                        <div class="show">
-                            <span>Username: </span>
-                            <span class="value" >{!! $profile['username'] !!}</span>
-                        </div>
-                        <br>
+
                         <div class="show">
                             <span>Email: </span>
                             <span class="value" >{!! $profile['email'] !!}</span>

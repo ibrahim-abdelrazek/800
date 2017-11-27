@@ -67,8 +67,17 @@
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('insurance_file', 'Upload Insurance File:',['class'=> 'required']) !!}</label>
 
         <div class="col-sm-10">
-        @if(request()->route()->getAction()['as'] == "patients.edit") <img src="<?= (empty($patient['insurance_file']))? '/upload/doc.png' : $patient['insurance_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
-        @endif
+            @if(request()->route()->getAction()['as'] == "patients.edit")
+                <a class="fancybox" href="<?= (empty($patient['insurance_file']))? '#' : $patient['insurance_file'];?>" target="_blank" data-fancybox-group="gallery" title="">
+                    @if(!empty($patient['insurance_file']) && strpos(mime_content_type(base_path().'/public/'.$patient['insurance_file']), 'image') !== false)
+                        <img src="<?= $patient['insurance_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                    @elseif(!empty($patient['insurance_file']) && strpos(mime_content_type(base_path().'/public/'.$patient['insurance_file']), 'pdf') !== false)
+                        <img src="/upload/pdf.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                    @else
+                        <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                    @endif
+                </a>
+            @endif
             {!! Form::file('insurance_file',null,  [  'class' => 'form-control']) !!}
         </div>
     </div>
@@ -101,7 +110,15 @@
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_file', 'Upload ID File:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             @if(request()->route()->getAction()['as'] == "patients.edit")
-            <img src="<?= (empty($patient['id_file']))? '/upload/doc.png' : $patient['id_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                <a class="fancybox" href="<?= (empty($patient['id_file']))? '#' : $patient['id_file'];?>" target="_blank" data-fancybox-group="gallery" title="">
+                    @if(!empty($patient['id_file']) && strpos(mime_content_type(base_path().'/public/'.$patient['id_file']), 'image') !== false)
+                        <img src="<?= $patient['id_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                    @elseif(!empty($patient['id_file']) && strpos(mime_content_type(base_path().'/public/'.$patient['id_file']), 'pdf') !== false)
+                        <img src="/upload/pdf.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                    @else
+                        <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                    @endif
+                </a>
             @endif
             {!! Form::file('id_file',null,  [  'class' => 'form-control']) !!}
         </div>
@@ -200,7 +217,7 @@
         <div class="col-sm-10">
 
         @if(\App\Partner::count() > 0)
-            {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}
+            {!! Form::select('partner_id',App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id'),null,['class' => 'form-control'])!!}
         @else
             <p>You don't have added partners yet, Please <a href="{{route('partners.index')}}"><b class="label-danger">Add
                         new Partner</b></a></p>
@@ -231,7 +248,7 @@
         </script>
     @endif
 
-<script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script>
+<script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script><script type="text/javascript" src="/assets/scripts/fancybox/jquery.fancybox.pack.js"></script>
 <script type="application/javascript">
     // asynchronous content
     (function ($) {
@@ -240,6 +257,7 @@
         });
     })(jQuery);
 
+    $('.fancybox').fancybox();
 </script>
 @endpush
 

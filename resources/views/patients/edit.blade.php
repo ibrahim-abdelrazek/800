@@ -5,6 +5,7 @@
     <!-- customization -->
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/flexdatalist/jquery.flexdatalist.min.css')}}"> <!-- original -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/flexdatalist/jquery.flexdatalist.min.css')}}"> <!-- customization -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('libs/flatpickr/flatpickr.min.css') }}">
 @endpush
 
 @section('content')
@@ -32,6 +33,7 @@
 @endsection
 
 @push('customjs')
+<script src="{{ asset('libs/flatpickr/flatpickr.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('label[for="insurance_file"]').removeClass('required');

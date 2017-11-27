@@ -120,7 +120,7 @@
                                                             <span class="la la-phone"></span>
                                                         </td>
                                                         <td class="ks-text">
-                                                           {{ $partner->phone }}
+                                                           {{ '(+971)' .$partner->phone }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -217,7 +217,7 @@
                                                             <td>{{ $doctor->first_name . ' ' . $doctor->last_name }}</td>
                                                             <td>{{ $doctor->specialty }}</td>
                                                             <td>{{$doctor->contact_email}}</td>
-                                                            <td>{{ $doctor->contact_number }}</td>
+                                                            <td>{{ '(+971)' . $doctor->contact_number }}</td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -264,7 +264,7 @@
                                                             </td>
                                                             <td>{{ $nurse->first_name. ' ' . $nurse->last_name }}</td>
                                                             <td>{{$nurse->contact_email}}</td>
-                                                            <td>{{ $nurse->contact_number }}</td>
+                                                            <td>{{ '(+971)' . $nurse->contact_number }}</td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -298,7 +298,7 @@
                                                     @foreach($patients as $patient)
                                                         <tr>
                                                             <td>{{ $patient->first_name . $patient->last_name}}</td>
-                                                            <td>{{ $patient->contact_number}}</td>
+                                                            <td>{{ '(+971)' . $patient->contact_number}}</td>
                                                             <td>{{ $patient->email}}</td>
                                                             <td>{{ $patient->notes }}</td>
                                                         </tr>

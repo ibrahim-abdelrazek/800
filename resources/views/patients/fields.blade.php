@@ -29,10 +29,11 @@
 
 
 <!--  date -->
-<div class="form-group row" >
+<div class="form-group row"  >
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('date', 'Date:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::date('date',null,  [  'class' => 'form-control']) !!}</div>
+        {!! Form::text('date',null,  [  'class' => 'date form-control' ,'id'=>'datetimepicker1' ,'data-date-format'=>"d-m-Y"]) !!}
+    </div>
 </div>
 
 <!-- gender-->
@@ -48,7 +49,8 @@
 <div class="form-group row" >
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('contact_number',null, [  'class' => 'form-control ks-phone-mask-input']) !!}
+        {!! Form::text('contact_number',null, [ 'style'=> 'padding-left:50px', 'maxlength'=> '10',  'class' => 'form-control ks-phone-mask-input1']) !!}
+        <span style="position: absolute;top: 10px;font-weight: bold;left: 23px;">(+971)</span>
     </div>
 </div>
 
@@ -99,7 +101,7 @@
     <div class="form-group row" >
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('emirates id details', 'Insurance Expiry date:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
-            {!! Form::date('insurance_expiry',null, [  'class' => 'form-control']) !!}
+            {!! Form::text('insurance_expiry',null, [  'class' => 'form-control' ,'id'=>'datetimepicker2','data-date-format'=>"d-m-Y"]) !!}
         </div>
     </div>
 
@@ -133,7 +135,7 @@
     <div class="form-group row" >
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('id_expiry', 'ID Expiry Date:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
-            {!! Form::date('id_expiry',null, [  'class' => 'form-control']) !!}
+            {!! Form::text('id_expiry',null, [  'class' => 'form-control','id'=>'datetimepicker3','data-date-format'=>"d-m-Y"]) !!}
         </div>
     </div>
 <br />
@@ -141,7 +143,7 @@
 <!-- notes-->
 
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('notes', 'Notes:',['class'=> 'required']) !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('notes', 'Notes:') !!}</label>
     <div class="col-sm-10">
         {!! Form::textarea('notes',null, [  'class' => 'form-control']) !!}
     </div>
@@ -253,12 +255,17 @@
     // asynchronous content
     (function ($) {
         $(document).ready(function () {
-            $('.ks-phone-mask-input').mask('(+971) 000-0000#');
+            $('.ks-phone-mask-input1').mask('000-0000#');
         });
     })(jQuery);
 
     $('.fancybox').fancybox();
 </script>
+<script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1,#datetimepicker2,#datetimepicker3').flatpickr();
+            });
+        </script>
 @endpush
 
 

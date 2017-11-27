@@ -25,7 +25,7 @@ class DoctorController extends Controller
         $person->name = $doctor->first_name . ' ' . $doctor->last_name;
         $person->job_title = $doctor->specialty . ' doctor';
         $person->email = $doctor->contact_email;
-        $person->phone = $doctor->contact_number;
+        $person->phone = '(+971) ' . $doctor->contact_number;
         $person->photo = $doctor->photo;
         $person->nurses = $doctor->nurses;
         if (!empty($doctor))
@@ -83,7 +83,7 @@ class DoctorController extends Controller
                 'last_name' => 'required|string|max:100',
                 'specialty' => 'required|string',
                 'contact_email' => 'required|email|unique:doctors,contact_email',
-                'contact_number' => 'required|string',
+                'contact_number' => 'required|string|max:10',
                 'photo' => 'image|mimes:jpg,jpeg,png',
                 'nurses' => 'required|array',
                 'nurses.*' => 'numeric'
@@ -182,7 +182,7 @@ class DoctorController extends Controller
                 'last_name' => 'required|string|max:100',
                 'specialty' => 'required|string',
                 'contact_email' => 'required|email|unique:doctors,contact_email,'.$doc->id,
-                'contact_number' => 'required|string',
+                'contact_number' => 'required|string|max:10',
                 'photo' => 'image|mimes:jpg,jpeg,png'
 
             ]);

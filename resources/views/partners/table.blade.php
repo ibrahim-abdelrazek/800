@@ -27,7 +27,7 @@
                         <td class="sorting_1">{{$partner->first_name . ' ' . $partner->last_name}}</td>
                         <td>{{ $partner->location }}</td>
                         <td>{{ $partner->partnerType->name }}</td>
-                        <td>{{  $partner->user->email }}</td>
+                        <td>{{  $partner->user['email'] }}</td>
 
 
                         <td>

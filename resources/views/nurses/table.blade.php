@@ -45,7 +45,7 @@
             <td>{{$nurse->contact_email}}</td>
             <td>{{ $nurse->contact_number }}</td>
             @if(Auth::user()->isAdmin())
-                <td>{{ $nurse->partner->name }}</td>
+                <td>{{ $nurse->partner->first_name . ' ' . $nurse->partner->last_name }}</td>
             @endif
             <td>
 

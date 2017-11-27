@@ -15,8 +15,8 @@ class NurseController extends Controller
     {
         $nurse = Nurse::find($id);
         $person = new \stdClass();
-        $person->name = $nurse->name;
-        $person->job_title = 'Nurse at ' . $nurse->partner->name;
+        $person->name = $nurse->first_name. ' ' .$nurse->last_name;
+        $person->job_title = 'Nurse at ' . $nurse->partner->first_name . ' '.$nurse->partner->last_name;
         $person->email = $nurse->contact_email;
         $person->phone = $nurse->contact_number;
         $person->photo = $nurse->photo;

@@ -62,8 +62,8 @@ class ProfileController extends Controller
     {
 
         $request->validate([
-            'name' => 'required|min:5|max:50',
-            'username' => 'required|min:5|max:50|regex:/^\S*$/|unique:users,username,'.$id,
+            'first_name' => 'required|min:5|max:50',
+            'last_name' => 'required|min:5|max:50',
             'email' => 'required|email|unique:users,email,'.$id,
             'avatar' =>'image|mimes:jpeg,png,jpg,gif',
 
@@ -74,14 +74,15 @@ class ProfileController extends Controller
 
         if(Auth::user()->user_group_id == 2 ){
             Partner::where('id', Auth::user()->partner_id)->update(array(
-                'name' => request('name'),
+                'first_name' => request('first_name'),
+                'last_name' => request('last_name'),
                 'location' => $this->location[$request->location],
             ));
         }
 
         $data = array(
-            'name' => request('name'),
-            'username' => request('username'),
+            'first_name' => request('first_name'),
+            'last_name' => request('last_name'),
             'email' => request('email')
         );
 

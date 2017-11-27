@@ -71,13 +71,13 @@ class UserController extends Controller
     {
         if (Auth::user()->ableTo('create', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
             $request->validate([
-            'name' => 'required|min:5|max:50',
-            'username' => 'required|min:5|max:50|regex:/^\S*$/|unique:users,username',
-            'email' => 'required|unique:users,email',
-            'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
-            'password_confirmation'=>'',
-            'user_group_id' => 'required',
-            'avatar' =>'required|image|mimes:jpeg,png,jpg,gif',
+                'first_name' => 'required|min:5|max:50',
+                'last_name' => 'required|min:5|max:50',
+                'email' => 'required|unique:users,email',
+                'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
+                'password_confirmation'=>'',
+                'user_group_id' => 'required',
+                'avatar' =>'required|image|mimes:jpeg,png,jpg,gif',
 
             ],
                 ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
@@ -181,8 +181,8 @@ class UserController extends Controller
         }
         
         $request->validate([
-            'name' => 'required|min:5|max:50',
-            'username' => 'required|min:5|max:50|regex:/^\S*$/|unique:users,username,'.$id,
+            'first_name' => 'required|min:5|max:50',
+            'last_name' => 'required|min:5|max:50',
             'email' => 'required|unique:users,email,' . $id ,
             'user_group_id' => 'required',
             'avatar' =>'image|mimes:jpeg,png,jpg,gif',
@@ -203,8 +203,8 @@ class UserController extends Controller
       
 
         $data =array();
-        $data['name'] = $request->name;
-        $data['username'] = $request->username;
+        $data['first_name'] = $request->first_name;
+        $data['last_name'] = $request->last_name;
         $data['email'] = $request->email;
         $data['user_group_id'] = $request->user_group_id;
         if(Auth::user()->isAdmin())

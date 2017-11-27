@@ -10,7 +10,7 @@
 
                     <div class="show">
                         <span>Name: </span>
-                        <span class="value">{{ $doctor->name }}</span>
+                        <span class="value">{{ $doctor->first_name ." ". $doctor->last_name }}  </span>
                     </div>
 
                     <div class="show">

@@ -200,7 +200,7 @@
         <div class="col-sm-10">
 
         @if(\App\Partner::count() > 0)
-            {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}
+            {!! Form::select('partner_id',App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id'),null,['class' => 'form-control'])!!}
         @else
             <p>You don't have added partners yet, Please <a href="{{route('partners.index')}}"><b class="label-danger">Add
                         new Partner</b></a></p>

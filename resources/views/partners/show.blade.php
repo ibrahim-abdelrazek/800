@@ -7,7 +7,7 @@
 @section('content')
         <div class="ks-page-header">
             <section class="ks-title">
-                <h3>{{$partner->name}}</h3>
+                <h3>{{$partner->first_name .' '.$partner->last_name}}</h3>
                 <a href="{{ route('partners.index') }}" class="pull-right btn btn-info"><span>Return to Partners</span> </a>
             </section>
         </div>
@@ -18,7 +18,7 @@
                     <div class="ks-user">
                         <img src="{{ asset($partner->logo) }}" class="ks-avatar" width="100" height="100">
                         <div class="ks-info">
-                            <div class="ks-name">{{$partner->name}}</div>
+                            <div class="ks-name">{{$partner->first_name .' '.$partner->last_name}}</div>
                             <div class="ks-description">{{$partner->location}}</div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                                                         </td>
                                                         <td>{{ $order->patient->first_name . " " . $order->patient->last_name  }}</td>
                                                         <td>
-                                                            {{ $order->doctor->name }}
+                                                            {{ $order->doctor->first_name .' ' . $order->doctor->last_name }}
                                                         </td>
                                                         <td>
                                                             <span class="badge ks-circle badge-{{$order->status->code}}">{{$order->status->message}}</span>
@@ -156,7 +156,6 @@
                                                     <thead>
                                                     <tr>
                                                         <th >Name</th>
-                                                        <th >User Name</th>
                                                         <th >Email</th>
                                                         <th >User Group</th>
                                                     </tr>
@@ -167,8 +166,7 @@
                                                     @endphp
                                                     @foreach($users as $user)
                                                         <tr>
-                                                            <td>{!! $user->name !!}</td>
-                                                            <td>{!! $user->username !!}</td>
+                                                            <td>{!! $user->first_name.' ' .$user->last_name  !!}</td>
                                                             <td>{!! $user->email !!}</td>
                                                             <td>{!! $user->userGroup->group_name !!}</td>
                                                         </tr>
@@ -216,7 +214,7 @@
                                                                     <img style="width: 50px; height: 50px;" class="media-object img-circle profile-img" src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png">
                                                                 @endif
                                                             </td>
-                                                            <td>{{ $doctor->name }}</td>
+                                                            <td>{{ $doctor->first_name . ' ' . $doctor->last_name }}</td>
                                                             <td>{{ $doctor->specialty }}</td>
                                                             <td>{{$doctor->contact_email}}</td>
                                                             <td>{{ $doctor->contact_number }}</td>
@@ -264,7 +262,7 @@
                                                                     <img style="width: 50px; height: 50px;" class="media-object img-circle profile-img" src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png">
                                                                 @endif
                                                             </td>
-                                                            <td>{{ $nurse->name }}</td>
+                                                            <td>{{ $nurse->first_name. ' ' . $nurse->last_name }}</td>
                                                             <td>{{$nurse->contact_email}}</td>
                                                             <td>{{ $nurse->contact_number }}</td>
                                                         </tr>

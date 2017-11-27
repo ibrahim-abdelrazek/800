@@ -11,13 +11,24 @@
     @endif
 </div>
 
-<!--  Name -->
+<!--  first Name -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:',['class'=> 'required']) !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">
+        {!! Form::label('first_name', 'First Name:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('name', null, [  'placeholder'=>'Enter Partner\'s name', 'class' => 'form-control']) !!}
+        {!! Form::text('first_name', null, [  'placeholder'=>'Enter Partner\'s first name', 'class' => 'form-control']) !!}
     </div>
 </div>
+
+<!--  last Name -->
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">
+        {!! Form::label('last_name', 'Last Name:',['class'=> 'required']) !!}</label>
+    <div class="col-sm-10">
+        {!! Form::text('last_name', null, [  'placeholder'=>'Enter Partner\'s last name', 'class' => 'form-control']) !!}
+    </div>
+</div>
+
 <!-- Logo -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
@@ -53,13 +64,6 @@
     </div>
 </div>
 
-<!--  username -->
-<div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('username', 'Username:',['class'=> 'required']) !!}</label>
-    <div class="col-sm-10">
-        {!! Form::text('username', null, [  'class' => 'form-control' , 'required']) !!}
-    </div>
-</div>
 
 
 <!-- Phone -->

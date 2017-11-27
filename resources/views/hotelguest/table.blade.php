@@ -37,7 +37,7 @@
             <td>{!! $hotelguest->officer_name !!}</td>
             <td>{!! $hotelguest->contact_number !!}</td>
             <td>{!! $hotelguest->guest_room_number !!}</td>
-            <td>{!! $hotelguest->partner->name !!}</td>
+            <td>{!! $hotelguest->partner->first_name . ' ' .$hotelguest->partner->last_name !!}</td>
             <td>{!! $hotelguest->items !!}</td>
 
                        @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\HotelGuest::$model) || Auth::user()->ableTo('edit', App\HotelGuest::$model) || Auth::user()->ableTo('delete', App\HotelGuest::$model))

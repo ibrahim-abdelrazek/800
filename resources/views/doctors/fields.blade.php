@@ -10,13 +10,23 @@
         </div>
     @endif
 </div>
-<!--  Name -->
+<!--  First Name -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:',['class'=> 'required']) !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">
+        {!! Form::label('first_name', 'First Name:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('name', null, [  'placeholder'=>'Enter Doctor\'s name', 'class' => 'form-control']) !!}
+        {!! Form::text('first_name', null, [  'class' => 'form-control']) !!}
     </div>
 </div>
+<!-- last Name -->
+<div class="form-group row">
+    <label for="default-input" class="col-sm-2 form-control-label">
+        {!! Form::label('last_name', 'Last Name:',['class'=> 'required']) !!}</label>
+    <div class="col-sm-10">
+        {!! Form::text('last_name', null, [ 'class' => 'form-control']) !!}
+    </div>
+</div>
+
 <div class="form-group row">
 
     <label for="default-input"
@@ -65,7 +75,7 @@
         <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner', 'partner',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             @if(\App\Partner::count() > 0)
-                {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
+                {!! Form::select('partner_id',App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id'),null,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
             @else
                 <p>You don't have added partners yet, Please <a href="{{route('partners.index')}}"><b
                                 class="label-danger">Add
@@ -85,7 +95,7 @@
             @foreach($nurses as $nurse)
             <div class="row">
                 <div class="col-md-10">
-                      {!! Form::select('nurses[]',App\Nurse::pluck('name','id'),$nurse->id,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
+                      {!! Form::select('nurses[]',App\Nurse::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id'),$nurse->id,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
                 </div> 
                 <div class="col-sm-2">
                     @if($i == 1 )

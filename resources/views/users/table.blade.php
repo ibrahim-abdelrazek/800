@@ -3,7 +3,6 @@
                 <tr>
                     <th rowspan="1" colspan="1">Image</th>
                     <th rowspan="1" colspan="1">Name</th>
-                    <th rowspan="1" colspan="1">User Name</th>
                     <th rowspan="1" colspan="1">Email</th>
                     <th rowspan="1" colspan="1">User Group</th>
                     @if(Auth::user()->isAdmin())
@@ -16,7 +15,6 @@
                 <tr>
                     <th rowspan="1" colspan="1">Image</th>
                     <th rowspan="1" colspan="1">Name</th>
-                    <th rowspan="1" colspan="1">User Name</th>
                     <th rowspan="1" colspan="1">Email</th>
                     <th rowspan="1" colspan="1">User Group</th>
                     @if(Auth::user()->isAdmin())
@@ -30,12 +28,11 @@
         @foreach($users as $user)
             <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
                 <td><img style="width:100px" src="{{asset($user->avatar)}}"></td>
-                <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->name !!}" data-original-title="{!! $user->name !!}">{!! substr($user->name,0,20) !!}</span></td>
-                <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->username !!}" data-original-title="{!! $user->username !!}">{!! substr($user->username,0,20) !!}</span></td>
+                <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->first_name . ' ' . $user->last_name !!}" data-original-title="{!! $user->name !!}">{!! substr($user->name,0,20) !!}</span></td>
                 <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->email !!}" data-original-title="{!! $user->email !!}">{!! strlen($user->email) > 20 ? substr($user->email,0,20) . '...' : $user->email !!}</span></td>
                 <td>{!! $user->userGroup->group_name !!}</td>
                 @if(Auth::user()->isAdmin())
-                    <td>{!! \App\Partner::where('id',$user->partner_id)->value('name')!!}</td>
+                    <td>{!! \App\Partner::where('id',$user->partner_id)->value('first_name') . ' '  . \App\Partner::where('id',$user->partner_id)->value('last_name')!!}</td>
                 @endif
 
                     <td>

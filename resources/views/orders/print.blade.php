@@ -17,7 +17,7 @@
                             </div>
                             <div class="ks-column">
                                 <h5>Doctor</h5>
-                                <span>{{$order->doctor->name}}</span>
+                                <span>{{$order->doctor->first_name .' '.$order->doctor->last_name}}</span>
                                 <span>{{$order->doctor->contact_email}}</span>
                                 <span>{{$order->doctor->contact_number}}</span>
                             </div>
@@ -72,7 +72,7 @@
 
                             </div>
                             <div class="ks-column">
-                                <h5>{{$order->partner->name }}</h5>
+                                <h5>{{$order->partner->first_name . ' ' . $order->partner->last_name }}</h5>
                                 <span>{{$order->partner->location}}</span>
 
                             </div>

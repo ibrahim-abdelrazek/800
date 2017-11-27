@@ -66,10 +66,8 @@ class HotelGuestController extends Controller
             $request->validate([
                 'name' => 'required|max:100|regex:/^[\pL\s]+$/u',
                 'officer_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
-                'contact_number' => 'required|numeric',
-                
+                'contact_number' => 'required|string|max:10',
                 'guest_room_number' => 'required|numeric',
-                
                 'guest_first_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
                 'guest_last_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
                 'items' => 'max:200',
@@ -156,7 +154,7 @@ class HotelGuestController extends Controller
             $request->validate([
                 'name' => 'required|max:100|regex:/^[\pL\s]+$/u',
                 'officer_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
-                'contact_number' => 'required|numeric',      
+                'contact_number' => 'required|string|max:10',
                 'guest_room_number' => 'required|numeric',
                 'guest_first_name' => 'required|max:100|regex:/^[\pL\s]+$/u',
                 'guest_last_name' => 'required|max:100|regex:/^[\pL\s]+$/u',

@@ -32,7 +32,7 @@
 
                         <div class="show">
                             <span>contact_number: </span>
-                            <span class="value" >{{ $patient->contact_number }}</span>
+                            <span class="value" >{{'(+971) ' . $patient->contact_number }}</span>
                         </div>
                         <div class="show">
                             <span>email: </span>

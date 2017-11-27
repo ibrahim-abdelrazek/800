@@ -7,6 +7,7 @@ use App\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManagerStatic as Image;
+use Input;
 
 class PatientController extends Controller
 {
@@ -30,7 +31,7 @@ class PatientController extends Controller
 
                 $patients = Patient::where('partner_id', Auth::user()->partner_id)->get();
 
-            } 
+            }
 
             return view('patients.index')->with('patients', $patients);
         }else{
@@ -72,11 +73,11 @@ class PatientController extends Controller
                 'gender' => 'required',
                 'contact_number' => 'required|string',
                 'email' => 'required|email|unique:patients,email',
-                'insurance_file' => 'required|image|mimes:jpg,png,jpeg',
+                'insurance_file' => 'required|mimes:jpg,png,jpeg,pdf',
                 'insurance_provider' => 'required|numeric',
                 'card_number' => 'required|string',
                 'insurance_expiry' => 'required',
-                'id_file' => 'required|image|mimes:jpg,png,jpeg',
+                'id_file' => 'required|mimes:jpg,png,jpeg,pdf',
                 'id_number' => 'required|string',
                 'id_expiry' => 'required',
                 'notes' => 'max:200|min:0',
@@ -107,21 +108,33 @@ class PatientController extends Controller
 
             if (!$request->has('partner_id')) {
 
-                    $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
-                   
+                $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
+
             }
             if($request->hasFile('id_file')){
                 $avatar = $request->file('id_file');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
+
+                if(strpos($request->file('id_file')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->resize(300, 300)->save(public_path('/upload/insurance/' . $filename));
+                }else {
+                    Input::file('id_file')->move(base_path().'/public/upload/insurance/', $filename);
+                }
                 $patient['id_file'] = '/upload/insurance/'.$filename;
+
+
+
             }
             if($request->hasFile('insurance_file')){
                 $avatar = $request->file('insurance_file');
                 $filename = time(). '1.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
+                if(strpos($request->file('insurance_file')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->resize(300, 300)->save(public_path('/upload/insurance/' . $filename));
+                }else {
+                    Input::file('insurance_file')->move(base_path().'/public/upload/insurance/', $filename);
+                }
                 $patient['insurance_file'] = '/upload/insurance/'.$filename;
             }
 
@@ -270,10 +283,10 @@ class PatientController extends Controller
                 'type1' => 'required',
             ];
             if($request->hasFile('insurance_file')){
-                $fieldsArr['insurance_file'] = 'required|image|mimes:jpg,png,jpeg';
+                $fieldsArr['insurance_file'] = 'required|mimes:jpg,png,jpeg,pdf';
             }
             if($request->hasFile('id_file')){
-                $fieldsArr['id_file'] = 'required|image|mimes:jpg,png,jpeg';
+                $fieldsArr['id_file'] = 'required|mimes:jpg,png,jpeg,pdf';
             }
 
             $request->validate($fieldsArr);
@@ -304,22 +317,31 @@ class PatientController extends Controller
 
             if (!$request->has('partner_id')) {
 
-                   $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
-                   
+                $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
+
             }
 
             if(isset($fieldsArr['insurance_file'])){
                 $avatar = $request->file('insurance_file');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
-                //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
+
+                if(strpos($request->file('insurance_file')->getMimeType(), 'image') !== false) {
+                    //Image::configure(array('driver' => 'imagick'));
+                    Image::make($avatar)->resize(300, 300)->save(public_path('/upload/insurance/' . $filename));
+                }else {
+                    Input::file('id_file')->move(base_path().'/public/upload/insurance/', $filename);
+                }
                 $patient['insurance_file'] = '/upload/insurance/'.$filename;
             }
             if(isset($fieldsArr['id_file'])){
                 $avatar = $request->file('id_file');
                 $filename = time(). '1.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->resize(300, 300)->save( public_path('/upload/insurance/'.$filename));
+                if(strpos($request->file('id_file')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->resize(300, 300)->save(public_path('/upload/insurance/' . $filename));
+                }else {
+                    Input::file('id_file')->move(base_path().'/public/upload/insurance/', $filename);
+                }
                 $patient['id_file'] = '/upload/insurance/'.$filename;
             }
 

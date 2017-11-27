@@ -21,7 +21,7 @@
                 @foreach($usergroups as $usergroup)
                     <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
                         <td>{!! $usergroup->group_name !!}</td>
-                        @if(Auth::user()->isAdmin())<td>{!! \App\Partner::where('id', $usergroup->partner_id)->value('name') !!}</td>@endif
+                        @if(Auth::user()->isAdmin())<td>{!! \App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name "))->where('id', $usergroup->partner_id)->value('name') !!}</td>@endif
 
                         <td>
                             <div class='btn-group'>

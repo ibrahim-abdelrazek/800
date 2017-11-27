@@ -13,7 +13,7 @@
 
                         <div class="show">
                             <span>Name: </span>
-                            <span class="value" >{{ $nurse->name }}</span>
+                            <span class="value" >{{ $nurse->first_name ." " .$nurse->last_name }}</span>
                         </div>
                         <div class="show">
                             <span>created at </span>
@@ -27,7 +27,7 @@
                         <!-- partner name  ????!!
                         <div class="show">
                             <span>Name: </span>
-                            <span class="value" >{{$nurse->name }}</span>
+                            <span class="value" >{{$nurse->first_name .' '. $nurse->last_name }}</span>
                         </div>
 -->
 

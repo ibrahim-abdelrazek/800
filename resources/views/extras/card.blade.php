@@ -25,7 +25,7 @@
             <div class="media-body col-md-4">
                 <h5>Nurses Associated</h5>
                 @foreach($person->nurses as $nurse)
-                <div >{{$nurse->name}}</div>
+                <div >{{$nurse->first_name . ' '. $nurse->last_name}}</div>
                 @endforeach
             </div>
             @endif

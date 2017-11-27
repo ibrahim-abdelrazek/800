@@ -17,6 +17,17 @@
     </label>
 
     <div class="col-sm-10">
+        @if(request()->route()->getAction()['as'] == "orders.edit")
+            <a class="fancybox" href="<?= (empty($order['prescription']))? '#' : $order['prescription'];?>" target="_blank" data-fancybox-group="gallery" title="">
+                @if(!empty($order['prescription']) && strpos(mime_content_type(base_path().'/public/'.$order['prescription']), 'image') !== false)
+                    <img src="<?= $order['prescription'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                @elseif(!empty($order['prescription']) && strpos(mime_content_type(base_path().'/public/'.$order['insurance_file']), 'pdf') !== false)
+                    <img src="/upload/pdf.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                @else
+                    <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                @endif
+            </a>
+        @endif
         {!! Form::file('prescription',null,  [  'class' => 'form-control']) !!}
     </div>
 
@@ -27,6 +38,17 @@
     </label>
 
     <div class="col-sm-10">
+        @if(request()->route()->getAction()['as'] == "orders.edit")
+            <a class="fancybox" href="<?= (empty($order['insurance_claim']))? '#' : $order['insurance_claim'];?>" target="_blank" data-fancybox-group="gallery" title="">
+                @if(!empty($order['insurance_claim']) && strpos(mime_content_type(base_path().'/public/'.$order['insurance_claim']), 'image') !== false)
+                    <img src="<?= $order['insurance_claim'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                @elseif(!empty($order['insurance_claim']) && strpos(mime_content_type(base_path().'/public/'.$order['insurance_file']), 'pdf') !== false)
+                    <img src="/upload/pdf.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                @else
+                    <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                @endif
+            </a>
+        @endif
         {!! Form::file('insurance_claim',null,  [  'class' => 'form-control']) !!}
     </div>
 
@@ -69,7 +91,7 @@
         <div class="col-sm-10">
             @if(\App\Doctor::where('partner_id', Auth::user()->partner_id)->count() > 0)
 
-                {!! form::select ('doctor_id',App\Doctor::where('partner_id', Auth::user()->partner_id)->pluck('name','id'),null,['class' => 'form-control'])!!}
+                {!! form::select ('doctor_id',App\Doctor::select(DB::raw("CONCAT(first_name,' ', last_name) AS name,id "))->where('partner_id', Auth::user()->partner_id)->pluck('name','id'),null,['class' => 'form-control'])!!}
             @else
                 <p>You don't have added doctors yet, Please <a href="{{route('doctors.index')}}"><b class="label-danger">Add
                             new Doctor</b></a></p>
@@ -86,7 +108,7 @@
         </label>
 
         <div class="col-sm-10">
-            {!! form :: select ('partner_id',App\Partner::pluck('name','id'),null,['class' => 'form-control'])!!}
+            {!! Form::select('partner_id',App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id'),null,['class' => 'form-control'])!!}
         </div>
     </div>
     <!-- Patients Holder -->
@@ -179,7 +201,12 @@
     <a href="{!! route('orders.index') !!} " class="btn btn-default"> Cancel</a>
 </div>
 
-
+@push('customjs')
+<script type="text/javascript" src="/assets/scripts/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+    $('.fancybox').fancybox();
+</script>
+@endpush
 
 
 

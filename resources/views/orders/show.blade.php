@@ -26,9 +26,27 @@
                             <div class="ks-info">
                                 <div class="ks-header">
                                     <h5>Prescription </h5>
-                                    <img class="ks-logo" src="{{asset($order->prescription)}}" height="60">
+                                        @if(!empty($order->prescription) && strpos(mime_content_type(base_path().'/public/'.$order->prescription), 'image') !== false)
+                                            <img class="ks-logo" src="{{asset($order->prescription)}}" height="60">
+                                        @elseif(!empty($order->prescription) && strpos(mime_content_type(base_path().'/public/'.$order->prescription), 'pdf') !== false)
+                                            <a href="{{$order->prescription}}" target="_blank">
+                                                <img src="/upload/pdf.png" style="width:75px; height:75px;">
+                                            </a>
+                                        @else
+                                            <img src="/upload/doc.png" style="width:45px; height:45px;">
+                                        @endif
+
                                     <h5>Insurance Claim</h5>
-                                    <img class="ks-insurance" src="{{asset($order->insurance_claim)}}" height="60">
+
+                                    @if(!empty($order->insurance_claim) && strpos(mime_content_type(base_path().'/public/'.$order->insurance_claim), 'image') !== false)
+                                        <img class="ks-insurance" src="{{asset($order->insurance_claim)}}" height="60">
+                                    @elseif(!empty($order->insurance_claim) && strpos(mime_content_type(base_path().'/public/'.$order->insurance_claim), 'pdf') !== false)
+                                        <a href="{{$order->insurance_claim}}" target="_blank">
+                                            <img src="/upload/pdf.png" style="width:75px; height:75px;">
+                                        </a>
+                                    @else
+                                        <img src="/upload/doc.png" style="width:45px; height:45px;">
+                                    @endif
 
                                     @php
                                         $color = '';
@@ -57,7 +75,7 @@
                                     </div>
                                     <div class="ks-column">
                                         <h5>Doctor</h5>
-                                        <span>{{$order->doctor->name}}</span>
+                                        <span>{{$order->doctor->first_name .' ' . $order->doctor->last_name}}</span>
                                         <span>{{$order->doctor->contact_email}}</span>
                                         <span>{{$order->doctor->contact_number}}</span>
                                     </div>
@@ -112,7 +130,7 @@
 
                                     </div>
                                     <div class="ks-column">
-                                        <h5>{{$order->partner->name }}</h5>
+                                        <h5>{{$order->partner->first_name .' ' . $order->partner->last_name }}</h5>
                                         <span>{{$order->partner->location}}</span>
 
                                     </div>

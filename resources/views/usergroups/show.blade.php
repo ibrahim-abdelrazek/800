@@ -3,7 +3,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <p class="">Group Name: <b>{!! $usergroup->group_name !!}</b></p>
-                <p> Partner Name:  <b>{!! \App\Partner::where('id', $usergroup->partner_id)->value('name') !!}</b></p>
+                <p> Partner Name:  <b>{!!  \App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name "))->where('id', $usergroup->partner_id)->value('name')  !!}</b></p>
 
             </div>
 

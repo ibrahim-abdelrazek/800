@@ -7,7 +7,6 @@
                     <th rowspan="1" colspan="1">Name</th>
                     <th rowspan="1" colspan="1">Location</th>
                     <th rowspan="1" colspan="1">Partner Type</th>
-                    <th rowspan="1" colspan="1">User Name</th>
                     <th rowspan="1" colspan="1">Email</th>
                     <th rowspan="1" colspan="1">Actions</th>
                 </tr>
@@ -17,7 +16,6 @@
                     <th rowspan="1" colspan="1">Name</th>
                     <th rowspan="1" colspan="1">Location</th>
                     <th rowspan="1" colspan="1">Partner Type</th>
-                    <th rowspan="1" colspan="1">User Name</th>
                     <th rowspan="1" colspan="1">Email</th>
                     <th rowspan="1" colspan="1">Actions</th>
                 </tr>
@@ -26,11 +24,10 @@
                 @php($i=1)
                 @foreach($partners as $partner)
                     <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
-                        <td class="sorting_1">{{$partner->name}}</td>
+                        <td class="sorting_1">{{$partner->first_name . ' ' . $partner->last_name}}</td>
                         <td>{{ $partner->location }}</td>
                         <td>{{ $partner->partnerType->name }}</td>
-                        <td> {{ $partner->user->username  }}</td>
-                        <td>{{  $partner->user->email }}</td>
+                        <td>{{  $partner->user['email'] }}</td>
 
 
                         <td>

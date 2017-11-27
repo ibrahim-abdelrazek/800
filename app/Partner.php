@@ -10,7 +10,8 @@ class Partner extends Model
     protected $appends = ['user'];
      protected $fillable = [
          'id',
-         'name',
+         'first_name',
+         'last_name',
          'location',
          'photo',
          'partner_type_id',
@@ -51,7 +52,7 @@ class Partner extends Model
         $id = $this->id;
         return Partner::join('users', function($q) use ($id){
             $q->where('users.partner_id', $id);
-        })->first(['partners.name','partners.partner_type_id','location','users.name','users.username','users.email','users.password','users.partner_id']);
+        })->first(['partners.first_name','partners.last_name','partners.partner_type_id','location','users.first_name','users.last_name','users.email','users.password','users.partner_id']);
     }
     //join('user_groups', function($q){ $q->where('user_groups.id', 2); })->
     public function getTransactionAmount(){

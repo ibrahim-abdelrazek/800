@@ -28,29 +28,28 @@
             <div class="row">
                 <div class="col-md-12">
                     <img src="<?= (empty($profile['avatar'])) ? asset('/upload/avatars/default.jpg') : asset($profile['avatar']) ;?>" style="width:150px; height:150px; float: left; border-radius:50%;margin-right:25px;">
-                    <h2>{{ $profile['name'] }}'s Profile</h2>
+                    <h2>{{ $profile['first_name'] .' ' . $profile['last_name'] }}'s Profile</h2>
                     {!! Form::label('avatar', 'Update Profile Image') !!}<br>
                     {!! Form::file('avatar',null,  [  'class' => 'form-control']) !!}
                 </div>
             </div>
 
-        <!--  Name -->
-            <!--  Name -->
+            <!--  first Name -->
             <div class="form-group row">
                 <label for="default-input"
-                       class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:') !!}</label>
+                       class="col-sm-2 form-control-label">{!! Form::label('first_name', 'First Name:') !!}</label>
                 <div class="col-sm-10">
-                    {!! Form::text('name', null, [  'class' => 'form-control' , 'required']) !!}
+                    {!! Form::text('first_name', null, [  'class' => 'form-control' , 'required']) !!}
                 </div>
             </div>
 
-            <!--  Username -->
-            <!--  Name -->
+            <!-- last Name -->
             <div class="form-group row">
                 <label for="default-input"
-                       class="col-sm-2 form-control-label">{!! Form::label('username', 'User Name:') !!}</label>
+                       class="col-sm-2 form-control-label">
+                    {!! Form::label('last_name', 'Last Name:') !!}</label>
                 <div class="col-sm-10">
-                    {!! Form::text('username', null, [  'class' => 'form-control' , 'required']) !!}
+                    {!! Form::text('last_name', null, [  'class' => 'form-control' , 'required']) !!}
                 </div>
             </div>
 

@@ -22,10 +22,10 @@ class DoctorController extends Controller
     {
         $doctor = Doctor::find($id);
         $person = new \stdClass();
-        $person->name = $doctor->name;
+        $person->name = $doctor->first_name . ' ' . $doctor->last_name;
         $person->job_title = $doctor->specialty . ' doctor';
         $person->email = $doctor->contact_email;
-        $person->phone = $doctor->contact_number;
+        $person->phone = '(+971) ' . $doctor->contact_number;
         $person->photo = $doctor->photo;
         $person->nurses = $doctor->nurses;
         if (!empty($doctor))
@@ -79,10 +79,11 @@ class DoctorController extends Controller
     {
        if (Auth::user()->ableTo('add', Doctor::$model)) {
             $request->validate([
-                'name' => 'required|string|max:100',
+                'first_name' => 'required|string|max:100',
+                'last_name' => 'required|string|max:100',
                 'specialty' => 'required|string',
                 'contact_email' => 'required|email|unique:doctors,contact_email',
-                'contact_number' => 'required|string',
+                'contact_number' => 'required|string|max:10',
                 'photo' => 'image|mimes:jpg,jpeg,png',
                 'nurses' => 'required|array',
                 'nurses.*' => 'numeric'
@@ -177,10 +178,11 @@ class DoctorController extends Controller
         if (Auth::user()->ableTo('edit', Doctor::$model)) {
             $doc = Doctor::find($id);
             $request->validate([
-                'name' => 'required|string|max:100',
+                'first_name' => 'required|string|max:100',
+                'last_name' => 'required|string|max:100',
                 'specialty' => 'required|string',
                 'contact_email' => 'required|email|unique:doctors,contact_email,'.$doc->id,
-                'contact_number' => 'required|string',
+                'contact_number' => 'required|string|max:10',
                 'photo' => 'image|mimes:jpg,jpeg,png'
 
             ]);
@@ -248,8 +250,7 @@ class DoctorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getNurses($id) {
-
-        $nurses = Nurse::where("partner_id",$id)->pluck("name","id");
+        $nurses = Nurse::select(DB::raw("CONCAT(first_name, ' ' , last_name) AS name , id"))->where('partner_id',$id)->pluck("name","id");
         if(!empty($nurses) && count($nurses) > 0)
             return response()->json(['success'=>true, 'data'=>$nurses], 200);
         return response()->json(['success'=>false], 200);
@@ -263,7 +264,7 @@ class DoctorController extends Controller
     }
     public function getDoctors($id) {
 
-        $doctors = Doctor::where("partner_id",$id)->pluck("name","id");
+        $doctors = Doctor::select(DB::raw("CONCAT(first_name, ' ' , last_name) AS name , id"))->where('partner_id',$id)->pluck("name","id");
         if(!empty($doctors) && count($doctors) > 0)
             return response()->json(['success'=>true, 'data'=>$doctors], 200);
         return response()->json(['success'=>false], 200);

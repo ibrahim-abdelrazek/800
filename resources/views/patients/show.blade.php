@@ -32,7 +32,7 @@
 
                         <div class="show">
                             <span>contact_number: </span>
-                            <span class="value" >{{ $patient->contact_number }}</span>
+                            <span class="value" >{{'(+971) ' . $patient->contact_number }}</span>
                         </div>
                         <div class="show">
                             <span>email: </span>
@@ -119,8 +119,14 @@
                                     <div class="show">
                                         <span style="float: left"> Insurance File:</span><br>
                                         <span class="value" >
-                                            <a class="fancybox" href="<?= (empty($patient['insurance_file']))? '#' : $patient['insurance_file'];?>" data-fancybox-group="gallery" title="">
-                                            <img src="<?= (empty($patient['insurance_file']))? '/upload/doc.png' : $patient['insurance_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                                            <a class="fancybox" href="<?= (empty($patient['insurance_file']))? '#' : $patient['insurance_file'];?>" target="_blank" data-fancybox-group="gallery" title="">
+                                                @if(!empty($patient['insurance_file']) && strpos(mime_content_type(base_path().'/public/'.$patient['insurance_file']), 'image') !== false)
+                                                    <img src="<?= $patient['insurance_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                                                @elseif(!empty($patient['insurance_file']) && strpos(mime_content_type(base_path().'/public/'.$patient['insurance_file']), 'pdf') !== false)
+                                                    <img src="/upload/pdf.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                                                @else
+                                                    <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                                                @endif
                                             </a>
                                         </span>
                                     </div>
@@ -131,8 +137,14 @@
                                     <div class="show">
                                         <span style="float: left"> ID File:</span><br>
                                         <span class="value" >
-                                            <a class="fancybox" href="<?= (empty($patient['id_file']))? '#' : $patient['id_file'];?>" data-fancybox-group="gallery" title="">
-                                                <img src="<?= (empty($patient['id_file']))? '/upload/doc.png' : $patient['id_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                                            <a class="fancybox" href="<?= (empty($patient['id_file']))? '#' : $patient['id_file'];?>" target="_blank" data-fancybox-group="gallery" title="">
+                                                @if(!empty($patient['id_file']) && strpos(mime_content_type(base_path().'/public/'.$patient['id_file']), 'image') !== false)
+                                                    <img src="<?= $patient['id_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
+                                                @elseif(!empty($patient['id_file']) && strpos(mime_content_type(base_path().'/public/'.$patient['id_file']), 'pdf') !== false)
+                                                    <img src="/upload/pdf.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                                                @else
+                                                    <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">
+                                                @endif
                                             </a>
                                         </span>
                                     </div>

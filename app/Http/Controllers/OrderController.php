@@ -66,8 +66,8 @@ class OrderController extends Controller
         if(Auth::user()->ableTo('add',Order::$model)) {
 
             $this->validate($request, [
-                'prescription' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-                'insurance_claim'=> 'required|image|mimes:jpeg,png,jpg,gif,svg',
+                'prescription' => 'required|mimes:jpeg,png,jpg,gif,svg,pdf',
+                'insurance_claim'=> 'required|mimes:jpeg,png,jpg,gif,svg,pdf',
                 'notes' => 'nullable|string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
@@ -82,15 +82,23 @@ class OrderController extends Controller
                 $avatar = $request->file('prescription');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                if(strpos($request->file('prescription')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                }else {
+                    Input::file('prescription')->move(base_path().'/public/upload/orders/', $filename);
+                }
                 $prescription = '/upload/orders/'.$filename;
                 // remove old image
             }
             if($request->hasFile('insurance_claim')){
                 $avatar = $request->file('insurance_claim');
-                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                $filename = time(). '1.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                if(strpos($request->file('insurance_claim')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                }else {
+                    Input::file('insurance_claim')->move(base_path().'/public/upload/orders/', $filename);
+                }
                 $insurance_claim = '/upload/orders/'.$filename;
                 // remove old image
             }
@@ -178,8 +186,8 @@ class OrderController extends Controller
 
             //|image|mimes:jpeg,png,jpg,gif,svg|max:2048
             $this->validate($request, [
-                'prescription' => 'image|mimes:jpeg,png,jpg,gif,svg',
-                'insurance_claim' => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'prescription' => 'mimes:jpeg,png,jpg,gif,svg,pdf',
+                'insurance_claim' => 'mimes:jpeg,png,jpg,gif,svg,pdf',
                 'notes' => 'nullable|string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
@@ -203,7 +211,11 @@ class OrderController extends Controller
                 $avatar = $request->file('prescription');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                if(strpos($request->file('prescription')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                }else {
+                    Input::file('prescription')->move(base_path().'/public/upload/orders/', $filename);
+                }
                 $prescription = '/upload/orders/'.$filename;
                 // remove old image
                 $order = array_merge($order, ['prescription' => $prescription]);
@@ -212,7 +224,11 @@ class OrderController extends Controller
                 $avatar = $request->file('insurance_claim');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                if(strpos($request->file('insurance_claim')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                }else {
+                    Input::file('insurance_claim')->move(base_path().'/public/upload/orders/', $filename);
+                }
                 $insurance_claim = '/upload/orders/'.$filename;
                 // remove old image
                 $order = array_merge($order, ['insurance_claim' => $insurance_claim]);

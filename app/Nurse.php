@@ -9,7 +9,8 @@ class Nurse extends Model
     static $model = 'nurse';
     protected $fillable = [
         'id',
-        'name',
+        'first_name',
+        'last_name',
         'contact_email',
         'contact_number',
         'photo',

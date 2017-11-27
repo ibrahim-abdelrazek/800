@@ -117,7 +117,7 @@ class PatientController extends Controller
                 //Image::configure(array('driver' => 'imagick'));
 
                 if(strpos($request->file('id_file')->getMimeType(), 'image') !== false) {
-                    Image::make($avatar)->resize(300, 300)->save(public_path('/upload/insurance/' . $filename));
+                    Image::make($avatar)->save(public_path('/upload/insurance/' . $filename));
                 }else {
                     Input::file('id_file')->move(base_path().'/public/upload/insurance/', $filename);
                 }
@@ -131,7 +131,7 @@ class PatientController extends Controller
                 $filename = time(). '1.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
                 if(strpos($request->file('insurance_file')->getMimeType(), 'image') !== false) {
-                    Image::make($avatar)->resize(300, 300)->save(public_path('/upload/insurance/' . $filename));
+                    Image::make($avatar)->save(public_path('/upload/insurance/' . $filename));
                 }else {
                     Input::file('insurance_file')->move(base_path().'/public/upload/insurance/', $filename);
                 }
@@ -327,7 +327,7 @@ class PatientController extends Controller
 
                 if(strpos($request->file('insurance_file')->getMimeType(), 'image') !== false) {
                     //Image::configure(array('driver' => 'imagick'));
-                    Image::make($avatar)->resize(300, 300)->save(public_path('/upload/insurance/' . $filename));
+                    Image::make($avatar)->save(public_path('/upload/insurance/' . $filename));
                 }else {
                     Input::file('id_file')->move(base_path().'/public/upload/insurance/', $filename);
                 }
@@ -338,7 +338,7 @@ class PatientController extends Controller
                 $filename = time(). '1.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
                 if(strpos($request->file('id_file')->getMimeType(), 'image') !== false) {
-                    Image::make($avatar)->resize(300, 300)->save(public_path('/upload/insurance/' . $filename));
+                    Image::make($avatar)->save(public_path('/upload/insurance/' . $filename));
                 }else {
                     Input::file('id_file')->move(base_path().'/public/upload/insurance/', $filename);
                 }

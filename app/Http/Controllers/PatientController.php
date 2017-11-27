@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Nighborhood;
 use App\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManagerStatic as Image;
-use Input;
+use Carbon;
 
 class PatientController extends Controller
 {
@@ -106,15 +107,21 @@ class PatientController extends Controller
 
             $patient =  array_merge($patient , ['address' => $address]);
 
+            $patient['date'] = Carbon::parse($request->date)->format('Y-m-d');
+            $patient['insurance_expiry'] = Carbon::parse($request->insurance_expiry)->format('Y-m-d');
+            $patient['id_expiry'] = Carbon::parse($request->id_expiry)->format('Y-m-d');
+
             if (!$request->has('partner_id')) {
 
                 $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
 
             }
             if($request->hasFile('id_file')){
+                
                 $avatar = $request->file('id_file');
-                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                $filename = time(). '1.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
+
 
                 if(strpos($request->file('id_file')->getMimeType(), 'image') !== false) {
                     Image::make($avatar)->save(public_path('/upload/insurance/' . $filename));
@@ -312,8 +319,11 @@ class PatientController extends Controller
             $patient = $request->except(['villa_number' ,'apartment_name' ,'apartment_number','street','type1','type2','company_name' ,'building_name' ,'office_number']);
             $request['city_id'] = $request->city;
             $request['nighborhood_id'] = $request->area;
-
+            $patient['date'] = Carbon::parse($request->date)->format('Y-m-d');
+            $patient['insurance_expiry'] = Carbon::parse($request->insurance_expiry)->format('Y-m-d');
+            $patient['id_expiry'] = Carbon::parse($request->id_expiry)->format('Y-m-d');
             $patient =  array_merge($patient , ['address' => $address]);
+
 
             if (!$request->has('partner_id')) {
 

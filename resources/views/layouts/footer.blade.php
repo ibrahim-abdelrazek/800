@@ -34,7 +34,6 @@
                 addMessages(data, "#messages");
             });
         }
-        $('select').select2();
     });
 
     function addNotifications(newNotifications, target) {

@@ -11,11 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Intervention\Image\ImageManagerStatic as Image;
-<<<<<<< HEAD
 use App\OrderStatus;
-=======
 use Barryvdh\DomPDF\Facade as PDF;
->>>>>>> 198c2e25e3255a0194262c8523f63de21408bb88
 
 class OrderController extends Controller
 {
@@ -34,12 +31,7 @@ class OrderController extends Controller
 
                 $orders = Order::where('partner_id', Auth::user()->partner_id);
 
-<<<<<<< HEAD
-            } else {
 
-                $orders = Order::where('user_id', Auth::user()->id);
-=======
->>>>>>> 198c2e25e3255a0194262c8523f63de21408bb88
             }
 
             return view('orders.index')->with('orders', $orders);

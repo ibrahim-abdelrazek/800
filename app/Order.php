@@ -17,7 +17,7 @@ class Order extends Model
          'partner_id',
          'products',
          'status_id',
-         'user_id'
+         'user_id','insurance_claim'
     ];
     protected $casts = [
         'products' => 'array'

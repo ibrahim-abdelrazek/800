@@ -9,7 +9,8 @@ class Nurse extends Model
     static $model = 'nurse';
     protected $fillable = [
         'id',
-        'name',
+        'first_name',
+        'last_name',
         'contact_email',
         'contact_number',
         'photo',
@@ -21,4 +22,9 @@ class Nurse extends Model
     {
         return $this->belongsTo(Partner::class);
     }
+    public function doctors()
+    {
+        return $this->belongsToMany(Doctor::class, 'doctor_nurse');
+    }
+    
 }

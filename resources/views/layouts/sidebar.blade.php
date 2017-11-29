@@ -13,7 +13,7 @@
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{{ route('profile.index') }}">Profile</a>
                                @if(Auth::user()->isAdmin())
-                             <a class="dropdown-item" href="{{ url('/') }}">Settings</a>
+                             <a class="dropdown-item" href="{{ url('/settings') }}">Settings</a>
                              @endif
                 </div>
             </li>
@@ -55,14 +55,15 @@
                     </a>
                 </li>
             @endif
-            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\HotelGuest::$model))
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('hotelguest.index') }}" role="button" aria-haspopup="true"
-                   aria-expanded="false">
-                    <span class="ks-icon la la-sliders"></span>
-                    <span>Hotel Guests</span>
-                </a>
-            </li>
+
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Nurse::$model))
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('nurses.index') }}" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="ks-icon la la-puzzle-piece"></span>
+                        <span>Nurses</span>
+                    </a>
+                </li>
             @endif
 
             @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Doctor::$model))
@@ -75,15 +76,7 @@
             </li>
             @endif
 
-            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Nurse::$model))
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('nurses.index') }}" role="button" aria-haspopup="true"
-                   aria-expanded="false">
-                    <span class="ks-icon la la-puzzle-piece"></span>
-                    <span>Nurses</span>
-                </a>
-            </li>
-            @endif
+
 
             @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Patient::$model))
             <li class="nav-item">
@@ -102,7 +95,7 @@
                         <span>Products</span>
                     </a>
                 </li>
-                <@endif
+            @endif
 
             @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Order::$model))
             <li class="nav-item">
@@ -112,7 +105,16 @@
                     <span>Orders</span>
                 </a>
             </li>
-                <@endif
+            @endif
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\HotelGuest::$model))
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('hotelguest.index') }}" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="ks-icon la la-sliders"></span>
+                        <span>Hotel Guests</span>
+                    </a>
+                </li>
+            @endif
             @if(Auth::user()->isAdmin())
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('settings.index') }}" role="button" aria-haspopup="true"

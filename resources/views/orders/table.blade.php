@@ -1,7 +1,11 @@
 <div class="ks-nav-body">
     <div class="ks-nav-body-wrapper">
         <div class="container-fluid">
+<<<<<<< HEAD
             <table id="table-{{$status_id}}" class="orders-datatable table table-striped table-bordered" cellspacing="0" width="100%">
+=======
+            <table id="orders-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+>>>>>>> 198c2e25e3255a0194262c8523f63de21408bb88
                 <thead>
                 <tr>
                     <th rowspan="1" colspan="1">#</th>
@@ -25,8 +29,13 @@
                 </tr>
                 </tfoot>
                 <tbody>
+<<<<<<< HEAD
                 @php $i=1; $orders = $orders->where('status_id', $status_id);
                 @endphp
+=======
+                
+                @php($i=1)
+>>>>>>> 198c2e25e3255a0194262c8523f63de21408bb88
                 @foreach($orders as $order)
                     <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
                         <td>{{$order->id}}</td>
@@ -34,6 +43,7 @@
                         <td>{{ $order->notes }}</td>
                         <td>{{ $order->owner->name }}</td>
                         <td>{{ date('Y m d', strtotime($order->created_at)) }}</td>
+<<<<<<< HEAD
                         <td class="text-center">
                            <div class="btn-group">
                                             <button class="status-holder btn btn-{{$order->status->code}} btn-block @if($order->status->code != 'success') dropdown-toggle @endif" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -54,16 +64,35 @@
                                             @endif
                                         </div>
                                         
+=======
+                        <td>
+                            <span class="badge ks-circle badge-{{$order->status->code}}"> {{$order->status->message}} </span>
+
+>>>>>>> 198c2e25e3255a0194262c8523f63de21408bb88
                         </td>
                         <td>
                             {!! Form::open(['route' => ['orders.destroy', $order->id], 'method' => 'delete']) !!}
                             <div class='btn-group'>
+<<<<<<< HEAD
                                 <a href="{!! url('orders/'. $order->id) !!}" class='btn btn-default btn-xs'>Show</a>
                                 @if(Auth::user()->id !== $order->owner->id && $order->status->code != 'success')
                                 <a href="{{ URL::to('orders/' . $order->id . '/edit') }}"
                                    class='btn btn-default btn-xs'>Edit</a>
                                 @endif
                                 {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+=======
+                                @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Order::$model))
+                                <a href="{!! url('orders/'. $order->id) !!}" class='btn btn-default btn-xs'>Show</a>
+                               @endif
+                                @if( $order->status->code != 'success' && Auth::user()->ableTo('edit', App\Order::$model ))
+                                   <a href="{{ URL::to('orders/' . $order->id . '/edit') }}"
+                                      class='btn btn-default btn-xs'>Edit</a>
+                                @endif
+                                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('delete', App\Order::$model))
+
+                                    {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                     @endif
+>>>>>>> 198c2e25e3255a0194262c8523f63de21408bb88
                             </div>
                             {!! Form::close() !!}
                         </td>
@@ -76,3 +105,63 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+
+@push('customjs')
+    <script src="{{ asset('libs/datatables-net/media/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables-net/media/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables-net/extensions/buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('libs/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('libs/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('libs/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.colVis.min.js') }}"></script>
+    <script type="application/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                var table = $('#orders-datatable').DataTable({
+                    lengthChange: false,
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4,5]
+                            }
+                        },
+                        {
+                            extend : 'excelHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4,5]
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4,5]
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions:{
+                                columns: [0,1,2,3,4,5]
+                            }
+                        }
+
+                    ],
+                    initComplete: function () {
+                        $('.dataTables_wrapper select').select2({
+                            minimumResultsForSearch: Infinity
+                        });
+                    }
+                });
+
+                table.buttons().container().appendTo('#orders-datatable_wrapper .col-md-6:eq(0)');
+
+            });
+        })(jQuery);
+    </script>
+@endpush
+>>>>>>> 198c2e25e3255a0194262c8523f63de21408bb88

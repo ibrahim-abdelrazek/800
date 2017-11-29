@@ -13,13 +13,10 @@
 
                         <div class="show">
                             <span>Name: </span>
-                            <span class="value" >{!! $user->name !!}</span>
+                            <span class="value" >{!! $user->first_name . ' ' . $user->last_name !!}</span>
                         </div>
 
-                        <div class="show">
-                            <span>Username: </span>
-                            <span class="value" >{!! $user->username !!}</span>
-                        </div>
+
                         <div class="show">
                             <span>email: </span>
                             <span class="value" >{!! $user->email !!}</span>

@@ -12,7 +12,7 @@
 
 <!--  Name -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('group_name', 'Name:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('group_name', 'Name:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('group_name', null, [  'class' => 'form-control' , 'required']) !!}
     </div>
@@ -21,9 +21,9 @@
 @if(Auth::user()->isAdmin())
     <div class="form-group row">
         <label for="default-input"
-               class="col-sm-2 form-control-label">{!! Form::label('partner_id', 'Partner:') !!}</label>
+               class="col-sm-2 form-control-label">{!! Form::label('partner_id', 'Partner:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
-            {!! Form::select('partner_id',  App\Partner::pluck('name', 'id') , null, ['class' => 'form-control' , 'required']) !!}
+            {!! Form::select('partner_id', App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id') , null, ['class' => 'form-control' , 'required']) !!}
         </div>
     </div>
 @endif

@@ -15,10 +15,10 @@ class NurseController extends Controller
     {
         $nurse = Nurse::find($id);
         $person = new \stdClass();
-        $person->name = $nurse->name;
-        $person->job_title = 'Nurse at ' . $nurse->partner->name;
+        $person->name = $nurse->first_name. ' ' .$nurse->last_name;
+        $person->job_title = 'Nurse at ' . $nurse->partner->first_name . ' '.$nurse->partner->last_name;
         $person->email = $nurse->contact_email;
-        $person->phone = $nurse->contact_number;
+        $person->phone = '+' .$nurse->contact_number;
         $person->photo = $nurse->photo;
         if (!empty($nurse))
             return view('extras.card')->with('person', $person);
@@ -73,20 +73,20 @@ class NurseController extends Controller
         if (Auth::user()->ableTo('add', Nurse::$model)) {
 
             $request->validate([
-                'name' => 'required|string|max:100|regex:/^[\pL\s]+$/u',
+                'first_name' => 'required|string|max:100',
+                'last_name' => 'required|string|max:100',
                 'contact_email' => 'required|email|unique:nurses,contact_email',
-                'contact_number' => 'required|string',
+                'contact_number' => 'required|string|max:10',
                 'photo' => 'image|mimes:jpg,jpeg,png'
             ]);
+
             if ($request->has('partner_id')) {
                 $nurses = $request->all();
             } else {
-                if (Auth::user()->user_group_id == 2) {
-                    $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
-                } else {
-                    $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                }
+
+                $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
             }
+
             if($request->hasFile('photo')){
                 $avatar = $request->file('photo');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
@@ -94,6 +94,12 @@ class NurseController extends Controller
                 Image::make($avatar)->resize(300, 300)->save( public_path('/upload/nurses/'.$filename));
                 $nurses['photo'] = '/upload/nurses/'.$filename;
             }
+
+            if ($request->has('full_number')) {
+                $nurses['contact_number'] = str_replace('+', '', $request->full_number);
+            }
+            unset($nurses['full_number']);
+
             if (Nurse::create($nurses))
                 return redirect(route('nurses.index'));
 
@@ -142,6 +148,8 @@ class NurseController extends Controller
 
             if (empty($nurse)) {
                 return redirect(route('nurses.index'));
+            }else{
+                $nurse->contact_number = (!empty($nurse->contact_number))? '+'.$nurse->contact_number:$nurse->contact_number;
             }
 
             return view('nurses.edit')->with('nurse', $nurse);
@@ -166,7 +174,8 @@ class NurseController extends Controller
                 return redirect(route('nurses.index'));
 
             $request->validate([
-                'name' => 'required|string|max:100',
+                'first_name' => 'required|string|max:100',
+                'last_name' => 'required|string|max:100',
                 'contact_email' => 'required|email|unique:nurses,contact_email,'. $nurse->id,
                 'contact_number' => 'required|string',
                 'photo' => 'image|mimes:jpg,jpeg,png'
@@ -182,7 +191,6 @@ class NurseController extends Controller
                 $nurses = $request->all();
             } else {
                     $nurses = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                    $nurses = array_merge($nurses, ['id' => Auth::user()->id]);
             }
             if($request->hasFile('photo')){
                 $avatar = $request->file('photo');
@@ -193,6 +201,11 @@ class NurseController extends Controller
                 // remove old image
                 //unlink(asset($nurse->photo));
             }
+
+            if ($request->has('full_number')) {
+                $nurses['contact_number'] = str_replace('+', '', $request->full_number);
+            }
+            unset($nurses['full_number']);
 
             if ($nurse->update($nurses))
                 return redirect(route('nurses.index'));

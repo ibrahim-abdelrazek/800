@@ -60,16 +60,29 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $request->validate([
+            'first_name' => 'required|min:5|max:50',
+            'last_name' => 'required|min:5|max:50',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'avatar' =>'image|mimes:jpeg,png,jpg,gif',
+
+            ],
+                ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
+                    'username.regex' => 'Username not allowing space',
+                ]);
+
         if(Auth::user()->user_group_id == 2 ){
             Partner::where('id', Auth::user()->partner_id)->update(array(
-                'name' => request('name'),
+                'first_name' => request('first_name'),
+                'last_name' => request('last_name'),
                 'location' => $this->location[$request->location],
             ));
         }
 
         $data = array(
-            'name' => request('name'),
-            'username' => request('username'),
+            'first_name' => request('first_name'),
+            'last_name' => request('last_name'),
             'email' => request('email')
         );
 

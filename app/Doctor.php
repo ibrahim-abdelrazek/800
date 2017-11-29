@@ -10,15 +10,19 @@ class Doctor extends Model
 {
 
     static $model = 'doctor';
+    protected static function boot() {
+        parent::boot();
+        static::addGlobalScope(new OrderScope('created_at', 'desc'));
+    }
     protected $fillable = [
         'id',
-        'name',
+        'first_name',
+        'last_name',
         'specialty',
         'contact_email',
         'contact_number',
         'photo',
         'partner_id',
-        'nurse_id',
         'user_id'
     ];
 
@@ -28,9 +32,9 @@ class Doctor extends Model
         return $this->belongsTo(Partner::class);
     }
 
-    public function nurse()
+    public function nurses()
     {
-        return $this->belongsTo(Nurse::class);
+        return $this->belongsToMany(Nurse::class, 'doctor_nurse');
     }
 
     public function orders()

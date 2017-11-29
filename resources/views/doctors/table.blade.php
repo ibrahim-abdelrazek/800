@@ -43,12 +43,12 @@
                     <img style="width: 50px; height: 50px;" class="media-object img-circle profile-img" src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png">
                 @endif
             </td>
-            <td>{{ $doctor->name }}</td>
+            <td>{{ $doctor->first_name ." ". $doctor->last_name }}</td>
             <td>{{ $doctor->specialty }}</td>
             <td>{{$doctor->contact_email}}</td>
-            <td>{{ $doctor->contact_number }}</td>
+            <td>{{ '+' .$doctor->contact_number }}</td>
             @if(Auth::user()->isAdmin())
-                <td>{{ $doctor->partner->name }}</td>
+                <td>{{ $doctor->partner->first_name . ' ' . $doctor->partner->last_name }}</td>
             @endif
             <td>
 

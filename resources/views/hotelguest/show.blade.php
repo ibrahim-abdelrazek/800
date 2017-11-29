@@ -18,7 +18,7 @@
         </div>
         <div class="show">
             <span>Contact Number: </span>
-            <span class="value" >{!! $hotelguest->contact_number !!}</span>
+            <span class="value" >{!! '+' . $hotelguest->contact_number !!}</span>
         </div>
 
         <div class="show">

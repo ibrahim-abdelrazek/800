@@ -9,8 +9,13 @@ use Illuminate\Http\Request;
 use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Intervention\Image\ImageManagerStatic as Image;
+<<<<<<< HEAD
 use App\OrderStatus;
+=======
+use Barryvdh\DomPDF\Facade as PDF;
+>>>>>>> 198c2e25e3255a0194262c8523f63de21408bb88
 
 class OrderController extends Controller
 {
@@ -25,13 +30,16 @@ class OrderController extends Controller
 
                 $orders = Order::get();
 
-            } elseif (Auth::user()->user_group_id == 2) {
+            } else {
 
                 $orders = Order::where('partner_id', Auth::user()->partner_id);
 
+<<<<<<< HEAD
             } else {
 
                 $orders = Order::where('user_id', Auth::user()->id);
+=======
+>>>>>>> 198c2e25e3255a0194262c8523f63de21408bb88
             }
 
             return view('orders.index')->with('orders', $orders);
@@ -68,8 +76,9 @@ class OrderController extends Controller
         if(Auth::user()->ableTo('add',Order::$model)) {
 
             $this->validate($request, [
-                'prescription' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-                'notes' => 'string',
+                'prescription' => 'required|mimes:jpeg,png,jpg,gif,svg,pdf',
+                'insurance_claim'=> 'required|mimes:jpeg,png,jpg,gif,svg,pdf',
+                'notes' => 'nullable|string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
                 'quantities'=> 'required|array',
@@ -77,30 +86,50 @@ class OrderController extends Controller
                 ]);
 
             $prescription = '';
+            $insurance_claim='';
             // upload image
             if($request->hasFile('prescription')){
                 $avatar = $request->file('prescription');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                if(strpos($request->file('prescription')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                }else {
+                    Input::file('prescription')->move(base_path().'/public/upload/orders/', $filename);
+                }
                 $prescription = '/upload/orders/'.$filename;
                 // remove old image
             }
+            if($request->hasFile('insurance_claim')){
+                $avatar = $request->file('insurance_claim');
+                $filename = time(). '1.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                if(strpos($request->file('insurance_claim')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                }else {
+                    Input::file('insurance_claim')->move(base_path().'/public/upload/orders/', $filename);
+                }
+                $insurance_claim = '/upload/orders/'.$filename;
+                // remove old image
+            }
+
             if ($request->has('partner_id')) {
                 $order = $request->all();
             }else {
-                if (!Auth::user()->user_group_id == 2) {
-                    $order = array_merge($request->all(), ['partner_id' => Auth::user()->id]);
-                } else {
-                    $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner->id]);
-                }
+
+                $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner->id]);
             }
             $order = array_merge($order, ['user_id' => Auth::user()->id,
                 'prescription' => $prescription,
-                'status_id' => getConfig('order_default_status'),
-                'products'=>array_combine($request->products, $request->quantities)]);
+                'insurance_claim' => $insurance_claim,
+                'products'=>array_combine($request->products, $request->quantities),
+                'status_id' =>  getConfig('order_default_status')]
+                );
             if(Order::create($order))
-                return redirect(route('orders.index'));
+               
+                 return redirect(route('orders.index'));
+            
+               
 
         }else {
             return view('extra.404');
@@ -167,18 +196,20 @@ class OrderController extends Controller
 
             //|image|mimes:jpeg,png,jpg,gif,svg|max:2048
             $this->validate($request, [
-                'prescription' => 'image|mimes:jpeg,png,jpg,gif,svg',
-                'notes' => 'string',
+                'prescription' => 'mimes:jpeg,png,jpg,gif,svg,pdf',
+                'insurance_claim' => 'mimes:jpeg,png,jpg,gif,svg,pdf',
+                'notes' => 'nullable|string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
                 'quantities'=> 'required|array',
-                'quantities.*' => 'numeric'
+                'quantities.*' => 'numeric',
+                'status_id' => 'required'
             ]);
 
 
             $orderr = Order::find($id);
 
-            if (empty($order)) {
+            if (empty($orderr)) {
                 return redirect(route('orders.index'));
             }
 
@@ -190,12 +221,34 @@ class OrderController extends Controller
                 $avatar = $request->file('prescription');
                 $filename = time(). '.' . $avatar->getClientOriginalExtension();
                 //Image::configure(array('driver' => 'imagick'));
-                Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                if(strpos($request->file('prescription')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                }else {
+                    Input::file('prescription')->move(base_path().'/public/upload/orders/', $filename);
+                }
                 $prescription = '/upload/orders/'.$filename;
                 // remove old image
                 $order = array_merge($order, ['prescription' => $prescription]);
             }
+            if($request->hasFile('insurance_claim')){
+                $avatar = $request->file('insurance_claim');
+                $filename = time(). '.' . $avatar->getClientOriginalExtension();
+                //Image::configure(array('driver' => 'imagick'));
+                if(strpos($request->file('insurance_claim')->getMimeType(), 'image') !== false) {
+                    Image::make($avatar)->save( public_path('/upload/orders/'.$filename));
+                }else {
+                    Input::file('insurance_claim')->move(base_path().'/public/upload/orders/', $filename);
+                }
+                $insurance_claim = '/upload/orders/'.$filename;
+                // remove old image
+                $order = array_merge($order, ['insurance_claim' => $insurance_claim]);
+            }
 
+            $order = array_merge($order, ['products'=>array_combine($request->products, $request->quantities)]);
+
+
+
+            //dd($orderr);
             $orderr->update($order);
 
             return redirect(route('orders.index'));
@@ -270,6 +323,15 @@ class OrderController extends Controller
 
         return json_encode($all) ;
 
+    }
+    public function download($id){
+
+        $order = Order::find($id);
+
+        $pdf = PDF::loadView('orders.print',['order'=>$order]);
+        $filename = 'Order Id: #' .$order->id .'.pdf';
+
+        return $pdf->download($filename);
     }
 
 }

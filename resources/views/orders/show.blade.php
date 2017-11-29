@@ -2,12 +2,19 @@
 @push('customcss')
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/stacktable/stacktable.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/payment/order.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('libs/jquery-confirm/jquery-confirm.min.css') }}"> <!-- original -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/jquery-confirm/jquery.confirm.min.css') }}"> <!-- original -->
+
+    <style>
+        img { cursor: pointer;}
+    </style>
 @endpush
+
 @section('content')
         <div class="ks-page-header">
             <section class="ks-title">
                 <h3>Order #{{$order->id}}</h3>
-                <!--<a href="javascript:void(0);" class="printDiv btn btn-info pull-right"><i class="la la-print la-1x">Print Receipt</i></a>-->
+            <a href="{{url('orders/print/'.$order->id)}}" class="printDiv btn btn-info pull-right"><i class="la la-print la-1x">Print Receipt</i></a>
             </section>
         </div>
 
@@ -18,7 +25,29 @@
                         <div class="ks-order-page ks-compact">
                             <div class="ks-info">
                                 <div class="ks-header">
-                                    <img class="ks-logo" src="{{asset($order->partner->logo)}}" height="60">
+                                    <h5>Prescription </h5>
+                                        @if(!empty($order->prescription) && strpos(mime_content_type(base_path().'/public/'.$order->prescription), 'image') !== false)
+                                            <img class="ks-logo" src="{{asset($order->prescription)}}" height="60">
+                                        @elseif(!empty($order->prescription) && strpos(mime_content_type(base_path().'/public/'.$order->prescription), 'pdf') !== false)
+                                            <a href="{{$order->prescription}}" target="_blank">
+                                                <img src="/upload/pdf.png" style="width:75px; height:75px;">
+                                            </a>
+                                        @else
+                                            <img src="/upload/doc.png" style="width:45px; height:45px;">
+                                        @endif
+
+                                    <h5>Insurance Claim</h5>
+
+                                    @if(!empty($order->insurance_claim) && strpos(mime_content_type(base_path().'/public/'.$order->insurance_claim), 'image') !== false)
+                                        <img class="ks-insurance" src="{{asset($order->insurance_claim)}}" height="60">
+                                    @elseif(!empty($order->insurance_claim) && strpos(mime_content_type(base_path().'/public/'.$order->insurance_claim), 'pdf') !== false)
+                                        <a href="{{$order->insurance_claim}}" target="_blank">
+                                            <img src="/upload/pdf.png" style="width:75px; height:75px;">
+                                        </a>
+                                    @else
+                                        <img src="/upload/doc.png" style="width:45px; height:45px;">
+                                    @endif
+
                                     @php
                                         $color = '';
                                         switch($order->status->code){
@@ -46,7 +75,7 @@
                                     </div>
                                     <div class="ks-column">
                                         <h5>Doctor</h5>
-                                        <span>{{$order->doctor->name}}</span>
+                                        <span>{{$order->doctor->first_name .' ' . $order->doctor->last_name}}</span>
                                         <span>{{$order->doctor->contact_email}}</span>
                                         <span>{{$order->doctor->contact_number}}</span>
                                     </div>
@@ -101,7 +130,7 @@
 
                                     </div>
                                     <div class="ks-column">
-                                        <h5>{{$order->partner->name }}</h5>
+                                        <h5>{{$order->partner->first_name .' ' . $order->partner->last_name }}</h5>
                                         <span>{{$order->partner->location}}</span>
 
                                     </div>
@@ -178,6 +207,8 @@
 @endsection
 
 @push('customjs')
+    <script src="{{ asset('libs/jquery-confirm/jquery-confirm.min.js') }}"></script>
+
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.print.min.js') }}"></script>
 <script type="text/javascript">
     (function($){
@@ -188,7 +219,31 @@
                    footer: "<h5>Copyrights Reserved {{$AppName . date('Y')}}",               // postfix to html
                });
            });
+
+            $('.ks-logo').on('click', function () {
+                $.dialog({
+                    title: 'Prescription',
+                    content: '<img src="' + $(this).attr('src') +'"> <br> <a id="download"  href="{{asset($order->prescription)}}" class="btn btn-xs btn-default pull-right" download="{{asset($order->prescription)}}">Download</a><div class="clearfix"></div>',
+                    animation: 'zoom',
+                    columnClass: 'medium',
+                    closeAnimation: 'scale',
+                    backgroundDismiss: true
+                });
+            });
+            $('.ks-insurance').on('click', function () {
+                $.dialog({
+                    title: 'Insurance Claim',
+                    content: '<img src="' + $(this).attr('src') +'"> <br> <a id="download" href="{{asset($order->insurance_claim)}}" class="btn btn-xs btn-default pull-right" download="{{asset($order->insurance_claim)}}">Download</a><div class="clearfix"></div>',
+                    animation: 'zoom',
+                    columnClass: 'medium',
+                    closeAnimation: 'scale',
+                    backgroundDismiss: true
+                });
+            });
+
+
         });
+
 
     })(jQuery);
 

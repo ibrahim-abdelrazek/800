@@ -10,23 +10,25 @@
         </div>
     @endif
 </div>
-<!--  Name -->
+<!-- first  Name -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('name', 'Name:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">
+        {!! Form::label('first_name', 'First Name:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('name', null, [   'class' => 'form-control']) !!}
+        {!! Form::text('first_name', null, [   'class' => 'form-control']) !!}
     </div>
 </div>
-<!--  username -->
+<!--  last name -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('username', 'Username:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">
+        {!! Form::label('last_name', 'Last Name:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('username', null, [  'class' => 'form-control']) !!}
+        {!! Form::text('last_name', null, [  'class' => 'form-control']) !!}
     </div>
 </div>
 <!--  Email -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('email', 'email:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('email', 'email:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::email('email', null, [  'class' => 'form-control']) !!}
     </div>
@@ -34,7 +36,7 @@
 <!--  image -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('avatar', 'Image:') !!}</label>
+        {!! Form::label('avatar', 'Image:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::file('avatar', null, [  'class' => 'form-control']) !!}
     </div>
@@ -43,7 +45,7 @@
 
 <!--  password -->
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password', 'Password:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password', 'Password:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::password('password',[  'class' => 'form-control']) !!}
         <br>
@@ -51,7 +53,7 @@
     </div>
 </div>
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password_confirmation', 'Confirm Password:') !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('password_confirmation', 'Confirm Password:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::password('password_confirmation', ['class' => 'form-control'] ) !!}
     </div>
@@ -61,10 +63,12 @@
     <!--  Status -->
     <div class="form-group row">
         <label for="default-input"
-               class="col-sm-2 form-control-label">{!! Form::label('partner_id', 'Partner:') !!}</label>
+               class="col-sm-2 form-control-label">{!! Form::label('partner_id', 'Partner:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
             @if(\App\Partner::count() > 0)
-                {!! Form::select('partner_id',App\Partner::pluck('name','id'),null,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
+                {!! Form::select('partner_id',
+                App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id')
+                ,null,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
             @else
                 <p>You don't have added partners yet, Please <a href="{{route('partners.index')}}"><b
                                 class="label-danger">Add
@@ -77,7 +81,7 @@
 <!--  user_group_id -->
 <div class="form-group row">
     <label for="default-input"
-           class="col-sm-2 form-control-label">{!! Form::label('user_group_id', 'User Group:') !!}</label>
+           class="col-sm-2 form-control-label">{!! Form::label('user_group_id', 'User Group:',['class'=> 'required']) !!}</label>
     <div id="usergroups-holder" class="col-sm-10"> </div>
 </div>
 @endif

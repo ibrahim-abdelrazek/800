@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/datatables-net/extensions/buttons/css/buttons.bootstrap4.min.css')}}"> <!-- original -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/datatables-net/datatables.min.css')}}"> <!-- customization -->
 
+<link rel="stylesheet" type="text/css" href="{{ asset('libs/flatpickr/flatpickr.min.css') }}">
 @endpush
 @section('content')
     <div class="ks-page-header">
@@ -76,6 +77,7 @@
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('libs/flatpickr/flatpickr.min.js') }}"></script>
      <script type="application/javascript">
         (function ($) {
             $(document).ready(function () {
@@ -205,5 +207,6 @@
             })(jQuery);
 
         </script>
+
 
 @endpush

@@ -25,6 +25,12 @@
             // asynchronous content
             (function ($) {
                 $(document).ready(function () {
+                    $('label[for="avatar"]').removeClass('required');
+                    $('label[for="password"]').removeClass('required');
+                    $('label[for="password_confirmation"]').removeClass('required');
+
+
+
                     loadUserGroup($('select[name=partner_id]').val());
                     $('select[name=partner_id]').on('change', function(e){
                         var partner_id = $(this).val();

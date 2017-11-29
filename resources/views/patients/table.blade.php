@@ -25,7 +25,7 @@
         @foreach($patients as $patient)
             <tr>
                 <td>{{ $patient->first_name . $patient->last_name}}</td>
-                <td>{{ $patient->contact_number}}</td>
+                <td>{{ '(+971) ' .$patient->contact_number}}</td>
                 <td>{{ $patient->email}}</td>
                 <td>{{ $patient->notes }}</td>
                 <td>
@@ -36,7 +36,7 @@
                   
                         <a href="{{ URL::to('patients/' . $patient->id . '/edit') }}" class='btn btn-default btn-xs'>Edit</a>
                         @endif
-                         @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('delete', App\Nurse::$model))
+                         @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('delete', App\Patient::$model))
                   
                         {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                         @endif

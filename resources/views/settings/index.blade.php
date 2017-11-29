@@ -17,6 +17,7 @@
                                     <a class="nav-link active" href="#" data-toggle="tab" data-target="#general">General</a>
                                     <a class="nav-link " href="#" data-toggle="tab" data-target="#order-statuses">Order Statuses</a>
                                 </li>
+                            
                               {{--  <li class="nav-item">
                                     <a class="nav-link" href="#" data-toggle="tab" data-target="#status">Order Status</a>
                                 </li>
@@ -31,7 +32,8 @@
                                 </li>--}}
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="general" role="tabpanel">
+
+                                 <div class="tab-pane active" id="general" role="tabpanel">
                                     {!! Form::open(['action' => array('SettingsController@update')]) !!}
 
                                     @foreach($settings as $setting)

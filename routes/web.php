@@ -40,8 +40,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('orders/print/{id}', 'OrderController@download');
 
     Route::resource('orders', 'OrderController');
+<<<<<<< HEAD
+    Route::post('orders/update-status', 'OrderController@updateStatus');
+=======
     Route::resource('status', 'StatusController');
 
+>>>>>>> 198c2e25e3255a0194262c8523f63de21408bb88
     Route::group(['prefix' => 'messages'], function () {
         Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);
         Route::get('create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);

@@ -10,7 +10,7 @@ use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
-
+use App\OrderStatus;
 
 class OrderController extends Controller
 {
@@ -27,11 +27,11 @@ class OrderController extends Controller
 
             } elseif (Auth::user()->user_group_id == 2) {
 
-                $orders = Order::where('partner_id', Auth::user()->partner_id)->get();
+                $orders = Order::where('partner_id', Auth::user()->partner_id);
 
             } else {
 
-                $orders = Order::where('user_id', Auth::user()->id)->get();
+                $orders = Order::where('user_id', Auth::user()->id);
             }
 
             return view('orders.index')->with('orders', $orders);
@@ -201,6 +201,37 @@ class OrderController extends Controller
             return redirect(route('orders.index'));
         }else {
             return view('extra.404');
+        }
+    }
+    public function updateStatus(Request $request)
+    {
+        if(Auth::user()->ableTo('edit',Order::$model)) {
+
+            $this->validate($request, [
+               'order' => 'required|numeric',
+               'status' => 'required|numeric',
+               'notes' => 'string'
+            ]);
+
+
+            $order = Order::find($request->order);
+
+            if (empty($order)) {
+                return response()->json(['success'=>false, 'message' => 'Order Not Found'], 200);
+            }
+            if($order->status->code == 'success')
+                return response()->json(['success'=>false, 'message' => 'Can\'t update a delivered order'], 200);
+            $order->status_id = $request->status;
+            $order->save();
+            
+            $statusOrder = new OrderStatus;
+            $statusOrder->order_id = $request->order;
+            $statusOrder->status_id = $request->status;
+            $statusOrder->notes = !empty($request->notes) ? $request->notes : '';
+            $statusOrder->save();
+           return response()->json(['success'=>true, 'message' => 'Order status has changed'], 200);
+        }else {
+            return response()->json(['success'=>false, 'message' => 'UnAuthorized!'], 503);
         }
     }
 

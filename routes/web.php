@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('nurse/viewCard/{id}', 'NurseController@viewCard');
     Route::resource('products', 'ProductController');
     Route::resource('orders', 'OrderController');
+    Route::post('orders/update-status', 'OrderController@updateStatus');
     Route::group(['prefix' => 'messages'], function () {
         Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);
         Route::get('create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);

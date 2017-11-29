@@ -18,7 +18,7 @@ class NurseController extends Controller
         $person->name = $nurse->first_name. ' ' .$nurse->last_name;
         $person->job_title = 'Nurse at ' . $nurse->partner->first_name . ' '.$nurse->partner->last_name;
         $person->email = $nurse->contact_email;
-        $person->phone = '(+971)' .$nurse->contact_number;
+        $person->phone = '+' .$nurse->contact_number;
         $person->photo = $nurse->photo;
         if (!empty($nurse))
             return view('extras.card')->with('person', $person);
@@ -95,6 +95,11 @@ class NurseController extends Controller
                 $nurses['photo'] = '/upload/nurses/'.$filename;
             }
 
+            if ($request->has('full_number')) {
+                $nurses['contact_number'] = str_replace('+', '', $request->full_number);
+            }
+            unset($nurses['full_number']);
+
             if (Nurse::create($nurses))
                 return redirect(route('nurses.index'));
 
@@ -143,6 +148,8 @@ class NurseController extends Controller
 
             if (empty($nurse)) {
                 return redirect(route('nurses.index'));
+            }else{
+                $nurse->contact_number = (!empty($nurse->contact_number))? '+'.$nurse->contact_number:$nurse->contact_number;
             }
 
             return view('nurses.edit')->with('nurse', $nurse);
@@ -194,6 +201,11 @@ class NurseController extends Controller
                 // remove old image
                 //unlink(asset($nurse->photo));
             }
+
+            if ($request->has('full_number')) {
+                $nurses['contact_number'] = str_replace('+', '', $request->full_number);
+            }
+            unset($nurses['full_number']);
 
             if ($nurse->update($nurses))
                 return redirect(route('nurses.index'));

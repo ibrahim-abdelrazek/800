@@ -120,7 +120,7 @@
                                                             <span class="la la-phone"></span>
                                                         </td>
                                                         <td class="ks-text">
-                                                           {{ '(+971)' .$partner->phone }}
+                                                           {{ '+' .$partner->phone }}
                                                         </td>
                                                     </tr>
                                                     <tr>

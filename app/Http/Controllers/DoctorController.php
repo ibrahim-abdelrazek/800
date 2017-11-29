@@ -25,7 +25,7 @@ class DoctorController extends Controller
         $person->name = $doctor->first_name . ' ' . $doctor->last_name;
         $person->job_title = $doctor->specialty . ' doctor';
         $person->email = $doctor->contact_email;
-        $person->phone = '(+971) ' . $doctor->contact_number;
+        $person->phone = '+' . $doctor->contact_number;
         $person->photo = $doctor->photo;
         $person->nurses = $doctor->nurses;
         if (!empty($doctor))
@@ -107,6 +107,12 @@ class DoctorController extends Controller
                 $doctor['photo'] = '/upload/doctors/'.$filename;
             }
 
+
+           if ($request->has('full_number')) {
+               $doctor['contact_number'] = str_replace('+', '', $request->full_number);
+           }
+           unset($doctor['full_number']);
+
             if ($doc = Doctor::create($doctor)){
                 // Assign new nurses to doctor
                 $nurses = $request->nurses;
@@ -154,9 +160,11 @@ class DoctorController extends Controller
         if (Auth::user()->ableTo('edit', Doctor::$model)) {
 
             $doctor = Doctor::find($id);
-            $specialities = Doctor::select('specialty')->pluck('specialty');
             if (empty($doctor)) {
                 return redirect(route('doctors.index'));
+            }else{
+                $specialities = Doctor::select('specialty')->pluck('specialty');
+                $doctor->contact_number = (!empty($doctor->contact_number))? '+'.$doctor->contact_number:$doctor->contact_number;
             }
 
             return view('doctors.edit')->with('doctor', $doctor)->with('specialites', array_unique($specialities->toArray()));
@@ -210,6 +218,12 @@ class DoctorController extends Controller
             }
             $nurses = $request->nurses;
             $doc->nurses()->sync(array_unique($nurses));
+
+            if ($request->has('full_number')) {
+                $doctor['contact_number'] = str_replace('+', '', $request->full_number);
+            }
+            unset($doctor['full_number']);
+
             if ($doc->update($doctor))
                 return redirect(route('doctors.index'));
 

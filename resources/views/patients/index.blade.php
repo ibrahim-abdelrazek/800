@@ -1,8 +1,5 @@
 @extends('layouts.app')
 @push('customcss')
-/
-
-/
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/jquery-confirm/jquery-confirm.min.css') }}"> <!-- original -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/jquery-confirm/jquery.confirm.min.css') }}"> <!-- original -->
     <!-- customization -->

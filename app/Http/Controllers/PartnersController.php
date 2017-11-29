@@ -61,7 +61,7 @@ class PartnersController extends Controller
                 'last_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
                 'location' => 'required|max:100',
                 'logo' =>'image|mimes:jpeg,png,jpg,gif,svg',
-                'contact_number' => 'required|string|max:10',
+                'phone' => 'required|string|max:10',
                 'fax' => '',
                 'partner_type_id' => 'required',
                 'email' => 'required|unique:users',
@@ -77,7 +77,7 @@ class PartnersController extends Controller
             $partner->last_name = $request->last_name;
             $partner->location = $this->location[$request->location];
             $partner->partner_type_id = $request->partner_type_id;
-            $partner->phone = $request->phone;
+            $partner->phone = str_replace('+', '', $request->full_number);
             $partner->email = $request->email;
             $partner->commission = $request->has('commission') ? $request->commission : 0;
             $partner->fax = $request->fax;
@@ -147,10 +147,11 @@ class PartnersController extends Controller
 
             $user = User::where('partner_id', $id)->first();
 
-            $partner->location = array_search($partner['location'],$this->location);
             if (empty($partner)) {
-
                 return redirect(route("partners.index"));
+            }else{
+                $partner->location = array_search($partner['location'],$this->location);
+                $partner->phone = (!empty($partner->phone))? '+'.$partner->phone:$partner->phone;
             }
             return view('partners.edit')->with("partner", $partner);
         }
@@ -176,7 +177,7 @@ class PartnersController extends Controller
                 'last_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u','location' => 'required|max:100',
                 'partner_type_id' => 'required',
                 'email' => 'required|unique:users,email,' . $userID,
-                'contact_number' => 'required|string|max:10',
+                'phone' => 'required|string|max:10',
                 //'fax' => 'numeric'
             ]);
 
@@ -191,7 +192,12 @@ class PartnersController extends Controller
             $partner = Partner::where('id', $id)->first();
             $request['location'] = $this->location[$request->location];
 
-            $partner->update($request->all());
+            $data = $request->all();
+            if ($request->has('full_number')) {
+                $data['phone'] = str_replace('+', '', $request->full_number);
+            }
+
+            $partner->update($data);
 
             if($request->hasFile('logo')){
                 $logo = $request->file('logo');

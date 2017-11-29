@@ -35,7 +35,7 @@
             <td>{!! $hotelguest->name !!}</td>
             <td>{!! $hotelguest->guest_first_name . " " . $hotelguest->guest_last_name  !!}</td>
             <td>{!! $hotelguest->officer_name !!}</td>
-            <td>{!! '(+971) ' . $hotelguest->contact_number !!}</td>
+            <td>{!! '+' . $hotelguest->contact_number !!}</td>
             <td>{!! $hotelguest->guest_room_number !!}</td>
             <td>{!! $hotelguest->partner->first_name . ' ' .$hotelguest->partner->last_name !!}</td>
             <td>{!! $hotelguest->items !!}</td>

@@ -43,7 +43,7 @@
             </td>
             <td>{{ $nurse->first_name ." " .$nurse->last_name }}</td>
             <td>{{$nurse->contact_email}}</td>
-            <td>{{ '(+971)' . $nurse->contact_number }}</td>
+            <td>{{ '+' . $nurse->contact_number }}</td>
             @if(Auth::user()->isAdmin())
                 <td>{{ $nurse->partner->first_name . ' ' . $nurse->partner->last_name }}</td>
             @endif

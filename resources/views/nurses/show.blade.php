@@ -17,7 +17,7 @@
                         </div>
                         <div class="show">
                             <span>Contact Number: </span>
-                            <span class="value" >{{'(+971)'. $nurse->contact_number}}</span>
+                            <span class="value" >{{'+'. $nurse->contact_number}}</span>
                         </div>
                         <div class="show">
                             <span>created at </span>

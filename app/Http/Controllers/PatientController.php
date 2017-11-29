@@ -75,12 +75,12 @@ class PatientController extends Controller
                 'contact_number' => 'required|string|max:10',
                 'email' => 'required|email|unique:patients,email',
                 'insurance_file' => 'required|mimes:jpg,png,jpeg,pdf',
-                'insurance_provider' => 'required|numeric',
-                'card_number' => 'required|string',
-                'insurance_expiry' => 'required',
+                'insurance_provider' => 'numeric',
+                'card_number' => 'string',
+//                'insurance_expiry' => 'required',
                 'id_file' => 'required|mimes:jpg,png,jpeg,pdf',
-                'id_number' => 'required|string',
-                'id_expiry' => 'required',
+                'id_number' => 'string',
+//                'id_expiry' => 'required',
                 'notes' => 'max:200|min:0',
                 'city'=>'required|numeric',
                 'area' => 'required|numeric',
@@ -144,6 +144,10 @@ class PatientController extends Controller
                 }
                 $patient['insurance_file'] = '/upload/insurance/'.$filename;
             }
+            if ($request->has('full_number')) {
+                $patient['contact_number'] = str_replace('+', '', $request->full_number);
+            }
+            unset($patient['full_number']);
 
             if(Patient::create($patient))
                 return redirect(route('patients.index'));
@@ -214,9 +218,10 @@ class PatientController extends Controller
 
             $patient = Patient::find($id);
 
-
             if (empty($patient)) {
                 return redirect(route('patients.index'));
+            }else{
+                $patient->contact_number = (!empty($patient->contact_number))? '+'.$patient->contact_number:$patient->contact_number;
             }
             $address = explode(',',$patient->address);
 
@@ -278,11 +283,11 @@ class PatientController extends Controller
                 'gender' => 'required',
                 'contact_number' => 'required|string|max:10',
                 'email' => 'required|email|unique:patients,email,'.$patientt->id,
-                'insurance_provider' => 'required|numeric',
-                'card_number' => 'required|string',
-                'insurance_expiry' => 'required',
-                'id_number' => 'required|string',
-                'id_expiry' => 'required',
+                'insurance_provider' => 'numeric',
+                'card_number' => 'string',
+//                'insurance_expiry' => 'required',
+                'id_number' => 'string',
+//                'id_expiry' => 'required',
                 'notes' => 'max:200|min:0',
                 'city'=>'required|numeric',
                 'area' => 'required|numeric',
@@ -326,9 +331,7 @@ class PatientController extends Controller
 
 
             if (!$request->has('partner_id')) {
-
                 $patient = array_merge($patient, ['partner_id' => Auth::user()->partner_id]);
-
             }
 
             if(isset($fieldsArr['insurance_file'])){
@@ -355,6 +358,11 @@ class PatientController extends Controller
                 $patient['id_file'] = '/upload/insurance/'.$filename;
             }
 
+            if ($request->has('full_number')) {
+                $patient['contact_number'] = str_replace('+', '', $request->full_number);
+            }
+            unset($patient['full_number']);
+            //dd($patient);
             $patientt->update($patient);
 
             return redirect(route('patients.index'));

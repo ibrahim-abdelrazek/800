@@ -76,8 +76,7 @@
     <label for="default-input"
            class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('contact_number', null, [  'placeholder'=>'Enter Doctor\'s Number','style'=> 'padding-left:50px', 'maxlength'=> '10',  'class' => 'form-control ks-phone-mask-input1']) !!}
-        <span style="position: absolute;top: 10px;font-weight: bold;left: 23px;">(+971)</span>
+        {!! Form::text('contact_number', null, [  'placeholder'=>'Enter Doctor\'s Number','style'=> 'padding-left:50px', 'maxlength'=> '10',  'class' => 'form-control phone-input', 'style' => 'padding-left: 100px;']) !!}
     </div>
 </div>
 
@@ -141,16 +140,27 @@
 
 </div>
 
+@push('customcss')
+<link rel="stylesheet" type="text/css" href="{{ asset('libs/international-telephone-input/css/intlTelInput.css') }}">
+@endpush
 @push('customjs')
-    <script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script>
-    <script type="application/javascript">
+<script src="{{ asset('libs/international-telephone-input/js/intlTelInput.min.js') }}"></script>
+<script type="application/javascript">
         // asynchronous content
-        (function ($) {
-            $(document).ready(function () {
-                $('.ks-phone-mask-input1').mask('000-0000#');
+        $(document).ready(function () {
+            $(".phone-input").intlTelInput({
+                autoHideDialCode: false,
+                formatOnDisplay: true,
+                hiddenInput: "full_number",
+                initialCountry: "ae",
+                nationalMode: true,
+                preferredCountries : ['ae'],
+                separateDialCode: true,
+                utilsScript: "{{asset("libs/international-telephone-input/js/utils.js")}}"
             });
-        })(jQuery);
-        $('.fancybox').fancybox();
+
+            $('.fancybox').fancybox();
+        });
     </script>
 @endpush
 

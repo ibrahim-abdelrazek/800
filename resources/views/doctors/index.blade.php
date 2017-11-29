@@ -200,6 +200,8 @@
                         
                     });
                     $('#nurses-holder').on('click', '.remove_button', function(e){ //Once remove button is clicked
+                    $('.add_button').removeClass('disabled');
+                    $('.add_new_nurse').remove();
                     e.preventDefault();
                     $(this).parent().parent().remove(); //Remove field html
                      });
@@ -214,17 +216,33 @@
                           success: function(data) {
                          if(data.success){
                             html = '<div class="row"><div class="col-md-10"><select class="form-control ks-select" name="nurses[]">';
+                             var Values = [];
+                             $('select[name="nurses[]"]').each(function () {
+                                 Values.push($(this).val());
+                             });
+                             var k = 0;
                             $.each(data.data , function (key, value) {
-                                html += '<option value="'+key+'">'+value+'</option>';
+                                if($('select[name="nurses[]"]').val()==null || Values.indexOf(key)<0) {
+                                    k = 1;
+                                    html += '<option value="' + key + '">' + value + '</option>';
+                                }
                             });
-                            html += '</select></div>';
-                            if(i == 1){
-                               html+=' <div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a></div>'; 
-                            }else{
-                                html += '<div class="col-sm-1"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div>';
-                            }
-                            html+= '</div>';
-                            $('input[type=submit]').prop('disabled', function(i, v) { return false; });
+
+                             if(k==1 || $('select[name="nurses[]"]').val()==null){
+                                 html += '</select></div>';
+                                 if(i == 1){
+                                     html+=' <div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a></div>';
+                                 }else{
+                                     html += '<div class="col-sm-1"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div>';
+                                 }
+                                 html+= '</div>';
+                                 $('input[type=submit]').prop('disabled', function(i, v) { return false; });
+                             }else{
+                                 html = '<div class="row add_new_nurse"><div class="col-md-10"><p>You have added all nurses, Please <a href="{{route("nurses.index")}}"><b class="label-danger">Add ' + 'new Nurse</b></a></p></div></div>';
+
+                                 $('.add_button').addClass('disabled');
+                             }
+
                         }else{
                             html = "<p>You don't have added nurses yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add " +
                                 "new Nurse</b></a></p>";
@@ -274,17 +292,31 @@
                           success: function(data) {
                          if(data.success){
                             html = '<div class="row"><div class="col-md-10"><select class="form-control ks-select" name="nurses[]">';
+                             var Values = [];
+                             $('select[name="nurses[]"]').each(function () {
+                                 Values.push($(this).val());
+                             });
+                             var k = 0;
                             $.each(data.data , function (key, value) {
-                                html += '<option value="'+key+'">'+value+'</option>';
+                                if($('select[name="nurses[]"]').val()==null || Values.indexOf(key)<0) {
+                                    k = 1;
+                                    html += '<option value="' + key + '">' + value + '</option>';
+                                }
                             });
-                            html += '</select></div>';
-                            if(i == 1){
-                               html+=' <div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a></div>'; 
-                            }else{
-                                html += '<div class="col-sm-1"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div>';
-                            }
-                            html+= '</div>';
-                            $('input[type=submit]').prop('disabled', function(i, v) { return false; });
+                             if(k==1 || $('select[name="nurses[]"]').val()==null){
+                                html += '</select></div>';
+                                if(i == 1){
+                                   html+=' <div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a></div>';
+                                }else{
+                                    html += '<div class="col-sm-1"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div>';
+                                }
+                                html+= '</div>';
+                                $('input[type=submit]').prop('disabled', function(i, v) { return false; });
+                             }else{
+                                 html = '<div class="row add_new_nurse"><div class="col-md-10"><p>You have added all nurses, Please <a href="{{route("nurses.index")}}"><b class="label-danger">Add ' + 'new Nurse</b></a></p></div></div>';
+
+                                 $('.add_button').addClass('disabled');
+                             }
                         }else{
                             html = "<p>You don't have added nurses yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add " +
                                 "new Nurse</b></a></p>";

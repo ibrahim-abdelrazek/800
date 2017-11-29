@@ -104,9 +104,21 @@
         @if(isset($doctor))
             @php $i=1; $nurses = $doctor->nurses; @endphp
             @foreach($nurses as $nurse)
+                <?php $nursesArr[] = $nurse->id;?>
+            @endforeach
+            @foreach($nurses as $nurse)
             <div class="row">
                 <div class="col-md-10">
-                      {!! Form::select('nurses[]',App\Nurse::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id'),$nurse->id,['style'=>'width:100% !importnat','class' => 'form-control'])!!}
+                    <?php $allNurses = App\Nurse::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->where('partner_id', $doctor['partner_id'])->pluck('name', 'id'); ?>
+                    <?php// dump($allNurses)?>
+                    <select name="nurses[]" style="width:100% !importnat" class="form-control">
+                        @foreach($allNurses as $key => $value)
+                            @if($key == $nurse->id || !in_array($key, $nursesArr))
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                      {{--{!! Form::select('nurses[]',App\Nurse::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->where('partner_id', $doctor['partner_id'])->pluck('name', 'id'),$nurse->id,['style'=>'width:100% !importnat','class' => 'form-control'])!!}--}}
                 </div> 
                 <div class="col-sm-2">
                     @if($i == 1 )

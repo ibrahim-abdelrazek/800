@@ -46,8 +46,8 @@ class DoctorController extends Controller
                 $doctors = Doctor::where('partner_id', Auth::user()->partner_id)->get();
 
             }
-            $specialities = Doctor::select('specialty')->pluck('specialty');
-            return view('doctors.index')->with('doctors', $doctors)->with('specialites', array_unique($specialities->toArray()));
+            $specialities = ["Cardiology","Child Psychiatry","Dermatology-Venereology","Emergency Medicine","Endocrinology","Family Medicine","Gastroenterology","General Practice","General Surgery","Geriatrics","Infectious Disease","Internal Medicine","Neonatology","Nephrology","Neurology","Neurosurgery","Obstetrics and Gynaecology","Ophthalmology","Orthodontics","Orthopaedics","Other","Paediatrics","Pathology","Physiotherapy and Rehabilitation","Plastic Surgery","Psychiatry","Public Health","Pulmonology","Radiology","Sports Medicine","Urology","Vascular Medicine","Vascular Surgery"];
+            return view('doctors.index')->with('doctors', $doctors)->with('specialites', array_unique($specialities));
         }else {
             return view('extra.404');
         }
@@ -163,11 +163,11 @@ class DoctorController extends Controller
             if (empty($doctor)) {
                 return redirect(route('doctors.index'));
             }else{
-                $specialities = Doctor::select('specialty')->pluck('specialty');
+                $specialities = ["Cardiology","Child Psychiatry","Dermatology-Venereology","Emergency Medicine","Endocrinology","Family Medicine","Gastroenterology","General Practice","General Surgery","Geriatrics","Infectious Disease","Internal Medicine","Neonatology","Nephrology","Neurology","Neurosurgery","Obstetrics and Gynaecology","Ophthalmology","Orthodontics","Orthopaedics","Other","Paediatrics","Pathology","Physiotherapy and Rehabilitation","Plastic Surgery","Psychiatry","Public Health","Pulmonology","Radiology","Sports Medicine","Urology","Vascular Medicine","Vascular Surgery"];
                 $doctor->contact_number = (!empty($doctor->contact_number))? '+'.$doctor->contact_number:$doctor->contact_number;
             }
 
-            return view('doctors.edit')->with('doctor', $doctor)->with('specialites', array_unique($specialities->toArray()));
+            return view('doctors.edit')->with('doctor', $doctor)->with('specialites', array_unique($specialities));
         } else {
             return view('extra.404');
         }

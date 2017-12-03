@@ -1,3 +1,7 @@
+
+@push('customcss')
+<link rel="stylesheet" type="text/css" href="{{ asset('libs/styles/token-input.css') }}">
+@endpush
 <div>
     @if($errors->any())
         <div class="alert alert-danger">
@@ -73,13 +77,15 @@
         </label>
 
         <div class="col-sm-10">
-            @if(\App\Patient::where('partner_id', Auth::user()->partner_id)->count() > 0)
+
+{!! Form::text('patient_id',null, [ 'id'=>'search', 'class' => 'form-control']) !!}
+ <!-- @if(\App\Patient::where('partner_id', Auth::user()->partner_id)->count() > 0)
 
                 {!! form::select ('patient_id',App\Patient::select(DB::raw("CONCAT(first_name,' ', last_name) AS full_name, id"))->where('partner_id', Auth::user()->partner_id)->pluck('full_name','id'),null,['class' => 'form-control'])!!}
             @else
                 <p>You don't have added patients yet, Please <a href="{{route('patients.index')}}"><b class="label-danger">Add
                             new Patient</b></a></p>
-            @endif
+            @endif -->
         </div>
     </div>
     <!-- Doctor -->
@@ -108,7 +114,7 @@
         </label>
 
         <div class="col-sm-10">
-            {!! Form::select('partner_id',App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id'),null,['class' => 'form-control'])!!}
+            {!! Form::select('partner_id',App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id'),null,['class' => 'form-control','id'=>'partner_id'])!!}
         </div>
     </div>
     <!-- Patients Holder -->
@@ -118,6 +124,7 @@
         </label>
 
         <div id="patients-holder" class="col-sm-10">
+            {!! Form::text('patient_id',null, [ 'id'=>'search', 'class' => 'form-control']) !!}
         </div>
     </div>
     <!--  doctor_id -->
@@ -126,6 +133,7 @@
             {!! Form::label('doctor', 'doctor',['class'=> 'required']) !!}
         </label>
         <div id="doctors-holder" class="col-sm-10">
+            {!! form::select ('doctor_id',App\Doctor::select(DB::raw("CONCAT(first_name,' ', last_name) AS name,id "))->where('partner_id', Auth::user()->partner_id)->pluck('name','id'),null,['class' => 'form-control '])!!}
         </div>
     </div>
 @endif
@@ -202,9 +210,31 @@
 </div>
 
 @push('customjs')
+<script src="{{ asset('libs/src/jquery.tokeninput.js') }}"></script>
 <script type="text/javascript">
     $('.fancybox').fancybox();
 </script>
+<script type="text/javascript">
+$(document).ready(function () {
+     var isAdmin= '<?=  Auth::user()->isAdmin()?>';
+    var partnerID = "<?= (!Auth::user()->isAdmin())? Auth::user()->partner_id:'' ?>";
+    var partner = (!isAdmin)? partnerID : $('#partner_id').val();
+    $("#search").tokenInput('{{url("patient/searchpatient")}}?c='+partner,
+        {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'searchDelay':1,
+            'minChars':2,
+            'tokenLimit':1,
+        }
+        );
+    $('#patients-holder ul').addClass('form-control');
+    $('#patients-holder ul li').addClass('form-control');
+    $('#patients-holder ul').css('width', 'unset');
+
+   
+});
+</script>
+
 @endpush
 
 

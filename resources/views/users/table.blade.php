@@ -27,8 +27,8 @@
                 @php($i=1)
         @foreach($users as $user)
             <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
-                <td><img style="width:100px" src="{{asset($user->avatar)}}"></td>
-                <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->first_name . ' ' . $user->last_name !!}" data-original-title="{!! $user->name !!}">{!! substr($user->name,0,20) !!}</span></td>
+                <td><img style="width:100px" src="{{url($user->avatar)}}"></td>
+                <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->first_name . ' ' . $user->last_name !!}" data-original-title="{!! $user->first_name . ' ' . $user->last_name !!}">{!! substr($user->first_name . ' ' . $user->last_name,0,20) !!}</span></td>
                 <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->email !!}" data-original-title="{!! $user->email !!}">{!! strlen($user->email) > 20 ? substr($user->email,0,20) . '...' : $user->email !!}</span></td>
                 <td>{!! $user->userGroup->group_name !!}</td>
                 @if(Auth::user()->isAdmin())

@@ -38,8 +38,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('nurse/viewCard/{id}', 'NurseController@viewCard');
     Route::resource('products', 'ProductController');
     Route::get('orders/print/{id}', 'OrderController@download');
-
     Route::resource('orders', 'OrderController');
+    Route::get('patient/searchpatient', 'PatientController@searchpatient');
     Route::post('orders/update-status', 'OrderController@updateStatus');
     Route::resource('status', 'StatusController');
     Route::group(['prefix' => 'messages'], function () {

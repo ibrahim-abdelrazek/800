@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Nighborhood;
 use App\Patient;
+use App\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
@@ -391,5 +392,34 @@ class PatientController extends Controller
         }else {
             return view('extra.404');
         }
+
+    }
+    public function searchpatient(Request $request)
+    {
+// $patients = Patients::DB::select(raw("CONCAT(first_name,' ', last_name) AS full_name, id,contact_number WHERE partner_id LIKE  '%'.Request->input('c').'%'"));
+//$patients = DB::table('patients')->where('partner_id', Request->input('c'))->where(function ($query) {
+            // ->where('first_name', 'LIKE', '%'.Request->input('q').'%')
+            //            ->orWhere('last_name', 'LIKE', '%'.Request->input('q').'%')
+            //            ->orWhere('contact_number', 'LIKE','%'.Request->input('q').'%');
+            //        })
+//return Response::json($patients);
+        $partner = Partner::find($request->c);
+        if(!empty($partner)){
+
+            $patients = Patient::where('partner_id', $request->c)->where(function($query) use ($request){
+
+                $query->where('first_name', 'LIKE', '%'.$request->input('q').'%')
+                       ->orWhere('last_name', 'LIKE', '%'.$request->input('q').'%')
+                       ->orWhere('contact_number', 'LIKE','%'.$request->input('q').'%');
+            })->get();
+            $response = [];
+            foreach ($patients as $patient) {
+                          $res['id'] = $patient->id;
+                          $res['name'] = $patient->first_name . ' ' . $patient->last_name . ' - ' . $patient->contact_number;
+                          $response[] = $res;
+                       }           
+           return response()->json($response, 200);                
+        }
+        return response()->json(['success'=>false], 200);   
     }
 }

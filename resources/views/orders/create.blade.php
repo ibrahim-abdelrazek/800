@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="row">
         <div class="col-lg-12 ks-panels-column-section">
             <div class="card">
@@ -22,7 +23,11 @@
     </div>
 @endsection
 @push('customjs')
+
+
+    
     <script type="text/javascript">
+
         (function($){
             $(document).ready(function(){
                 var addButton = $('.add_button'); //Add button selector
@@ -51,10 +56,10 @@
             (function ($) {
                 $(document).ready(function () {
                     loadDoctors($('select[name=partner_id]').val());
-                    loadPatients($('select[name=partner_id]').val());
+                    //loadPatients($('select[name=partner_id]').val());
                     $('select[name=partner_id]').on('change', function(e){
                         var partner_id = $(this).val();
-                        loadPatients(partner_id);
+                        //loadPatients(partner_id);
                         loadDoctors(partner_id);
                     });
                 });

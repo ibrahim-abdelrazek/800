@@ -54,8 +54,9 @@ class UserController extends Controller
     {
         //
       if (Auth::user()->ableTo('create', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
+          $specialities = ["Cardiology","Child Psychiatry","Dermatology-Venereology","Emergency Medicine","Endocrinology","Family Medicine","Gastroenterology","General Practice","General Surgery","Geriatrics","Infectious Disease","Internal Medicine","Neonatology","Nephrology","Neurology","Neurosurgery","Obstetrics and Gynaecology","Ophthalmology","Orthodontics","Orthopaedics","Other","Paediatrics","Pathology","Physiotherapy and Rehabilitation","Plastic Surgery","Psychiatry","Public Health","Pulmonology","Radiology","Sports Medicine","Urology","Vascular Medicine","Vascular Surgery"];
 
-        return view('users.create');
+        return view('users.create')->with('specialites', array_unique($specialities));
       }else{
                return view('extra.404');
         }
@@ -71,13 +72,13 @@ class UserController extends Controller
     {
         if (Auth::user()->ableTo('create', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
             $request->validate([
-                'first_name' => 'required|min:5|max:50',
-                'last_name' => 'required|min:5|max:50',
+                'first_name' => 'required|min:3|max:50',
+                'last_name' => 'required|min:3|max:50',
                 'email' => 'required|unique:users,email',
                 'password' => 'required|min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
                 'password_confirmation'=>'',
                 'user_group_id' => 'required',
-                'avatar' =>'required|image|mimes:jpeg,png,jpg,gif',
+                'avatar' =>'image|mimes:jpeg,png,jpg,gif',
 
             ],
                 ['password.regex' => 'Your Password must contain at least 6 characters as (Uppercase and Lowercase characters and Numbers and Special characters). ',
@@ -93,25 +94,70 @@ class UserController extends Controller
             else $user = $request->all();
     
             $user['password'] = Hash::make($user['password']);
-    
-    
-            //dd($user);
-    
+
+            $user['contact_number'] = str_replace('+', '', $request->full_number);
+            unset($user['full_number']);
+
+            if($user['user_group_id'] == 31){
+                $doctorData = $user;
+                $doctorData['contact_email'] = $user['email'];
+                (!$request->hasFile('avatar')? : $doctorData['photo'] = $user['avatar']);
+                unset($doctorData['email']);
+                unset($doctorData['avatar']);
+                unset($doctorData['user_group_id']);
+                unset($doctorData['password']);
+                unset($doctorData['password_confirmation']);
+            }elseif($user['user_group_id'] == 32){
+                $nurseData = $user;
+                $nurseData['contact_email'] = $user['email'];
+                (!$request->hasFile('avatar')? : $nurseData['photo'] = $user['avatar']);
+                unset($nurseData['email']);
+                unset($nurseData['avatar']);
+                unset($nurseData['user_group_id']);
+                unset($nurseData['specialty']);
+                unset($nurseData['nurses']);
+            }
+            unset($user['full_number']);
+            unset($user['specialty']);
+            unset($user['nurses']);
             if ($userr = User::create($user)){
+                if($user['user_group_id'] == 31){
+                    $doctorData['user_id'] = $userr->id;
+                    if ($doctor = Doctor::create($doctorData)){
+                        // Assign new nurses to doctor
+                        $nurses = $request->nurses;
+                        $doctor->nurses()->attach(array_unique($nurses));
+                    }
+                }elseif($user['user_group_id'] == 32){
+                    $nurseData['user_id'] = $userr->id;
+                    $nurse = Nurse::create($nurseData);
+                }
+
                 if($request->hasFile('avatar')){
                     $img = $request->file('avatar');
                     $filename = time(). '.' . $img->getClientOriginalExtension();
                     //Image::configure(array('driver' => 'imagick'));
                     Image::make($img)->save( public_path('/upload/users/'.$filename));
                     Image::make($img)->save( public_path('/upload/avatars/'.$filename));
-                    $userr->avatar = '/upload/avatars/'.$filename;
+                    $userr->avatar = '/upload/users/'.$filename;
                     $userr->save();
-                    return redirect(route('users.index'));
-    
+
+                    if($user['user_group_id'] == 31){
+                        Image::make($img)->save( public_path('/upload/doctors/'.$filename));
+                        $doctor->photo = '/upload/doctors/'.$filename;
+                        $doctor->save();
+                    }elseif($user['user_group_id'] == 32){
+                        Image::make($img)->save( public_path('/upload/nurses/'.$filename));
+                        $nurse->photo = '/upload/nurses/'.$filename;
+                        $nurse->save();
+                    }
                 }
-    
-    
+
+                return redirect(route('users.index'));
+
                 // remove old image
+            }else{
+                return back();
             }
         }else{
                return view('extra.404');

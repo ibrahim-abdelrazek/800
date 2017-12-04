@@ -110,7 +110,6 @@
             <div class="row">
                 <div class="col-md-10">
                     <?php $allNurses = App\Nurse::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->where('partner_id', $doctor['partner_id'])->pluck('name', 'id'); ?>
-                    <?php// dump($allNurses)?>
                     <select name="nurses[]" style="width:100% !importnat" class="form-control">
                         @foreach($allNurses as $key => $value)
                             @if($key == $nurse->id || !in_array($key, $nursesArr))

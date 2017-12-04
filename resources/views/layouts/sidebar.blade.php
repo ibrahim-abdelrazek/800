@@ -41,13 +41,6 @@
             @endif
             @if(Auth::user()->isAdmin() || Auth::user()->isPartner())
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('usergroups.index') }}" role="button" aria-haspopup="true"
-                       aria-expanded="false">
-                        <span class="ks-icon la la-toggle-off"></span>
-                        <span>User Groups</span>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{{ route('users.index') }}" role="button" aria-haspopup="true"
                        aria-expanded="false">
                         <span class="ks-icon la la-user"></span>

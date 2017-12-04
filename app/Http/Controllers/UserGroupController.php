@@ -185,8 +185,8 @@ class UserGroupController extends Controller
 
             $dataa['group_name'] = $usergroup['group_name'];
             $dataa['id'] = $usergroup['id'];
-            $dataa['partner_id'] = $usergroup['partner_id'];
-
+//            $dataa['partner_id'] = $usergroup['partner_id'];
+//
             if (empty($usergroup)) {
                 return redirect(route('usergroups.index'));
             }

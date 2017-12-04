@@ -36,7 +36,7 @@
             <td scope="row">{{ $i }}</td>
             <td>
                 @if(!empty($nurse->photo))
-                    <img style="width: 50px; height: 50px;" class="media-object img-circle profile-img" src="{{ asset($nurse->photo) }}">
+                    <img style="width: 50px; height: 50px;" class="media-object img-circle profile-img" src="{{ url($nurse->photo) }}">
                 @else
                     <img style="width: 50px; height: 50px;" class="media-object img-circle profile-img" src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png">
                 @endif

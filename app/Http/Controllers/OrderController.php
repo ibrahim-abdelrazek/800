@@ -25,11 +25,11 @@ class OrderController extends Controller
 
             if (Auth::user()->isAdmin()) {
 
-                $orders = Order::get();
+                $orders = Order::all();
 
             } else {
 
-                $orders = Order::where('partner_id', Auth::user()->partner_id);
+                $orders = Order::where('partner_id', Auth::user()->partner_id)->get();
 
 
             }

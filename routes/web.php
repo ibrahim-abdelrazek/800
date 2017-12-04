@@ -23,7 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('settings', 'SettingsController');
     Route::post('settings/update', 'SettingsController@update');
     Route::resource('partnertypes' , 'PartnerTypesController');
-    Route::resource('usergroups' , 'UserGroupController');
+    // Route::resource('usergroups' , 'UserGroupController');
     Route::resource('users' , 'UserController');
     Route::resource('partners' , 'PartnersController');
     Route::resource('doctors', 'DoctorController');

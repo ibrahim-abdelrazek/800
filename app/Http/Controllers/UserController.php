@@ -31,7 +31,7 @@ class UserController extends Controller
         if (Auth::user()->ableTo('view', User::$model) || Auth::user()->user_group_id == 1 || Auth::user()->user_group_id == 2) {
             if (Auth::user()->user_group_id == 1) {
     
-                $users = User::where('user_group_id', '!=', 1)->where('user_group_id', '!=', 2)->get();
+                $users = User::where('id', '!=', Auth::user()->id)->get();
     
             } elseif (Auth::user()->user_group_id == 2) {
              
@@ -98,7 +98,9 @@ class UserController extends Controller
             $user['contact_number'] = str_replace('+', '', $request->full_number);
             unset($user['full_number']);
 
-            if($user['user_group_id'] == 31){
+            if($user['user_group_id'] == 1){
+                $user['partner_id'] = null;
+            }elseif($user['user_group_id'] == 31){
                 $doctorData = $user;
                 $doctorData['contact_email'] = $user['email'];
                 (!$request->hasFile('avatar')? : $doctorData['photo'] = $user['avatar']);
@@ -253,7 +255,10 @@ class UserController extends Controller
         $data['last_name'] = $request->last_name;
         $data['email'] = $request->email;
         $data['user_group_id'] = $request->user_group_id;
-        if(Auth::user()->isAdmin())
+        
+        if($request->user_group_id == 1){
+            $data['partner_id'] = null;
+        }elseif(Auth::user()->isAdmin())
             $data['partner_id'] = $request->partner_id;
         else
             $data['partner_id'] = Auth::user()->partner_id;

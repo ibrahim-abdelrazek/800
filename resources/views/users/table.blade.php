@@ -53,7 +53,9 @@
         
 @push('customjs')
     <script src="{{ asset('libs/datatables-net/media/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables-net/extensions/responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/media/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables-net/extensions/responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('libs/jszip/jszip.min.js') }}"></script>
@@ -66,6 +68,7 @@
         (function ($) {
             $(document).ready(function () {
                 var table = $('#user-datatable').DataTable({
+                    responsive: true,
                     columnDefs: [
                         { width: '20%', targets: 3 }
                     ],

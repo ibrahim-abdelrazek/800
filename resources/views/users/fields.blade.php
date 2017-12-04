@@ -27,7 +27,7 @@
     </div>
 
     <!--  Status -->
-    <div class="form-group row">
+    <div class="form-group row partner_form_input  <?= (!empty($user->user_group_id) && $user->user_group_id==1)? 'hidden':''?>">
         <label for="default-input"
                class="col-sm-2 form-control-label">{!! Form::label('partner_id', 'Partner:',['class'=> 'required']) !!}</label>
         <div class="col-sm-10">
@@ -53,7 +53,7 @@
         <div class="col-sm-10">
             @if(\App\Partner::count() > 0)
                 {!! Form::select('user_group_id',
-            App\UserGroup::where('id', '!=', 2)->get()->pluck("group_name","id")
+            App\UserGroup::where('id', '!=', 2)->where('id', '!=', 1)->get()->pluck("group_name","id")
             , null, [  'class' => 'form-control ks-select']) !!}
             @else
                 <p>You don't have added User Group yet, Please <a href="{{route('userfroups.index')}}"><b
@@ -233,6 +233,12 @@
                     $('.doctor_form_input').each(function () {
                         $(this).addClass('hidden');
                     })
+                }
+                
+                if(userGroup==1){
+                    $('.partner_form_input').addClass('hidden');
+                }else{
+                    $('.partner_form_input').removeClass('hidden');
                 }
             }
             $(".phone-input").intlTelInput({

@@ -143,5 +143,6 @@
 
 </script>
 @stack('customjs')
+
 </body>
 </html>

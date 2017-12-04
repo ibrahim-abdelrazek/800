@@ -1,7 +1,7 @@
 <div class="ks-nav-body">
     <div class="ks-nav-body-wrapper">
         <div class="container-fluid">
-            <table id="patient-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <table id="patient-datatable" class="table table-striped table-bordered datatable dtr-inline" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th rowspan="1" colspan="1">Name</th>

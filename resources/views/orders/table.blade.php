@@ -32,7 +32,7 @@
                         <td>{{$order->id}}</td>
                         <td>{{ $order->patient->first_name . " " . $order->patient->last_name }}</td>
                         <td>{{ $order->notes }}</td>
-                        <td>{{ $order->owner->name }}</td>
+                        <td>{{ !empty($order->owner) ? $order->owner->name : '' }}</td>
                         <td>{{ date('Y m d', strtotime($order->created_at)) }}</td>
                         <td class="text-center">
                            <div class="btn-group">

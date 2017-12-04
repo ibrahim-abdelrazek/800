@@ -5,8 +5,10 @@
     <!-- customization -->
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/flexdatalist/jquery.flexdatalist.min.css')}}"> <!-- original -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/flexdatalist/jquery.flexdatalist.min.css')}}"> <!-- customization -->
-
+    
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/datatables-net/media/css/dataTables.bootstrap4.min.css')}}"> <!-- original -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('libs/datatables-net/extensions/responsive/js/responsive.bootstrap4.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('libs/datatables-net/extensions/responsive/js/responsive.bootstrap4.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/datatables-net/extensions/buttons/css/buttons.bootstrap4.min.css')}}"> <!-- original -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styles/libs/datatables-net/datatables.min.css')}}"> <!-- customization -->
 
@@ -68,7 +70,9 @@
     <script src="{{ asset('libs/jquery-mask/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('libs/flexdatalist/jquery.flexdatalist.min.js')}}"></script>
     <script src="{{ asset('libs/datatables-net/media/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables-net/extensions/responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/media/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables-net/extensions/responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('libs/datatables-net/extensions/buttons/js/buttons.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('libs/jszip/jszip.min.js') }}"></script>
@@ -82,7 +86,8 @@
         (function ($) {
             $(document).ready(function () {
                 var table = $('#patient-datatable').DataTable({
-                    lengthChange: false,
+                    responsive: true,
+                    lengthChange: true,
                     buttons: [
                         {
                             extend: 'copyHtml5',

@@ -53,7 +53,7 @@
         <div class="col-sm-10">
             @if(\App\Partner::count() > 0)
                 {!! Form::select('user_group_id',
-            App\UserGroup::where('id', '!=', 2)->where('id', '!=', 1)->get()->pluck("group_name","id")
+            App\UserGroup::where('id', '!=', 2)->where('id', '!=', 1)->where('id', '!=', 28)->where('id', '!=', 29)->get()->pluck("group_name","id")
             , null, [  'class' => 'form-control ks-select']) !!}
             @else
                 <p>You don't have added User Group yet, Please <a href="{{route('userfroups.index')}}"><b

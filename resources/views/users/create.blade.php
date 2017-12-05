@@ -1,23 +1,19 @@
-@extends('layouts.app')
+<div class="row">
+    <div class="col-lg-12 ks-panels-column-section">
+        <div class="card">
+            <div class="card-block">
+                <h5 class="card-title">Create new User</h5>
 
-@section('content')
-    <div class="row">
-        <div class="col-lg-12 ks-panels-column-section">
-            <div class="card">
-                <div class="card-block">
-                    <h5 class="card-title">Create new User</h5>
+                {!! Form::open(['route' => 'users.store', 'files' => true]) !!}
 
-                    {!! Form::open(['route' => 'users.store', 'files' => true]) !!}
+                @include('users.fields')
 
-                    @include('users.fields')
-
-                    {!! Form::close() !!}
-                </div>
+                {!! Form::close() !!}
             </div>
-
         </div>
+
     </div>
-@endsection
+</div>
 @push('customjs')
 @if(Auth::user()->isAdmin())
     <script type="application/javascript">

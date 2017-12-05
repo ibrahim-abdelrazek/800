@@ -14,20 +14,20 @@
 <!--  first Name -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('first_name', 'First Name:',['class'=> 'required']) !!}</label>
+        {!! Form::label('first_name', 'Partner Name:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('first_name', null, [  'placeholder'=>'Enter Partner\'s first name', 'class' => 'form-control']) !!}
+        {!! Form::text('first_name', null, [  'placeholder'=>'Enter Partner\'s name', 'class' => 'form-control']) !!}
     </div>
 </div>
 
 <!--  last Name -->
-<div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('last_name', 'Last Name:',['class'=> 'required']) !!}</label>
-    <div class="col-sm-10">
-        {!! Form::text('last_name', null, [  'placeholder'=>'Enter Partner\'s last name', 'class' => 'form-control']) !!}
-    </div>
-</div>
+{{--<div class="form-group row">--}}
+    {{--<label for="default-input" class="col-sm-2 form-control-label">--}}
+        {{--{!! Form::label('last_name', 'Last Name:',['class'=> 'required']) !!}</label>--}}
+    {{--<div class="col-sm-10">--}}
+        {{--{!! Form::text('last_name', null, [  'placeholder'=>'Enter Partner\'s last name', 'class' => 'form-control']) !!}--}}
+    {{--</div>--}}
+{{--</div>--}}
 
 <!-- Logo -->
 <div class="form-group row">

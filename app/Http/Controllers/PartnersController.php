@@ -14,7 +14,8 @@ class PartnersController extends Controller
 
     public function __construct()
     {
-        $this->location =['Abu Dhabi' , 'Dubai' , 'Sharjah' , 'Ajman' ,'Umm Al Quwain','Ras Al Khaimah' ,'Fujairah' ];
+        $this->location =['Dubai'];
+        //['Abu Dhabi' , 'Dubai' , 'Sharjah' , 'Ajman' ,'Umm Al Quwain','Ras Al Khaimah' ,'Fujairah' ];
     }
 
     /**

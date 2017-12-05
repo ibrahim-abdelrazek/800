@@ -23,9 +23,9 @@
     <div class="col-sm-10">
         @if(request()->route()->getAction()['as'] == "orders.edit")
             <a class="fancybox" href="<?= (empty($order['prescription']))? '#' : $order['prescription'];?>" target="_blank" data-fancybox-group="gallery" title="">
-                @if(!empty($order['prescription']) && strpos(mime_content_type(base_path().'/public/'.$order['prescription']), 'image') !== false)
+                @if(!empty($order['prescription']) && file_exists(base_path().'/public/'.$order['prescription']) && strpos(mime_content_type(base_path().'/public/'.$order['prescription']), 'image') !== false)
                     <img src="<?= $order['prescription'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
-                @elseif(!empty($order['prescription']) && strpos(mime_content_type(base_path().'/public/'.$order['insurance_file']), 'pdf') !== false)
+                @elseif(!empty($order['prescription']) && file_exists(base_path().'/public/'.$order['prescription']) && strpos(mime_content_type(base_path().'/public/'.$order['insurance_file']), 'pdf') !== false)
                     <img src="/upload/pdf.png" style="width:75px; height:75px; float: left;margin-right:25px;">
                 @else
                     <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">
@@ -44,9 +44,9 @@
     <div class="col-sm-10">
         @if(request()->route()->getAction()['as'] == "orders.edit")
             <a class="fancybox" href="<?= (empty($order['insurance_claim']))? '#' : $order['insurance_claim'];?>" target="_blank" data-fancybox-group="gallery" title="">
-                @if(!empty($order['insurance_claim']) && strpos(mime_content_type(base_path().'/public/'.$order['insurance_claim']), 'image') !== false)
+                @if(!empty($order['insurance_claim']) && file_exists(base_path().'/public/'.$order['insurance_claim']) && strpos(mime_content_type(base_path().'/public/'.$order['insurance_claim']), 'image') !== false)
                     <img src="<?= $order['insurance_claim'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
-                @elseif(!empty($order['insurance_claim']) && strpos(mime_content_type(base_path().'/public/'.$order['insurance_file']), 'pdf') !== false)
+                @elseif(!empty($order['insurance_claim']) && file_exists(base_path().'/public/'.$order['insurance_claim']) && strpos(mime_content_type(base_path().'/public/'.$order['insurance_file']), 'pdf') !== false)
                     <img src="/upload/pdf.png" style="width:75px; height:75px; float: left;margin-right:25px;">
                 @else
                     <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">

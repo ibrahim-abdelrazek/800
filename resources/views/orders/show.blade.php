@@ -38,9 +38,9 @@
 
                                     <h5>Insurance Claim</h5>
 
-                                    @if(!empty($order->insurance_claim) && strpos(mime_content_type(base_path().'/public/'.$order->insurance_claim), 'image') !== false)
+                                    @if(!empty($order->insurance_claim) && file_exists(base_path().'/public/'.$order->insurance_claim) && strpos(mime_content_type(base_path().'/public/'.$order->insurance_claim), 'image') !== false)
                                         <img class="ks-insurance" src="{{asset($order->insurance_claim)}}" height="60">
-                                    @elseif(!empty($order->insurance_claim) && strpos(mime_content_type(base_path().'/public/'.$order->insurance_claim), 'pdf') !== false)
+                                    @elseif(!empty($order->insurance_claim) && file_exists(base_path().'/public/'.$order->insurance_claim) && strpos(mime_content_type(base_path().'/public/'.$order->insurance_claim), 'pdf') !== false)
                                         <a href="{{$order->insurance_claim}}" target="_blank">
                                             <img src="/upload/pdf.png" style="width:75px; height:75px;">
                                         </a>

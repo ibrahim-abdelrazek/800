@@ -203,90 +203,27 @@
 
 @push('customjs')
 
-<script src="{{ asset('libs/international-telephone-input/js/intlTelInput.min.js') }}"></script>
-    <script type="application/javascript">
+@if(Auth::user()->isAdmin())
+<script type="application/javascript">
+    // asynchronous content
+    (function ($) {
         $(document).ready(function () {
-            handle_user_group_form();
-            $("#user_group_id").on('change', function () {
-                handle_user_group_form();
-            });
+            var i = 1;
+            var partner_id = $('select[name=partner_id]').val();
+            var html = loadNurses(i, partner_id);
 
-            function handle_user_group_form(){
-                var userGroup = $("#user_group_id").val();
-                if(userGroup==31 || userGroup==32){
+            if(i == 1){
+                $('#nurses-holder').html(html);
 
-                    if(userGroup==31){
-                        $('.doctor_form_input').each(function () {
-                            $(this).removeClass('hidden');
-                        })
-                    }else if(userGroup==32 ){
-                        $('.doctor_form_input').each(function () {
-                            $(this).addClass('hidden');
-                        })
-                        $('.nurse_form_input').removeClass('hidden');
-                    }else{
-                        $('.doctor_form_input').each(function () {
-                            $(this).addClass('hidden');
-                        })
-                    }
-                }else{
-                    $('.doctor_form_input').each(function () {
-                        $(this).addClass('hidden');
-                    })
-                }
-                
-                if(userGroup==1){
-                    $('.partner_form_input').addClass('hidden');
-                }else{
-                    $('.partner_form_input').removeClass('hidden');
-                }
             }
-            $(".phone-input").intlTelInput({
-                autoHideDialCode: false,
-                formatOnDisplay: true,
-                hiddenInput: "full_number",
-                initialCountry: "ae",
-                nationalMode: true,
-                preferredCountries : ['ae'],
-                separateDialCode: true,
-                utilsScript: "{{asset("libs/international-telephone-input/js/utils.js")}}"
-            });
-        });
-    </script>
-
-    @if(Auth::user()->isAdmin())
-    <script type="application/javascript">
-        // asynchronous content
-        (function ($) {
-            $(document).ready(function () {
-                var i = 1;
-                var partner_id = $('select[name=partner_id]').val();
-                var html = loadNurses(i, partner_id);
-
+            $('select[name=partner_id]').on('change', function(e){
+                i = 1;
+                partner_id = $(this).val();
+                html = loadNurses(i, partner_id);
                 if(i == 1){
                     $('#nurses-holder').html(html);
 
                 }
-                $('select[name=partner_id]').on('change', function(e){
-                    i = 1;
-                    partner_id = $(this).val();
-                    html = loadNurses(i, partner_id);
-                    if(i == 1){
-                        $('#nurses-holder').html(html);
-
-                    }
-                    var addButton = $('.add_button'); //Add button selector
-                    $(addButton).on('click', function(){ //Once add button is clicked
-                        i++;
-                        $('#nurses-holder').append(loadNurses(i, partner_id)); // Add field html
-
-                    });
-                    $('#nurses-holder').on('click', '.remove_button', function(e){ //Once remove button is clicked
-                        e.preventDefault();
-                        $(this).parent().parent().remove(); //Remove field html
-                    });
-                });
-
                 var addButton = $('.add_button'); //Add button selector
                 $(addButton).on('click', function(){ //Once add button is clicked
                     i++;
@@ -294,137 +231,223 @@
 
                 });
                 $('#nurses-holder').on('click', '.remove_button', function(e){ //Once remove button is clicked
-                    $('.add_button').removeClass('disabled');
-                    $('.add_new_nurse').remove();
                     e.preventDefault();
                     $(this).parent().parent().remove(); //Remove field html
                 });
             });
-            function loadNurses(i, partner_id)
-            {
-                var re = '';
-                $.ajax({
-                    url: "{{url('/doctors/get-nurses')}}/" + partner_id,
-                    dataType: 'json',
-                    async: false,
-                    success: function(data) {
-                        if(data.success){
-                            html = '<div class="row"><div class="col-md-10"><select class="form-control ks-select" name="nurses[]">';
-                            var Values = [];
-                            $('select[name="nurses[]"]').each(function () {
-                                Values.push($(this).val());
-                            });
-                            var k = 0;
-                            $.each(data.data , function (key, value) {
-                                if($('select[name="nurses[]"]').val()==null || Values.indexOf(key)<0) {
-                                    k = 1;
-                                    html += '<option value="' + key + '">' + value + '</option>';
-                                }
-                            });
 
-                            if(k==1 || $('select[name="nurses[]"]').val()==null){
-                                html += '</select></div>';
-                                if(i == 1){
-                                    html+=' <div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a></div>';
-                                }else{
-                                    html += '<div class="col-sm-1"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div>';
-                                }
-                                html+= '</div>';
-                                $('input[type=submit]').prop('disabled', function(i, v) { return false; });
-                            }else{
-                                html = '<div class="row add_new_nurse"><div class="col-md-10"><p>You have added all nurses, Please <a href="{{route("nurses.index")}}"><b class="label-danger">Add ' + 'new Nurse</b></a></p></div></div>';
+            var addButton = $('.add_button'); //Add button selector
+            $(addButton).on('click', function(){ //Once add button is clicked
+                i++;
+                $('#nurses-holder').append(loadNurses(i, partner_id)); // Add field html
 
-                                $('.add_button').addClass('disabled');
-                            }
+            });
+            $('#nurses-holder').on('click', '.remove_button', function(e){ //Once remove button is clicked
+                $('.add_button').removeClass('disabled');
+                $('.add_new_nurse').remove();
+                e.preventDefault();
+                $(this).parent().parent().remove(); //Remove field html
+            });
+        });
 
-                        }else{
-                            html = "<p>You don't have added nurses yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add " +
-                            "new Nurse</b></a></p>";
-                            $('input[type=submit]').prop('disabled', function(i, v) { return true; });
+    })(jQuery);
+
+    function loadNurses(i, partner_id)
+    {
+        var re = '';
+        $.ajax({
+            url: "{{url('/doctors/get-nurses')}}/" + partner_id,
+            dataType: 'json',
+            async: false,
+            success: function(data) {
+                if(data.success){
+                    html = '<div class="row"><div class="col-md-10"><select class="form-control ks-select" name="nurses[]">';
+                    var Values = [];
+                    $('select[name="nurses[]"]').each(function () {
+                        Values.push($(this).val());
+                    });
+                    var k = 0;
+                    $.each(data.data , function (key, value) {
+                        if($('select[name="nurses[]"]').val()==null || Values.indexOf(key)<0) {
+                            k = 1;
+                            html += '<option value="' + key + '">' + value + '</option>';
                         }
-                        re = html;
+                    });
+
+                    if(k==1 || $('select[name="nurses[]"]').val()==null){
+                        html += '</select></div>';
+                        if(i == 1){
+                            html+=' <div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a></div>';
+                        }else{
+                            html += '<div class="col-sm-1"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div>';
+                        }
+                        html+= '</div>';
+                        if($("#user_group_id").val()==31) {
+                            $('input[type=submit]').prop('disabled', function (i, v) {
+                                return false;
+                            });
+                        }
+                    }else{
+                        html = '<div class="row add_new_nurse"><div class="col-md-10"><p>You have added all nurses, Please <a href="{{route("nurses.index")}}"><b class="label-danger">Add ' + 'new Nurse</b></a></p></div></div>';
+
+                        $('.add_button').addClass('disabled');
                     }
 
-                });
-                return re;
-            }
-
-        })(jQuery);
-
-    </script>
-    @else
-    <script type="application/javascript">
-        // asynchronous content
-        (function ($) {
-            $(document).ready(function () {
-                var i = 1;
-                var html = loadNurses(i, {{Auth::user()->partner_id}});
-
-                if(i == 1){
-                    $('#nurses-holder').html(html);
-
+                }else{
+                    html = "<p>You don't have added nurses yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add " +
+                    "new Nurse</b></a></p>";
+                    if($("#user_group_id").val()==31) {
+                        $('input[type=submit]').prop('disabled', function (i, v) {
+                            return true;
+                        });
+                    }
                 }
-                var addButton = $('.add_button'); //Add button selector
-                $(addButton).on('click', function(){ //Once add button is clicked
-                    i++;
-                    $('#nurses-holder').append(loadNurses(i, {{Auth::user()->partner_id}})); // Add field html
-
-                });
-                $('#nurses-holder').on('click', '.remove_button', function(e){ //Once remove button is clicked
-                    e.preventDefault();
-                    $(this).parent().parent().remove(); //Remove field html
-                });
-            });
-
-            function loadNurses(i, partner_id)
-            {
-                var re = '';
-                $.ajax({
-                    url: "{{url('/doctors/get-nurses')}}/" + partner_id,
-                    dataType: 'json',
-                    async: false,
-                    success: function(data) {
-                        if(data.success){
-                            html = '<div class="row"><div class="col-md-10"><select class="form-control ks-select" name="nurses[]">';
-                            var Values = [];
-                            $('select[name="nurses[]"]').each(function () {
-                                Values.push($(this).val());
-                            });
-                            var k = 0;
-                            $.each(data.data , function (key, value) {
-                                if($('select[name="nurses[]"]').val()==null || Values.indexOf(key)<0) {
-                                    k = 1;
-                                    html += '<option value="' + key + '">' + value + '</option>';
-                                }
-                            });
-                            if(k==1 || $('select[name="nurses[]"]').val()==null){
-                                html += '</select></div>';
-                                if(i == 1){
-                                    html+=' <div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a></div>';
-                                }else{
-                                    html += '<div class="col-sm-1"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div>';
-                                }
-                                html+= '</div>';
-                                $('input[type=submit]').prop('disabled', function(i, v) { return false; });
-                            }else{
-                                html = '<div class="row add_new_nurse"><div class="col-md-10"><p>You have added all nurses, Please <a href="{{route("nurses.index")}}"><b class="label-danger">Add ' + 'new Nurse</b></a></p></div></div>';
-
-                                $('.add_button').addClass('disabled');
-                            }
-                        }else{
-                            html = "<p>You don't have added nurses yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add " +
-                            "new Nurse</b></a></p>";
-                            $('input[type=submit]').prop('disabled', function(i, v) { return true; });
-                        }
-                        re = html;
-                    }
-
-                });
-                return re;
+                re = html;
             }
 
-        })(jQuery);
+        });
+        return re;
+    }
+</script>
+@else
+<script type="application/javascript">
+    // asynchronous content
+    (function ($) {
+        $(document).ready(function () {
+            var i = 1;
+            var html = loadNurses(i, {{Auth::user()->partner_id}});
 
-    </script>
-    @endif
+            if(i == 1){
+                $('#nurses-holder').html(html);
+
+            }
+            var addButton = $('.add_button'); //Add button selector
+            $(addButton).on('click', function(){ //Once add button is clicked
+                i++;
+                $('#nurses-holder').append(loadNurses(i, {{Auth::user()->partner_id}})); // Add field html
+
+            });
+            $('#nurses-holder').on('click', '.remove_button', function(e){ //Once remove button is clicked
+                e.preventDefault();
+                $(this).parent().parent().remove(); //Remove field html
+            });
+        });
+
+
+
+    })(jQuery);
+
+    function loadNurses(i, partner_id)
+    {
+        var re = '';
+        $.ajax({
+            url: "{{url('/doctors/get-nurses')}}/" + partner_id,
+            dataType: 'json',
+            async: false,
+            success: function(data) {
+                if(data.success){
+                    html = '<div class="row"><div class="col-md-10"><select class="form-control ks-select" name="nurses[]">';
+                    var Values = [];
+                    $('select[name="nurses[]"]').each(function () {
+                        Values.push($(this).val());
+                    });
+                    var k = 0;
+                    $.each(data.data , function (key, value) {
+                        if($('select[name="nurses[]"]').val()==null || Values.indexOf(key)<0) {
+                            k = 1;
+                            html += '<option value="' + key + '">' + value + '</option>';
+                        }
+                    });
+                    if(k==1 || $('select[name="nurses[]"]').val()==null){
+                        html += '</select></div>';
+                        if(i == 1){
+                            html+=' <div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a></div>';
+                        }else{
+                            html += '<div class="col-sm-1"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div>';
+                        }
+                        html+= '</div>';
+                        if($("#user_group_id").val()==31) {
+                            $('input[type=submit]').prop('disabled', function (i, v) {
+                                return false;
+                            });
+                        }
+                    }else{
+                        html = '<div class="row add_new_nurse"><div class="col-md-10"><p>You have added all nurses, Please <a href="{{route("nurses.index")}}"><b class="label-danger">Add ' + 'new Nurse</b></a></p></div></div>';
+
+                        $('.add_button').addClass('disabled');
+                    }
+                }else{
+                    html = "<p>You don't have added nurses yet, Please <a href='{{route("nurses.index")}}'><b class='label-danger'>Add new Nurse</b></a></p>";
+                    if($("#user_group_id").val()==31) {
+                        $('input[type=submit]').prop('disabled', function (i, v) {
+                            return true;
+                        });
+                    }
+                }
+                re = html;
+            }
+
+        });
+        return re;
+    }
+</script>
+@endif
+
+<script src="{{ asset('libs/international-telephone-input/js/intlTelInput.min.js') }}"></script>
+<script type="application/javascript">
+    $(document).ready(function () {
+        handle_user_group_form();
+        $("#user_group_id").on('change', function () {
+            handle_user_group_form();
+            if($("#user_group_id").val()==31) {
+                loadNurses(1, {{Auth::user()->partner_id}});
+            }else{
+                $('input[type=submit]').prop('disabled', function (i, v) {
+                    return false;
+                });
+            }
+        });
+
+        function handle_user_group_form(){
+            var userGroup = $("#user_group_id").val();
+            if(userGroup==31 || userGroup==32){
+
+                if(userGroup==31){
+                    $('.doctor_form_input').each(function () {
+                        $(this).removeClass('hidden');
+                    })
+                }else if(userGroup==32 ){
+                    $('.doctor_form_input').each(function () {
+                        $(this).addClass('hidden');
+                    })
+                    $('.nurse_form_input').removeClass('hidden');
+                }else{
+                    $('.doctor_form_input').each(function () {
+                        $(this).addClass('hidden');
+                    })
+                }
+            }else{
+                $('.doctor_form_input').each(function () {
+                    $(this).addClass('hidden');
+                })
+            }
+
+            if(userGroup==1){
+                $('.partner_form_input').addClass('hidden');
+            }else{
+                $('.partner_form_input').removeClass('hidden');
+            }
+        }
+        $(".phone-input").intlTelInput({
+            autoHideDialCode: false,
+            formatOnDisplay: true,
+            hiddenInput: "full_number",
+            initialCountry: "ae",
+            nationalMode: true,
+            preferredCountries : ['ae'],
+            separateDialCode: true,
+            utilsScript: "{{asset("libs/international-telephone-input/js/utils.js")}}"
+    });
+    });
+</script>
 @endpush

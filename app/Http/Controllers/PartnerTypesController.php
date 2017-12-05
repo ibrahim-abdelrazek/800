@@ -44,7 +44,7 @@ class PartnerTypesController extends Controller
         $this->validate(request(), [
             'name' => [
                 'required',
-                'min:5',
+                'min:3',
                 'max:50',
                 'unique:partner_types',
                 'regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u'

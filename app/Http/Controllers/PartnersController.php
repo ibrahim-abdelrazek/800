@@ -187,7 +187,7 @@ class PartnersController extends Controller
                 $request->validate(['logo' =>'image|mimes:jpeg,png,jpg,gif,svg',
                 ]);
             if($request->has('password') && !empty($request->password ))
-                $request->validate(['password' => 'min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',
+                $request->validate(['password' => 'min:6|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@$#%^&*]).*$/|confirmed',
                     'password_confirmation'=>''
                 ]);
             $partner = Partner::where('id', $id)->first();

@@ -3,7 +3,7 @@
     <div class="ks-page-header">
         <section class="ks-title">
             <h3 > Products </h3>
-            <a href="{{ route('products.create') }} " class="pull-right btn btn-default create"> Creat New Product </a>
+{{--            <a href="{{ route('products.create') }} " class="pull-right btn btn-default create"> Creat New Product </a>--}}
 
         </section>
     </div>

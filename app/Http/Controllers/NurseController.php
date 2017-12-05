@@ -230,7 +230,11 @@ class NurseController extends Controller
             if (empty($nurse)) {
                 return redirect(route('nurses.index'));
             }
+
+
             $nurse->delete($id);
+            $nurse->doctors()->detach();
+
             return redirect(route('nurses.index'));
         } else {
             return view('extra.404');

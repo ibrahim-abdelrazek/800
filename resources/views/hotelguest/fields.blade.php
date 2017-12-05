@@ -84,7 +84,7 @@
 <div class="form-group row" id='submit'>
 
     {!! Form::submit('Save', ['class' => 'btn btn-danger']) !!}
-        <a href="{!! route('hotelguest.index') !!}</div> " class="btn btn-default"> Cancel</a>
+        <a href="{!! route('hotelguest.index') !!}" class="btn btn-default"> Cancel</a>
 </div>
 
 @push('customcss')

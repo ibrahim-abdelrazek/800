@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManagerStatic as Image;
 use Carbon;
+use DB;
 
 class PatientController extends Controller
 {
@@ -69,8 +70,8 @@ class PatientController extends Controller
         if(Auth::user()->ableTo('add',Patient::$model)) {
 
             $request->validate([
-                'first_name' => 'required|string|max:45|min:2',
-                'last_name' => 'required|string|max:100|min:2',
+                'first_name' => 'required|string|max:45|min:3',
+                'last_name' => 'required|string|max:100|min:3',
                 'date' => 'required',
                 'gender' => 'required',
                 'contact_number' => 'required|string|max:10',
@@ -278,8 +279,8 @@ class PatientController extends Controller
             $patientt = Patient::find($id);
 
             $fieldsArr = [
-                'first_name' => 'required|string|max:45|min:2',
-                'last_name' => 'required|string|max:100|min:2',
+                'first_name' => 'required|string|max:45|min:3',
+                'last_name' => 'required|string|max:100|min:3',
                 'date' => 'required',
                 'gender' => 'required',
                 'contact_number' => 'required|string|max:10',
@@ -396,17 +397,10 @@ class PatientController extends Controller
     }
     public function searchpatient(Request $request)
     {
-// $patients = Patients::DB::select(raw("CONCAT(first_name,' ', last_name) AS full_name, id,contact_number WHERE partner_id LIKE  '%'.Request->input('c').'%'"));
-//$patients = DB::table('patients')->where('partner_id', Request->input('c'))->where(function ($query) {
-            // ->where('first_name', 'LIKE', '%'.Request->input('q').'%')
-            //            ->orWhere('last_name', 'LIKE', '%'.Request->input('q').'%')
-            //            ->orWhere('contact_number', 'LIKE','%'.Request->input('q').'%');
-            //        })
-//return Response::json($patients);
+
         $partner = Partner::find($request->c);
         if(!empty($partner)){
-
-            $patients = Patient::where('partner_id', $request->c)->where(function($query) use ($request){
+            $patients = Patient::select(DB::raw("id, CONCAT(first_name,' ', last_name, ' - ', contact_number) AS name"))->where('partner_id', $request->c)->where(function($query) use ($request){
 
                 $query->where('first_name', 'LIKE', '%'.$request->input('q').'%')
                        ->orWhere('last_name', 'LIKE', '%'.$request->input('q').'%')
@@ -418,7 +412,7 @@ class PatientController extends Controller
                           $res['name'] = $patient->first_name . ' ' . $patient->last_name . ' - ' . $patient->contact_number;
                           $response[] = $res;
                        }           
-           return response()->json($response, 200);                
+           return response()->json($patients, 200);
         }
         return response()->json(['success'=>false], 200);   
     }

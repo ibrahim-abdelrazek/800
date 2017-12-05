@@ -166,7 +166,6 @@
             (function ($) {
                 $(document).ready(function () {
                   var i = 1;
-                    
                     var addButton = $('.add_button'); //Add button selector
                     $(addButton).on('click', function(){ //Once add button is clicked
                     i++;
@@ -178,7 +177,8 @@
                     $(this).parent().parent().remove(); //Remove field html
                      });
                 });
-        
+
+
                 function loadNurses(i, partner_id)
                 { 
                     var re = '';
@@ -187,8 +187,8 @@
                           dataType: 'json',
                           async: false,
                           success: function(data) {
-                         if(data.success){
-                            html = '<div class="row"><div class="col-md-10"><select class="form-control ks-select" name="nurses[]">';
+                         if(data.success ){
+                             html = '<div class="row"><div class="col-md-10"><select class="form-control ks-select" name="nurses[]">';
                              var Values = [];
                              $('select[name="nurses[]"]').each(function () {
                                  Values.push($(this).val());
@@ -221,9 +221,14 @@
                         }
                         re = html;
                     }
-                    
-                    }); 
+
+                    });
                     return re;  
+                }
+
+                if($('#nurses-holder').find("select").length == 0){
+                    var i = 1;
+                    $('#nurses-holder').append(loadNurses(i, {{Auth::user()->partner_id}}));
                 }
 
             })(jQuery);

@@ -63,7 +63,7 @@ class ProductController extends Controller
         //
         if(Auth::user()->isAdmin()) {
             $request->validate([
-                'name' => 'required|regex:/^[\pL\s]+$/u|min:5|max:50|unique:products',
+                'name' => 'required|regex:/^[\pL\s]+$/u|min:3|max:50|unique:products',
                 'image' => 'required|image|mimes:jpg,png,jpeg',
                 'price' => 'required|numeric',
             ]);
@@ -146,7 +146,7 @@ class ProductController extends Controller
 
 
             $request->validate([
-                'name' => 'required|min:5|regex:/^[\pL\s]+$/u|max:50|unique:products,name,' . $id ,
+                'name' => 'required|min:3|regex:/^[\pL\s]+$/u|max:50|unique:products,name,' . $id ,
                 'image' => 'image|mimes:jpg,png',
                 'price' => 'required|numeric',
             ]);

@@ -58,8 +58,8 @@ class PartnersController extends Controller
         if (Auth::user()->ableTo('add', Partner::$model)) {
             //
             $request->validate([
-                'first_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
-                'last_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
+                'first_name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
+                'last_name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
                 'location' => 'required|max:100',
                 'logo' =>'image|mimes:jpeg,png,jpg,gif,svg',
                 'phone' => 'required|string|max:10',
@@ -174,8 +174,8 @@ class PartnersController extends Controller
             $userID = User::where('partner_id', $id)->where('user_group_id',2)->value('id');
 
             $request->validate([
-                'first_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
-                'last_name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u','location' => 'required|max:100',
+                'first_name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
+                'last_name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u','location' => 'required|max:100',
                 'partner_type_id' => 'required',
                 'email' => 'required|unique:users,email,' . $userID,
                 'phone' => 'required|string|max:10',

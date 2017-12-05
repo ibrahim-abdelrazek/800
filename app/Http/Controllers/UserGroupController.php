@@ -80,7 +80,7 @@ class UserGroupController extends Controller
         if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
 
             $request->validate([
-                'group_name' => 'required|min:5|max:50|string'],
+                'group_name' => 'required|min:3|max:50|string'],
                 ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']
             );
 
@@ -230,7 +230,7 @@ class UserGroupController extends Controller
 
 
             $request->validate([
-                'group_name' => 'required|min:5|max:50|string',
+                'group_name' => 'required|min:3|max:50|string',
             ], ['name.alpha_dash' => 'The name may only contain letters, numbers, and dashes( _ , - ) .']);
 
 

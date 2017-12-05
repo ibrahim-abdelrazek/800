@@ -229,8 +229,8 @@ class UserController extends Controller
         }
         
         $request->validate([
-            'first_name' => 'required|min:5|max:50',
-            'last_name' => 'required|min:5|max:50',
+            'first_name' => 'required|min:3|max:50',
+            'last_name' => 'required|min:3|max:50',
             'email' => 'required|unique:users,email,' . $id ,
             'user_group_id' => 'required',
             'avatar' =>'image|mimes:jpeg,png,jpg,gif',

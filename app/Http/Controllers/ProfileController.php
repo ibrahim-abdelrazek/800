@@ -62,8 +62,8 @@ class ProfileController extends Controller
     {
 
         $request->validate([
-            'first_name' => 'required|min:5|max:50',
-            'last_name' => 'required|min:5|max:50',
+            'first_name' => 'required|min:3|max:50',
+            'last_name' => 'required|min:3|max:50',
             'email' => 'required|email|unique:users,email,'.$id,
             'avatar' =>'image|mimes:jpeg,png,jpg,gif',
 

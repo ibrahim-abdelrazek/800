@@ -110,7 +110,7 @@ class PartnerTypesController extends Controller
     {
         $partnerType = PartnerType::find($id);
         $request->validate([
-            'name' => 'required|min:5|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u|unique:partner_types,name,' . $partnerType->id
+            'name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u|unique:partner_types,name,' . $partnerType->id
         ],
 
             ['name.regex' => 'The name may only contain letters and space.']);

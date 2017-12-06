@@ -15,8 +15,11 @@ class Product extends Model
         'image',
         'price',
     ];
-
+    protected $appends = ['ImageUrl'];
     public function orders (){
         return $this->hasMany( Order::class);
+    }
+    public function getImageUrlAttribute(){
+        return asset($this->image);
     }
 }

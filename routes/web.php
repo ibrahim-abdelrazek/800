@@ -51,5 +51,10 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::get('/get-user-group/{id}', 'UserController@getUserGroups')->name("get-user-group");
     Route::get('/getall/{id}', 'OrderController@getAll')->name("getall");
+    Route::get('Order/CheckNewOrder', 'OrderController@CheckNewOrder');
+    Route::get('Order/GetOrderTable', 'OrderController@GetOrderTable');
+    Route::get('Order/GetNewOrderItem', 'OrderController@GetNewOrderItem');
+    Route::get('Order/GetOrderDetailImage', 'OrderController@GetOrderDetailImage');
+    
 });
 

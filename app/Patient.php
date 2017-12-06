@@ -30,6 +30,7 @@ class Patient extends Model
         'address',
     ];
 
+    protected $appends = ['name'];
 
     public function partner(){
     	return $this->belongsTo(Partner::class);
@@ -43,4 +44,9 @@ class Patient extends Model
     public function area(){
         return $this->belongsTo(Nighborhood::class, 'nighborhood_id', 'id');
     }
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name ;  
+    }
+
 }

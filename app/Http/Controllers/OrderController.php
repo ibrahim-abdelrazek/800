@@ -74,7 +74,9 @@ class OrderController extends Controller
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
                 'quantities'=> 'required|array',
-                'quantities.*' => 'numeric'
+                'quantities.*' => 'numeric',
+                'copayments'=> 'required|array',
+                'copayments.*' => 'numeric'
                 ]);
 
             $prescription = '';
@@ -115,6 +117,7 @@ class OrderController extends Controller
                 'prescription' => $prescription,
                 'insurance_claim' => $insurance_claim,
                 'products'=>array_combine($request->products, $request->quantities),
+                'copayments'=>array_combine($request->products, $request->copayments),
                 'status_id' =>  getConfig('order_default_status')]
                 );
             if(Order::create($order))
@@ -193,8 +196,10 @@ class OrderController extends Controller
                 'notes' => 'nullable|string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
-                'quantities'=> 'required|array',
+                'quantities'=> 'array',
                 'quantities.*' => 'numeric',
+                'copayments'=> 'array',
+                'copayments.*' => 'numeric',
                 'status_id' => 'required'
             ]);
 
@@ -204,6 +209,14 @@ class OrderController extends Controller
             if (empty($orderr)) {
                 return redirect(route('orders.index'));
             }
+             if($orderr->status_id == 0){
+                $this->validate($request, [
+                    'quantities'=> 'required|array',
+                    'quantities.*' => 'numeric',
+                    'copayments'=> 'required|array',
+                    'copayments.*' => 'numeric',
+                ]);
+             }
 
             // upload image
             $prescription = '';
@@ -236,7 +249,7 @@ class OrderController extends Controller
                 $order = array_merge($order, ['insurance_claim' => $insurance_claim]);
             }
 
-            $order = array_merge($order, ['products'=>array_combine($request->products, $request->quantities)]);
+            $order = array_merge($order, ['products'=>array_combine($request->products, $request->quantities),'copayments'=>array_combine($request->products, $request->copayments),]);
 
 
 
@@ -260,6 +273,8 @@ class OrderController extends Controller
 
 
             $order = Order::find($request->order);
+            if($order->status_id == 0 && $request->status && !empty($order->copayments) && !empty($order->products))
+                return response()->json(['success'=>false, 'message' => 'You Must add products first'], 200);
 
             if (empty($order)) {
                 return response()->json(['success'=>false, 'message' => 'Order Not Found'], 200);
@@ -326,4 +341,88 @@ class OrderController extends Controller
         return $pdf->download($filename);
     }
 
+    // Don't Touch anything here PLS
+    public function GetOrderTable(Request $request){
+        $orderStatus = $request->orderstatus;
+        if(Auth::user()->isAdmin())
+            $orders = Order::where('status_id', $orderStatus)->with('patient', 'doctor');
+        else
+            $orders = Order::where('status_id', $orderStatus)->where('partner_id', Auth::user()->partner_id)->with('patient', 'doctor');    
+        $response['sEcho'] = $request->sEcho;
+        $response['iTotalRecords'] = $orders->count();
+        $response['iTotalDisplayRecords'] = $orders->count();
+        if(!empty($request->sSearch)){
+            if(Auth::user()->isAdmin())
+            $patients = Patient::where('first_name', 'LIKE', '%' . $request->sSearch . '%')->orWhere('last_name','like','%'. $request->sSearch . '%')->pluck('id');
+            else
+               $patients = Patient::where('partner_id', Auth::user()->partner_id)->where(function($query){
+               $query->where('first_name', 'LIKE', '%' . $request->sSearch . '%')->orWhere('last_name','like','%'. $request->sSearch . '%');
+           })->pluck('id'); 
+            $orders = Order::whereIn('patient_id', $patients)->where('status_id', $request->orderstatus)->get(); 
+            $response['iTotalRecords'] = $orders->count();
+            $response['iTotalDisplayRecords'] = $orders->count();
+            $response['aaData'] = $orders;  
+
+
+        }else{
+          $response['aaData'] = $orders->get();  
+        }
+        
+        return response()->json($response, 200);
+    }
+    public function GetNewOrderItem(Request $request)
+    {
+        $order = $request->ObjectId;
+        if(!empty($order)){
+            if(Auth::user()->isAdmin() || ($order->partner_id == Auth::user()->partner_id))
+                return response()->json(Order::where('id', $order)->first(), 200);
+
+            return response()->json(['success'=>false], 200);
+    
+        }
+        return response()->json(['success'=>false], 200);
+    }
+    public function CheckNewOrder(Request $request)
+    {
+        // Get Notifier by id
+        $notifiers = Auth::user()->notifiers->where('read_at', NULL);
+        if($notifiers->count() > 0){
+            //Update Read
+            foreach($notifiers as $notifier){
+                $notifier->read_at = date('Y-m-d H:i:s');
+                $notifier->save();
+            }
+            return response()->json(['Message'=>  $notifier->count() . ' Order has been add', 'NoData'=>"false", 'success'=>"true"], 200);
+
+        }
+        return response()->json(['Message'=>'No New Data', 'NoData'=>"true", 'success'=>"true"], 200);
+    }
+    public function GetOrderDetailImage(Request $request)
+    {
+        $order =  Order::find($request->id);
+        if(!empty($order))
+        {
+            if(Auth::user()->isAdmin() || ($order->partner_id == Auth::user()->partner_id)){
+
+            if(file_exists(public_path() . $order->prescription)){
+              return response()->json([
+                    'success'       =>true,
+                    'ImageBase64'   => 'data:image/jpeg;base64,'. base64_encode(file_get_contents(public_path() . $order->prescription))
+            ], 200);  
+            }
+            return response()->json([
+                    'success'       =>false,
+                    'ImageBase64'   => null
+            ], 200);
+        }
+        return response()->json([
+                    'success'       =>false,
+                    'ImageBase64'   => null
+            ], 200);
+        }
+        return response()->json([
+                    'success'       =>false,
+                    'ImageBase64'   => null
+            ], 200);
+    }
 }

@@ -159,13 +159,23 @@
                     <div class="col-sm-3">
                         {!! Form::text('quantities[]', $val, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}
                     </div>
+                    <div class="col-sm-3">
+                        @php 
+                    $cop = [];
+                    @endphp
+                    @for($i = 0; $i <= 35; $i=$i+5)
+                    @php $cop[$i] = $i; @endphp
+                    @endfor 
+                        {!! Form::select('copayments[]', $cop, $order->copayments[$key], ['class' => 'form-control']) !!}
+                        
+                    </div>
                     <div class="col-sm-2">
                         @if($i == 1 )
                         <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
                         @else
                             <a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a>
                         @endif
-                            @php($i++)
+                            @php $i++; @endphp
 
                     </div>
                 </div>
@@ -182,6 +192,15 @@
                  <div class="col-sm-3">
                      {!! Form::text('quantities[]', null, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}
                  </div>
+                 <div class="col-sm-3">
+                    @php 
+                    $cop = [];
+                    @endphp
+                    @for($i = 0; $i <= 35; $i=$i+5)
+                    @php $cop[$i] = $i; @endphp
+                    @endfor 
+                        {!! Form::select('copayments[]', $cop, null, ['class' => 'form-control']) !!}
+                    </div>
                  <div class="col-sm-2">
                      <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
                  </div>

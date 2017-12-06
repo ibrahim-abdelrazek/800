@@ -37,8 +37,9 @@ class UserController extends Controller
              
                 $users = User::where('partner_id', Auth::user()->partner_id)->where('user_group_id', '!=', 2)->get();
             }
+            $specialities = ["Cardiology","Child Psychiatry","Dermatology-Venereology","Emergency Medicine","Endocrinology","Family Medicine","Gastroenterology","General Practice","General Surgery","Geriatrics","Infectious Disease","Internal Medicine","Neonatology","Nephrology","Neurology","Neurosurgery","Obstetrics and Gynaecology","Ophthalmology","Orthodontics","Orthopaedics","Other","Paediatrics","Pathology","Physiotherapy and Rehabilitation","Plastic Surgery","Psychiatry","Public Health","Pulmonology","Radiology","Sports Medicine","Urology","Vascular Medicine","Vascular Surgery"];
 
-             return view('users.index')->with('users', $users);
+             return view('users.index')->with('users', $users)->with('specialites', array_unique($specialities));
         }else{
                return view('extra.404');
         }

@@ -28,19 +28,19 @@
                         <a class="nav-link @if(!$errors->any()) active @endif" href="#" data-toggle="tab" data-target="#users-list">
                             All Users
                             @if(Auth::user()->isAdmin())
-                                <span class="badge badge-info badge-pill">{{ App\Nurse::count()}}</span>
+                                <span class="badge badge-info badge-pill">{{ App\User::count()}}</span>
                             @elseif(Auth::user()->isPartner())
-                                <span class="badge badge-info badge-pill">{{ App\Nurse::where('partner_id', Auth::user()->id)->count()}}</span>
+                                <span class="badge badge-info badge-pill">{{ App\User::where('partner_id', Auth::user()->id)->count()}}</span>
                             @else
-                                <span class="badge badge-info badge-pill">{{ App\Nurse::where('partner_id', Auth::user()->partner_id)->count()}}</span>
+                                <span class="badge badge-info badge-pill">{{ App\User::where('partner_id', Auth::user()->partner_id)->count()}}</span>
                             @endif
 
                         </a>
                     </li>
-                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Nurse::$model))
+                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\User::$model))
                         <li class="nav-item">
                             <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new-user">
-                                Create New Nurse
+                                Create New User
                                 @if($errors->any())
                                     <span class="badge badge-danger badge-pill">{{ count($errors->all()) }}</span>
                                 @endif
@@ -54,7 +54,7 @@
                         @include('users.table')
                     </div>
 
-                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Nurse::$model))
+                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\User::$model))
 
                         <div class="tab-pane @if($errors->any()) active @endif" id="new-user" role="tabpanel">
                             <!-- Second Content -->

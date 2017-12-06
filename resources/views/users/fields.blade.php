@@ -97,8 +97,7 @@
     </div>
 </div>
 
-
-@if(request()->route()->getAction()['as'] == "users.create")
+@if(request()->route()->getAction()['as'] == "users.index")
 <!--  specialty -->
 <div class="form-group row doctor_form_input <?= (isset($user->user_group_id) && $user->user_group_id==31)? '':'hidden'?>">
     <label for="default-input"
@@ -398,9 +397,12 @@
     $(document).ready(function () {
         handle_user_group_form();
         $("#user_group_id").on('change', function () {
+            var isAdmin = <?=  Auth::user()->isAdmin()?>;
+            var partnerID = "<?= (!Auth::user()->isAdmin())? Auth::user()->partner_id:'' ?>";
+            var partner_id = (!isAdmin)? partnerID : $('select[name=partner_id]').val();
             handle_user_group_form();
             if($("#user_group_id").val()==31) {
-                loadNurses(1, {{Auth::user()->partner_id}});
+                loadNurses(1, partner_id);
             }else{
                 $('input[type=submit]').prop('disabled', function (i, v) {
                     return false;

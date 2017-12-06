@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('partnertypes' , 'PartnerTypesController');
     // Route::resource('usergroups' , 'UserGroupController');
     Route::resource('users' , 'UserController');
+    Route::resource('category' , 'CategoryController');
     Route::resource('partners' , 'PartnersController');
     Route::resource('doctors', 'DoctorController');
     Route::get('doctors/viewCard/{id}', 'DoctorController@viewCard');

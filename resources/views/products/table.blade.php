@@ -1,29 +1,48 @@
 <div class="ks-nav-body">
     <div class="ks-nav-body-wrapper">
         <div class="container-fluid">
-            <table id="partners-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <table id="products-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
+
+                    <th rowspan="1" colspan="1"> Barcode</th>
                     <th rowspan="1" colspan="1">Image</th>
-                    <th rowspan="1" colspan="1">Name</th>
+                    <th rowspan="1" colspan="1">Title</th>
+                    <th rowspan="1" colspan="1">Category</th>
                     <th rowspan="1" colspan="1">Price</th>
+                    <th rowspan="1" colspan="1">Quantity</th>
+                    <th rowspan="1" colspan="1">Description</th>
                     <th rowspan="1" colspan="1">Actions</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
+                    <th rowspan="1" colspan="1">Barcode</th>
                     <th rowspan="1" colspan="1">Image</th>
-                    <th rowspan="1" colspan="1">Name</th>
+                    <th rowspan="1" colspan="1">Title</th>
+                    <th rowspan="1" colspan="1">Category</th>
                     <th rowspan="1" colspan="1">Price</th>
+                    <th rowspan="1" colspan="1">Quantity</th>
+                    <th rowspan="1" colspan="1">Description</th>
                     <th rowspan="1" colspan="1">Actions</th>
                 </tr>
                 </tfoot>
                 <tbody>
                 @foreach($products as $product)
                     <tr>
-                        <td><img src="{!! URL::asset('upload'.'/'.$product->image) !!}" style="width:150px !important; height: 100px !important;"></td>
-                        <td>{{ $product->name }}</td>
+                        <td>{{$product->id}}</td>
+                        <td><img src="{!! URL::asset('upload/products'.'/'.$product->image) !!}" style="width:150px !important; height: 100px !important;"></td>
+                        <td>{{ $product->title }}</td>
+
+                        <td><ul>
+                            @foreach($product->category as $cat)
+                                <li>{{ $cat->name }}</li>
+                                @endforeach
+                            </ul>
+                        </td>
                         <td>{{ $product->price }}</td>
+                        <td>{{ $product->qty }}</td>
+                        <td>{{ $product->description }}</td>
 
                         <td>
                             {!! Form::open(['route' => ['products.destroy', $product->id], 'method' => 'delete']) !!}
@@ -58,7 +77,7 @@
 <script type="application/javascript">
     (function ($) {
         $(document).ready(function () {
-            var table = $('#partners-datatable').DataTable({
+            var table = $('#products-datatable').DataTable({
                 lengthChange: false,
                 buttons: [
                     'copyHtml5',
@@ -74,9 +93,9 @@
                 }
             });
 
-            table.buttons().container().appendTo('#partners-datatable_wrapper .col-md-6:eq(0)');
-            $('#partners-datatable_filter').addClass('pull-right');
-            $('#partners-datatable_paginate').addClass('pull-right');
+            table.buttons().container().appendTo('#products-datatable_wrapper .col-md-6:eq(0)');
+            $('#products-datatable_filter').addClass('pull-right');
+            $('#products-datatable_paginate').addClass('pull-right');
         });
     })(jQuery);
 </script>

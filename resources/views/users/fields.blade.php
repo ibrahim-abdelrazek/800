@@ -393,6 +393,7 @@
 @endif
 
 <script src="{{ asset('libs/international-telephone-input/js/intlTelInput.min.js') }}"></script>
+<script src="{{ asset('libs/flexdatalist/jquery.flexdatalist.min.js') }}"></script>
 <script type="application/javascript">
     $(document).ready(function () {
         handle_user_group_form();

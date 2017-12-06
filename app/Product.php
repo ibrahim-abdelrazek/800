@@ -11,7 +11,9 @@ class Product extends Model
 
     protected $fillable = [
         'id',
-        'name',
+        'title',
+        'description',
+        'qty',
         'image',
         'price',
     ];
@@ -22,4 +24,11 @@ class Product extends Model
     public function getImageUrlAttribute(){
         return asset($this->image);
     }
+
+    public function category()
+    {
+        return $this->belongsToMany(Category::class, 'product_category');
+    }
+
+
 }

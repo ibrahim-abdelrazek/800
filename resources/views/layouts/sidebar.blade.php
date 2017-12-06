@@ -80,6 +80,13 @@
                 </a>
             </li>
             @endif
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('category.index') }}" role="button" aria-haspopup="true"
+                   aria-expanded="false">
+                    <span class="ks-icon la la-file-text-o"></span>
+                    <span>Categories</span>
+                </a>
+            </li>
             @if(Auth::user()->isAdmin())
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('products.index') }}" role="button" aria-haspopup="true"
@@ -88,6 +95,7 @@
                         <span>Products</span>
                     </a>
                 </li>
+
             @endif
 
             @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Order::$model))

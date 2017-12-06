@@ -15,8 +15,7 @@
 @section('content')
     <div class="ks-page-header">
         <section class="ks-title">
-            <h3 > Products </h3>
-
+            <h3>Categories</h3>
         </section>
     </div>
     <div class="ks-page-content">
@@ -25,14 +24,14 @@
             <div class="container-fluid">
                 <ul class="nav ks-nav-tabs ks-tabs-page-default ks-tabs-full-page">
                     <li class="nav-item">
-                        <a class="nav-link @if(!$errors->any()) active @endif " href="#" data-toggle="tab" data-target="#products-list">
-                            All Products
-                            <span class="badge badge-info badge-pill">{{ App\Product::count()}}</span>
+                        <a class="nav-link @if(!$errors->any()) active @endif " href="#" data-toggle="tab" data-target="#categories-list">
+                            All Categories
+                            <span class="badge badge-info badge-pill">{{ App\Category::count()}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new_product">
-                            Create New Product
+                        <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new_category">
+                            Create New Category
                             @if($errors->any())
                                 <span class="badge badge-danger badge-pill">{{ count($errors->all()) }}</span>
                             @endif
@@ -40,21 +39,19 @@
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane @if(!$errors->any()) active @endif ks-column-section" id="products-list" role="tabpanel">
-                        <!-- Content Here -->
-                        @include('products.table')
-                    </div>
-                    @if(Auth::user()->isAdmin() || Auth::user()->ableTo('add', App\Category::$model))
+                    <div class="tab-pane @if(!$errors->any()) active @endif ks-column-section" id="categories-list" role="tabpanel">
+                     <!-- Content Here --> 
+                     @include('category.table')
+                     </div>
+                    @if(Auth::user()->isAdmin() ||  Auth::user()->ableTo('add', App\Category::$model))
 
-                        <div class="tab-pane @if($errors->any()) active @endif" id="new_product" role="tabpanel">
-                            <!-- Second Content -->
-                            @include('products.create')
-                        </div>
+                    <div class="tab-pane @if($errors->any()) active @endif" id="new_category" role="tabpanel">
+                        <!-- Second Content --> 
+                        @include('category.create')
+                    </div>
                     @endif
+                      </div>
                 </div>
             </div>
         </div>
-    </div>
-
 @endsection
-

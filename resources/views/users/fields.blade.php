@@ -53,7 +53,7 @@
         <div class="col-sm-10">
             @if(\App\Partner::count() > 0)
                 {!! Form::select('user_group_id',
-            App\UserGroup::where('id', '!=', 2)->where('id', '!=', 1)->get()->pluck("group_name","id")
+            App\UserGroup::where('id', '!=', 2)->where('id', '!=', 1)->where('id', '!=', 28)->where('id', '!=', 29)->get()->pluck("group_name","id")
             , null, [  'class' => 'form-control ks-select']) !!}
             @else
                 <p>You don't have added User Group yet, Please <a href="{{route('userfroups.index')}}"><b
@@ -97,8 +97,7 @@
     </div>
 </div>
 
-
-@if(request()->route()->getAction()['as'] == "users.create")
+@if(request()->route()->getAction()['as'] == "users.index")
 <!--  specialty -->
 <div class="form-group row doctor_form_input <?= (isset($user->user_group_id) && $user->user_group_id==31)? '':'hidden'?>">
     <label for="default-input"
@@ -394,13 +393,17 @@
 @endif
 
 <script src="{{ asset('libs/international-telephone-input/js/intlTelInput.min.js') }}"></script>
+<script src="{{ asset('libs/flexdatalist/jquery.flexdatalist.min.js') }}"></script>
 <script type="application/javascript">
     $(document).ready(function () {
         handle_user_group_form();
         $("#user_group_id").on('change', function () {
+            var isAdmin = "<?=  Auth::user()->isAdmin()?>";
+            var partnerID = "<?= (!Auth::user()->isAdmin())? Auth::user()->partner_id:'' ?>";
+            var partner_id = (isAdmin!='1')? partnerID : $('select[name=partner_id]').val();
             handle_user_group_form();
             if($("#user_group_id").val()==31) {
-                loadNurses(1, {{Auth::user()->partner_id}});
+                loadNurses(1, partner_id);
             }else{
                 $('input[type=submit]').prop('disabled', function (i, v) {
                     return false;

@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('content')
 <div class="row">
     <div class="col-lg-12 ks-panels-column-section">
         <div class="card">
@@ -17,5 +14,3 @@
 
     </div>
 </div>
-
-@endsection

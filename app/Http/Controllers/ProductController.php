@@ -63,21 +63,30 @@ class ProductController extends Controller
         //
         if(Auth::user()->isAdmin()) {
             $request->validate([
-                'name' => 'required|regex:/^[\pL\s]+$/u|min:3|max:50|unique:products',
-                'image' => 'required|image|mimes:jpg,png,jpeg',
-                'price' => 'required|numeric',
+                'id' => 'required|unique:products',
+                'title' => 'required|min:1|max:191',
+                'price' => 'nullable|min:1|max:50',
+                'category' => 'required',
+                'image' => 'nullable|image|mimes:jpg,png,jpeg',
+                'qty' => 'nullable|min:1',
+                'description' => 'nullable|min:1',
             ]);
 
             $input = $request->all();
 
-            $destinationPath = './upload/';
+            $destinationPath = './upload/products';
             $file = $request->file('image');
             $input['image'] = $file->getClientOriginalName();
             $input['image']     = rand(0, 10000000) . '_' . $input['image'];
             $file->move($destinationPath, $input['image']);
 
-            $products = Product::create($input);
-            return redirect(route('products.index'));
+            if ($pro = Product::create($input)){
+                // Assign new nurses to doctor
+                $categories = $request->category;
+                $pro->category()->attach(array_unique($categories));
+                return redirect(route('products.index'));
+            }
+
 
         }else {
             return view('extra.404');
@@ -146,9 +155,13 @@ class ProductController extends Controller
 
 
             $request->validate([
-                'name' => 'required|min:3|regex:/^[\pL\s]+$/u|max:50|unique:products,name,' . $id ,
-                'image' => 'image|mimes:jpg,png',
-                'price' => 'required|numeric',
+                'id' => 'required|unique:products,id,' .$id,
+                'title' => 'required|min:1|max:191',
+                'price' => 'nullable|min:1|max:50',
+                'category' => 'required',
+                'image' => 'nullable|image|mimes:jpg,png,jpeg',
+                'qty' => 'nullable|min:1',
+                'description' => 'nullable|min:1',
             ]);
 
             $product = Product::find($id);
@@ -157,7 +170,7 @@ class ProductController extends Controller
                 return redirect(route('products.index'));
             }
             $input = $request->all();
-            $destinationPath = './upload/';
+            $destinationPath = './upload/products';
 
             if (isset($request->image)) {
                 $file = $request->file('image');
@@ -166,18 +179,17 @@ class ProductController extends Controller
                 $file->move($destinationPath, $input['image']);
 
             }
+            $categories = $request->category;
+            $product->category()->sync(array_unique($categories));
 
             if (!isset($request->image)) {
-                $product->update(
-                    array(
-                        'name' => request('name'),
-                        'price' => request('price'),
-                        'email' => request('email'),
-                    )
-                );
+                unset($product['image']);
+                $product->update($input);
+
             } else {
                 $product->update($input);
             }
+
 
             return redirect(route('products.index'));
         }else {

@@ -30,7 +30,7 @@
 
 <!--  date -->
 <div class="form-group row"  >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('date', 'Date:',['class'=> 'required']) !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('date', 'Birthdate:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('date',null,  [  'class' => 'date form-control' ,'id'=>'datetimepicker1' ,'data-date-format'=>"d-m-Y"]) !!}
     </div>
@@ -112,9 +112,9 @@
         <div class="col-sm-10">
             @if(request()->route()->getAction()['as'] == "patients.edit")
                 <a class="fancybox" href="<?= (empty($patient['id_file']))? '#' : $patient['id_file'];?>" target="_blank" data-fancybox-group="gallery" title="">
-                    @if(!empty($patient['id_file']) && file_exists(base_path().'/public/'.$patient['id_file'])  && strpos(mime_content_type(base_path().'/public/'.$patient['id_file']), 'image') !== false)
+                    @if(!empty($patient['id_file']) && file_exists(base_path().'/public/'.$patient['insurance_file'])  && strpos(mime_content_type(base_path().'/public/'.$patient['id_file']), 'image') !== false)
                         <img src="<?= $patient['id_file'];?>" style="width:150px; height:150px; float: left;margin-right:25px;">
-                    @elseif(!empty($patient['id_file']) && file_exists(base_path().'/public/'.$patient['id_file'])  && strpos(mime_content_type(base_path().'/public/'.$patient['id_file']), 'pdf') !== false)
+                    @elseif(!empty($patient['id_file']) && file_exists(base_path().'/public/'.$patient['insurance_file'])  && strpos(mime_content_type(base_path().'/public/'.$patient['id_file']), 'pdf') !== false)
                         <img src="/upload/pdf.png" style="width:75px; height:75px; float: left;margin-right:25px;">
                     @else
                         <img src="/upload/doc.png" style="width:75px; height:75px; float: left;margin-right:25px;">
@@ -166,14 +166,14 @@
 
 <!-- address street-->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address street', 'Street:',['class'=> 'required']) !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address street', 'Street:',['class'=> '']) !!}</label>
     <div class="col-sm-10">
         {!! Form::text('street',null, [  'class' => 'form-control']) !!}
     </div>
 </div>
 
 <div class="form-group row">
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address details', 'Address Details:',['class'=> 'required']) !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address details', 'Address Details:',['class'=> '']) !!}</label>
     <div class="col-sm-10">
 
     {{ Form::radio('type1','home',false , ['class' => 'home' ]) }} Home

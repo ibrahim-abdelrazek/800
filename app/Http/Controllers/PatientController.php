@@ -86,8 +86,8 @@ class PatientController extends Controller
                 'notes' => 'max:200|min:0',
                 'city'=>'required|numeric',
                 'area' => 'required|numeric',
-                'street' => 'required|max:150',
-                'type1' => 'required',
+                'street' => 'max:150',
+                'type1' => '',
             ]);
 
             //create address
@@ -293,8 +293,8 @@ class PatientController extends Controller
                 'notes' => 'max:200|min:0',
                 'city'=>'required|numeric',
                 'area' => 'required|numeric',
-                'street' => 'required|max:150',
-                'type1' => 'required',
+                'street' => 'max:150',
+                'type1' => '',
             ];
             if($request->hasFile('insurance_file')){
                 $fieldsArr['insurance_file'] = 'required|mimes:jpg,png,jpeg,pdf';

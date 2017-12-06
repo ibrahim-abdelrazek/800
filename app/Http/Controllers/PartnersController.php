@@ -58,8 +58,8 @@ class PartnersController extends Controller
         if (Auth::user()->ableTo('add', Partner::$model)) {
             //
             $request->validate([
-                'first_name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
-                'last_name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
+                'first_name' => 'required|min:3|max:50',
+//                'last_name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
                 'location' => 'required|max:100',
                 'logo' =>'image|mimes:jpeg,png,jpg,gif,svg',
                 'phone' => 'required|string|max:10',
@@ -75,7 +75,7 @@ class PartnersController extends Controller
 
             $partner  = new Partner();
             $partner->first_name = $request->first_name;
-            $partner->last_name = $request->last_name;
+            $partner->last_name = '';
             $partner->location = $this->location[$request->location];
             $partner->partner_type_id = $request->partner_type_id;
             $partner->phone = str_replace('+', '', $request->full_number);
@@ -94,7 +94,7 @@ class PartnersController extends Controller
 
             $users = User::create([
                 'first_name' => request('first_name'),
-                'last_name' => request('last_name'),
+                'last_name' => '',
                 'email' => request('email'),
                 'password' => Hash::make(request('password')),
                 'user_group_id' => 2,
@@ -175,7 +175,7 @@ class PartnersController extends Controller
 
             $request->validate([
                 'first_name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u',
-                'last_name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u','location' => 'required|max:100',
+//                'last_name' => 'required|min:3|max:50|regex:/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/u','location' => 'required|max:100',
                 'partner_type_id' => 'required',
                 'email' => 'required|unique:users,email,' . $userID,
                 'phone' => 'required|string|max:10',
@@ -212,7 +212,7 @@ class PartnersController extends Controller
             if (isset($request->password)) {
                 User::where('id', $userID)->update(array(
                     'first_name' => request('first_name'),
-                    'last_name' => request('last_name'),
+                    'last_name' => '',
                     'email' => request('email'),
                     'password' => Hash::make(request('password')),
                     'user_group_id' => 2,
@@ -220,7 +220,7 @@ class PartnersController extends Controller
             } else {
                 User::where('id', $userID)->update(array(
                     'first_name' => request('first_name'),
-                    'last_name' => request('last_name'),
+                    'last_name' => '',
                     'email' => request('email'),
                     'user_group_id' => 2,
                 ));

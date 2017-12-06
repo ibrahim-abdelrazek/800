@@ -397,9 +397,9 @@
     $(document).ready(function () {
         handle_user_group_form();
         $("#user_group_id").on('change', function () {
-            var isAdmin = <?=  Auth::user()->isAdmin()?>;
+            var isAdmin = "<?=  Auth::user()->isAdmin()?>";
             var partnerID = "<?= (!Auth::user()->isAdmin())? Auth::user()->partner_id:'' ?>";
-            var partner_id = (!isAdmin)? partnerID : $('select[name=partner_id]').val();
+            var partner_id = (isAdmin!='1')? partnerID : $('select[name=partner_id]').val();
             handle_user_group_form();
             if($("#user_group_id").val()==31) {
                 loadNurses(1, partner_id);

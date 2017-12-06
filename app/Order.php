@@ -107,7 +107,15 @@ class Order extends Model
     }
     public function getFormattedTotalAttribute()
     {
-        return 0;
+        $total = 0;
+        if(!empty($this->products)){
+           foreach($this->products as $product=>$value){
+            $prod = Product::find($product);
+            $total += $product->price * $value * ($this->copayments[$product] / 100);
+           } 
+        }
+        
+        return $total;
     }
      public function getCreatedDateAttribute(){
 

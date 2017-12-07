@@ -591,7 +591,7 @@ $(document).ready(function () {
                 }
 
                 $('#order-objectid').val(data.id);
-                $('#order-userid').val(data.user_id);
+                $('#order-userid').val(data.patient_id);
                 $('#order-name').val(data.patient.first_name);
                 $('#order-surname').val(data.patient.last_name);
                 $('#order-mobile').val(data.patient.contact_number);
@@ -599,7 +599,7 @@ $(document).ready(function () {
                 $('#order-status').val(data.status.id);
                 $('#total-price').append(data.FormattedTotal);
                 $("#order-created-date").append(GetFormattedDate(data.CreatedDate));
-                $("#button_print_order").attr("href", "/orders/" + data.id);
+                $("#button_print_order").attr("href", "/orders/" + data.id + "/print");
                 $("#button_update_order").attr("href", "/orders/" + data.id + "/edit");
                 $('#order_detail_drop_off_total').val('');
                 $('.status-holder').addClass('btn-' + data.status.code);
@@ -752,10 +752,10 @@ $(document).ready(function () {
                             }
                         },
                         { "mDataProp": "name", "responsivePriority": 1 },
-                        { "mDataProp": "Description", "responsivePriority": 8, "sClass": "hidden-xs hidden-sm hidden-md" },
+                        { "mDataProp": "description", "responsivePriority": 8, "sClass": "hidden-xs hidden-sm hidden-md" },
                         { "mDataProp": "FormattedPricePerItem", "responsivePriority": 9, "sClass": "alignRight hidden-xs hidden-sm hidden-md" },
                         { "mDataProp": "Quantity", "responsivePriority": 4, "sClass": "alignRight hidden-xs" },
-                        { "mDataProp": "price", "responsivePriority": 7, "sClass": "alignRight hidden-xs hidden-sm" },
+                        { "mDataProp": "sum", "responsivePriority": 7, "sClass": "alignRight hidden-xs hidden-sm" },
                         { "mDataProp": "FormattedDiscount", "responsivePriority": 6, "sClass": "alignRight text-danger hidden-xs hidden-sm" },
                         { "mDataProp": "FormattedPrice", "responsivePriority": 3, "sClass": "alignRight hidden-xs" },
                     ],
@@ -917,7 +917,7 @@ $(document).ready(function () {
             $('#order-detail-product-id').val('');
             $('#order-detail-promotion-id').val('');
             $('#order-detail-quantity').prop("disabled", false);
-            $('#order-detail-price-per-item').prop("disabled", false);
+            $('#order-detail-price-per-item').prop("disabled", true);
             $('#button_update_order_detail').show();
             $('#button_cancel_order_detail').show();
             $('#div-order-detail-discount').show();
@@ -1146,9 +1146,9 @@ $(document).ready(function () {
             beforeSend: function () { $('.loading').show(); },
             success: function (UserData) {
 
-                $('#user-insuramce-provider').val(UserData.InsuranceProvider);
-                $('#user-expiry-date').val(UserData.ExpirationDate);
-                $('#user-emirates-id').val(UserData.EmiratesId);
+                $('#user-insuramce-provider').val(UserData.InsuranceProviderCompany);
+                $('#user-expiry-date').val(UserData.insurance_expiry);
+                $('#user-emirates-id').val(UserData.id_number);
 
                 if (UserData.InsuranceCardImageUrl == null || UserData.InsuranceCardImageUrl == "") {
                     $("#user-detail-image1").hide();
@@ -1601,8 +1601,8 @@ $(document).ready(function () {
             cache: false,
             beforeSend: function () { $('.loading').show(); },
             success: function (data) {
-                $.notify(data.Message);
-                if (data.Success) {
+                $.notify(data.message);
+                if (data.success) {
                     $('#orderDetailEditModal').modal('hide');
                     $('#total-price').html('');
                     $('#total-normal-price').html('');
@@ -1612,13 +1612,6 @@ $(document).ready(function () {
                     $('#total-discount-price').append(data.DiscountTotal);
 
                     tableReLoad(_status, _status);
-
-                    if (false == true) {
-                        tabledeliveredorderwithmissingproducts.ajax.reload();
-                    }
-                    if (false == true) {
-                        serviceOrderOnLoad();
-                    }
                     table.clear();
                     table.rows.add(data.Orders);
                     table.draw();
@@ -1627,7 +1620,7 @@ $(document).ready(function () {
             },
             error: function (data) {
                 $('.loading').hide();
-                $.notify(data.Message);
+                $.notify(data.message);
             }
         });
     };
@@ -1685,7 +1678,7 @@ $(document).ready(function () {
             cache: false,
             beforeSend: function () { $('.loading').show(); },
             success: function (data) {
-                if (data.Success) {
+                if (data.success) {
                     $('#total-price').html('');
                     $('#total-normal-price').html('');
                     $('#total-discount-price').html('');
@@ -1697,14 +1690,14 @@ $(document).ready(function () {
                     table.draw();
                 }
 
-                $.notify(data.Message);
+                $.notify(data.message);
                 $('#orderProductAdd').modal('hide');
                 $('#add_product_confirm_model').modal('hide');
                 $('.loading').hide();
             },
             error: function (data) {
                 $('.loading').hide();
-                $.notify(data.Message);
+                $.notify(data.message);
             }
         });
     };
@@ -1789,7 +1782,7 @@ $(document).ready(function () {
             success: function (result) {
                 if (result.success) {
                     $("#detailImage").attr("src", result.ImageBase64);
-                    
+                    $('#detailImage-id').val(result.OrderImageId);
                     $('#orderImageModal').modal('show');
                 }
                 else
@@ -1885,7 +1878,7 @@ $(document).ready(function () {
         var id = $("#detailImage-id").val();
         if (id != undefined && id != '' && degree != undefined && degree != 0) {
             $.ajax({
-                type: "POST",
+                type: "get",
                 url: "/Order/UpdateOrderDetailImage",
                 dataType: "json",
                 data: { 'id': '' + id + '', 'degree': degree },
@@ -1893,12 +1886,12 @@ $(document).ready(function () {
                 beforeSend: function () { $('.loading').show(); },
                 success: function (result) {
                     $('.loading').hide();
-                    if (result.Success) {
+                    if (result.success) {
                         $('#orderImageModal').modal('hide');
-                        $.notify(result.Message);
+                        $.notify(result.message);
                     }
                     else
-                        $.notify(result.Message);
+                        $.notify(result.message);
                 },
                 error: function (data) {
                     $('.loading').hide();

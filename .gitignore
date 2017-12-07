@@ -22,7 +22,6 @@ Homestead.json
 .rocketeer/
 
 .idea/
-vendor/
 public/upload/
 .git/
 demo/

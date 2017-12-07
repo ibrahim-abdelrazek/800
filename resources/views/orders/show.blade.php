@@ -130,8 +130,8 @@
 
                                     </div>
                                     <div class="ks-column">
-                                        <h5>{{$order->partner->first_name .' ' . $order->partner->last_name }}</h5>
-                                        <span>{{$order->partner->location}}</span>
+                                        <h5>{{$order->partner }}</h5>
+                                        
 
                                     </div>
                                 </div>

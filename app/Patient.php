@@ -30,7 +30,7 @@ class Patient extends Model
         'address',
     ];
 
-    protected $appends = ['name'];
+    protected $appends = ['name', 'InsuranceProviderCompany', 'UserIDCardImageUrl', 'InsuranceCardImageUrl'];
 
     public function partner(){
     	return $this->belongsTo(Partner::class);
@@ -47,6 +47,16 @@ class Patient extends Model
     public function getNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name ;  
+    }
+    public function getInsuranceProviderCompanyAttribute()
+    {
+        return InsuranceProvider::where('id', $this->insurance_provider)->first()->insurance_company;
+    }
+    public function getUserIDCardImageUrlAttribute(){
+        return asset($this->id_file);
+    }
+    public function getInsuranceCardImageUrlAttribute(){
+        return asset($this->insurance_file);
     }
 
 }

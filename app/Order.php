@@ -17,13 +17,15 @@ class Order extends Model
          'partner_id',
          'products',
          'copayments',
+         'canceled',
          'status_id',
          'user_id',
          'insurance_claim'
     ];
     protected $casts = [
         'products' => 'array',
-        'copayments' => 'array'
+        'copayments' => 'array',
+        'canceled' => 'array'
     ];
     protected $appends = ['name', 'address', 'partner', 'FormattedTotal' ,'CreatedDate', 'UpdatedDate', 'InprocessDate', 'DispatchedDate', 'DeliveredDate','ConfirmedDate', 'status', 'Orders', 'OrderImageId'];
    
@@ -94,8 +96,17 @@ class Order extends Model
             $array = [];
             foreach ($orders as $key => $value) {
                 $product = Product::find($key);
-                if(!empty($product))
-                $array[] = array_merge($product->toArray(), ['Quantity'=>(int) $value, 'FormattedPrice'=>(int) $value * $product->price]);
+                if(!empty($product)){
+                    $canceled = false;
+                    if(array_key_exists($key, $this->canceled))
+                        $canceled = true;
+                $array[] = array_merge($product->toArray(), [
+                    'Quantity'=>(int) $value,
+                    'FormattedPricePerItem'=> $product->price, 'FormattedPrice'=>(int) $value * $product->price * (100 - $this->copayments[$key]) / 100,
+                    'FormattedDiscount'=>$value * $this->copayments[$key] * $product->price / 100,
+                    'sum' => $value * $product->price,
+                    'IsCanceled'=>$canceled]);
+                }
             }
             return $array;
         }
@@ -110,8 +121,10 @@ class Order extends Model
         $total = 0;
         if(!empty($this->products)){
            foreach($this->products as $product=>$value){
+               if(!array_key_exists($product, $this->canceled)){
             $prod = Product::find($product);
-            $total += $product->price * $value * ($this->copayments[$product] / 100);
+            $total += $prod->price * $value * (100 - $this->copayments[$product]) / 100;
+               }
            } 
         }
         
@@ -150,4 +163,5 @@ class Order extends Model
             return "/Date(".strtotime($stat->created_at) . ")/";
         return "/Date(-".strtotime($this->updated_at) . ")/";    
          }
+    
 }

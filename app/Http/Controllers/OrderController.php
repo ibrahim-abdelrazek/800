@@ -273,7 +273,7 @@ class OrderController extends Controller
 
 
             $order = Order::find($request->order);
-            if($order->status_id == 0 && $request->status && !empty($order->copayments) && !empty($order->products))
+            if($order->status_id == 0 && $request->status == 1 && empty($order->copayments) && empty($order->products))
                 return response()->json(['success'=>false, 'message' => 'You Must add products first'], 200);
 
             if (empty($order)) {
@@ -407,6 +407,7 @@ class OrderController extends Controller
             if(file_exists(public_path() . $order->prescription)){
               return response()->json([
                     'success'       =>true,
+                    'OrderImageId' => $request->id,
                     'ImageBase64'   => 'data:image/jpeg;base64,'. base64_encode(file_get_contents(public_path() . $order->prescription))
             ], 200);  
             }
@@ -424,5 +425,102 @@ class OrderController extends Controller
                     'success'       =>false,
                     'ImageBase64'   => null
             ], 200);
+    }
+    public function GetDetailItem(Request $request){
+        if(!empty($request->ProductId) && !empty($request->ObjectId)){
+            $order = Order::find($request->ObjectId);
+            if(!empty($order)){
+              if(Auth::user()->isAdmin() || ($order->partner_id == Auth::user()->partner_id) || Auth::user()->ableTo('view',Order::$model)){
+                 $product = Product::find($request->ProductId);
+                 $response['ImageUrl'] = $product->ImageUrl;
+                 $response['Product'] = $product->name;
+                 $response['Quantity'] = $order->products[$product->id];
+                 $response['PricePerItem'] = $product->price;
+                 $response['Price'] = $order->products[$product->id] * $product->price;
+                 $response['Discount'] = $order->products[$product->id] * $product->price * $order->copayments[$product->id] /100;
+                 $response['IsCanceled'] = array_key_exists($product->id, $order->canceled) ? true : false;
+                 return response()->json($response, 200);
+              }  
+            }
+            
+        } 
+    } 
+    public function GetUserItemDetail(Request $request){
+        if(!empty($request->endUserId)){
+            $patient = Patient::find($request->endUserId);
+            if(!empty($patient) && (Auth::user()->isAdmin() || $patient->partner_id == Auth::user()->partner_id))
+                return response()->json($patient, 200);
+        }
+    }
+    public function InsertDetailItem(Request $request){
+         if(Auth::user()->ableTo('edit',Order::$model) && !empty($request->ProductId) && !empty($request->id) && !empty($request->Quantity) && !empty($request->insureRate) ){
+            $order = Order::where('id', $request->id)->first();
+            if(!empty($order)){
+                if($request->insureRate == -1) 
+                $request->insureRate = 0;
+                $order->products = $order->products + [$request->ProductId=>$request->Quantity];
+                $order->copayments = $order->copayments + [$request->ProductId=>$request->insureRate];
+                $product = Product::where('id', $request->ProductId)->first();
+                $total = $order->FormattedTotal + ($product->price * $request->Quantity * (100 - $request->insureRate) / 100);
+                $normalPrice = $order->NormalPrice + ($product->price * $request->Quantity);
+                $totalDiscount = $order->TotalDiscount + ($product->price * $request->Quantity * ( $request->insureRate) / 100);
+            
+                if($order->save())
+                    return response()->json(['success'=>true, 'message'=>'product has been added', 'Total'=>$total, 'NormalPriceTotal'=>$normalPrice, 'DiscountTotal'=>$totalDiscount, 'Orders'=>$order->Orders], 200);
+                return response()->json(['success'=>false, 'message'=>'failed to save order'], 200);    
+            }
+            return response()->json(['success'=>false, 'message'=>'order not found'], 200);
+        }
+        return response()->json(['success'=>false, 'message'=>'not authorized'], 200);
+    }
+    public function CancelDetailItem(Request $request){
+        if(Auth::user()->ableTo('edit',Order::$model) && !empty($request->ProductId) && !empty($request->ObjectId) && !empty($request->IsCanceled) ){
+            $order = Order::where('id', $request->ObjectId)->first();
+            if(!empty($order)){
+                if($request->IsCanceled == true && !array_key_exists($request->ProductId, $order->canceled))
+                $order->canceled = $order->canceled + [$request->ProductId=>true];
+                $product = Product::where('id', $request->ProductId)->first();
+                $total = $order->FormattedTotal - ($product->price * $order->products[$product->id] * (100 - $order->copayments[$product->id]) / 100);
+                $normalPrice = $order->NormalPrice - ($product->price * $order->products[$product->id] );
+                $totalDiscount = $order->TotalDiscount + ($product->price * $order->products[$product->id] * ( $order->copayments[$product->id]) / 100);
+                if($order->save())
+                    return response()->json(['success'=>true, 'message'=>'product has been added', 'Total'=>$total, 'NormalPriceTotal'=>$normalPrice, 'DiscountTotal'=>$totalDiscount, 'Orders'=>$order->Orders], 200);
+            return response()->json(['success'=>false, 'message'=>'failed to save order'], 200);    
+            }
+            return response()->json(['success'=>false, 'message'=>'order not found'], 200);
+        }
+        return response()->json(['success'=>false, 'message'=>'not authorized'], 200);
+    }
+    public function PrintOrder(Request $request, $id){
+         if(Auth::user()->ableTo('view',Order::$model)) {
+
+            $order = Order::find($id);
+
+            if (empty($order)) {
+                return redirect(route('orders.index'));
+            }
+
+            return view('orders.print')->with('order', $order);
+        }else{
+            return view('extra.404');
+        }
+    }    
+    public function UpdateOrderDetailImage(Request $request){
+         if(Auth::user()->ableTo('edit',Order::$model) && !empty($request->id) && !empty($request->degree)) {
+
+            $order = Order::find($request->id);
+
+            if (empty($order)) {
+                return response()->json(['success'=>false, 'message'=>'fInvalid Image Id'], 200);  
+            }
+            $prescription = $order->prescription;
+            if(file_exists(public_path() . $prescription)){
+                Image::make(public_path() . $prescription)->rotate(-$request->degree)->save(public_path() . $prescription);
+                return response()->json(['success'=>true, 'message'=>'Image rotated successfully'], 200);  
+            }
+            return response()->json(['success'=>false, 'message'=>'Image not found'], 200);
+        }else{
+            return response()->json(['success'=>false, 'message'=>'Not Authorized'], 200);
+        }
     }
 }

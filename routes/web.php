@@ -56,6 +56,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('Order/GetOrderTable', 'OrderController@GetOrderTable');
     Route::get('Order/GetNewOrderItem', 'OrderController@GetNewOrderItem');
     Route::get('Order/GetOrderDetailImage', 'OrderController@GetOrderDetailImage');
+    Route::get('Order/GetDetailItem', 'OrderController@GetDetailItem');
+    Route::get('Order/GetUserItemDetail', 'OrderController@GetUserItemDetail');
+    Route::get('Order/InsertDetailItem', 'OrderController@InsertDetailItem');
+    Route::get('Order/CancelDetailItem', 'OrderController@CancelDetailItem');
+    Route::get('orders/{id}/print', 'OrderController@PrintOrder');
+    Route::get('Order/UpdateOrderDetailImage', 'OrderController@UpdateOrderDetailImage');
     
 });
 

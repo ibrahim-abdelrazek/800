@@ -64,7 +64,7 @@ class ProductController extends Controller
         if(Auth::user()->isAdmin()) {
             $request->validate([
                 'id' => 'required|unique:products',
-                'title' => 'required|min:1|max:191',
+                'name' => 'required|min:1|max:191',
                 'price' => 'nullable|min:1|max:50',
                 'category' => 'required',
                 'image' => 'nullable|image|mimes:jpg,png,jpeg',
@@ -156,7 +156,7 @@ class ProductController extends Controller
 
             $request->validate([
                 'id' => 'required|unique:products,id,' .$id,
-                'title' => 'required|min:1|max:191',
+                'name' => 'required|min:1|max:191',
                 'price' => 'nullable|min:1|max:50',
                 'category' => 'required',
                 'image' => 'nullable|image|mimes:jpg,png,jpeg',

@@ -12,19 +12,36 @@
                     <div class="panel-body">
 
                         <div class="show">
-                            <span>Name: </span>
+                            <span>Title: </span>
                             <span class="value" >{{ $product->name }}</span>
                         </div>
-
+                        <div class="show">
+                            <span>Category </span>
+                            <span class="value" >
+                                <ul>
+                                    @foreach($product->category as $cat)
+                                        <li>{{ $cat->name }}</li>
+                                        @endforeach
+                                </ul>
+                            </span>
+                        </div>
 
                         <div class="show">
                             <span>price </span>
                             <span class="value" >{{ $product->price }}</span>
                         </div>
+                         <div class="show">
+                            <span>Quantity </span>
+                            <span class="value" >{{ $product->qty }}</span>
+                        </div>
+                         <div class="show">
+                            <span>Description </span>
+                            <span class="value" >{{ $product->description }}</span>
+                        </div>
 
                         <div class="show">
-                            <span>image </span>
-                            <span class="value" ><img style="width:100px" src="{!! URL::asset('upload'.'/'.$product->image) !!}"></span>
+                            <span>image: </span>
+                            <span class="value" ><img style="width:100px" src="{!! URL::asset('upload/product'.'/'.$product->image) !!}"></span>
                         </div>
                         
 

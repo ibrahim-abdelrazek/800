@@ -17,8 +17,8 @@
 </div>
 <!--  title -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
-    {!! Form::label('title', 'Title:',['class'=> 'required']) !!}
-    {!! Form::text('title', null, [  'class' => 'form-control']) !!}
+    {!! Form::label('name', 'Title:',['class'=> 'required']) !!}
+    {!! Form::text('name', null, [  'class' => 'form-control']) !!}
 </div>
 
 

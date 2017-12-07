@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @push('customcss')
+
     <link rel="stylesheet" type="text/css"
           href="{{ asset('libs/jquery-confirm/jquery-confirm.min.css') }}"> <!-- original -->
     <link rel="stylesheet" type="text/css"
@@ -19,9 +20,8 @@
     <link href="http://800pharmacy.1001dubaipanel.com//Content/select2/css/select2-bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('libs/bootstrap-notify/bootstrap-notify.min.css')}}"> <!-- customization -->
     <style>
-        .fade.in{
-            opacity: 1;
-        }
+       .dropdown-item{ width:100%;}
+       .ks-navbar-actions{position:absolute; right:0;}
         .vertical-alignment-helper {
             display: table;
             height: 100%;
@@ -384,8 +384,7 @@
                                                hidden="hidden">View User Details</a>
                                         </div>
                                         <div class="pull-right">
-                                            <a href="#" class="btn btn-primary bold" target="_blank"
-                                               id="button_print_order"><i class="md md-print"></i>&nbsp;Show Full Order</a>
+                                            <a href="#" class="btn btn-primary bold" target="_blank" id="button_print_order"><i class="md md-print"></i>&nbsp;Print Order</a>
                                             
                                             <div class="btn-group">
                                      <button class="status-holder btn btn-block" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -638,7 +637,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <img id="order-detail-image" class="img-responsive" src="" alt="photo">
+                                <img id="order-detail-image" class="img-fluid" src="" alt="photo">
                             </div>
                             <div class="col-md-3">
                                 <label for="order-detail-product">Product</label>
@@ -653,7 +652,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="order-detail-price-per-item">Price Per Item</label>
-                                <input type="number" id="order-detail-price-per-item" class="form-control" step="0.01" min="0" />
+                                <input disabled type="number" id="order-detail-price-per-item" class="form-control" step="0.01" min="0" />
                                 <div hidden="hidden"><input type="number" id="order-detail-original-price-per-item" class="form-control" /></div>
                             </div>
                             <div class="col-md-3 col-md-offset-6" id="div-order-detail-discount">
@@ -705,11 +704,11 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="user-expiry-date">Insurance Card</label>
-                                    <img id="user-detail-image1" class="img-responsive">
+                                    <img id="user-detail-image1" class="img-fluid">
                                 </div>
                                 <div class="form-group">
                                     <label for="user-expiry-date">User Card</label>
-                                    <img id="user-detail-image2" class="img-responsive">
+                                    <img id="user-detail-image2" class="img-fluid">
                                 </div>
                             </div>
                         </div>
@@ -881,9 +880,76 @@
                 </div>
             </div>
     </div>
+     <div id="orderProductAdd" class="modal fade">
+        <div class="vertical-alignment-helper">
+            <div class="modal-dialog modal-md vertical-align-center">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Order Detail Add</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="order-product-add-product">Product</label>
+                            <select class="select2 form-control" id="order-product-add-product" name="order-product-add-product" placeholder="Select Product" style="width: 100%;">
+                                @php $products = App\Product::all(); @endphp
+                                @foreach($products as $product)
+                                <option value="{{$product->id}}">{{$product->name}}</option>
+                                @endforeach
+</select>
+                        </div>
+                        <div class="form-group">
+                            <label for="order-product-add-quantity">Quantity</label>
+                            <input type="number" id="order-product-add-quantity" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" min="0" />
+                        </div>
+
+                            <div class="form-group">
+                                <label for="order-insure-rate">Co-Payment %</label>
+                                <select class="form-control select2" id="order-insure-rate" style="width: 100%">
+                                    <option value="-1" selected="selected">No Insure</option>
+                                    <option value="0">% 0</option>
+                                    <option value="5">% 5</option>
+                                    <option value="10">% 10</option>
+                                    <option value="15">% 15</option>
+                                    <option value="20">% 20</option>
+                                    <option value="25">% 25</option>
+                                    <option value="30">% 30</option>
+                                    <option value="35">% 35</option>
+                                </select>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-danger btn-outline bold" id="button-order-product-add-confirm">Confirm</a>
+                        <a href="#" class="btn btn-default  btn-outline bold" data-dismiss="modal" aria-hidden="true">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="add_product_confirm_model" class="modal fade bs-example-modal-sm">
+        <div class="vertical-alignment-helper">
+            <div class="modal-dialog modal-sm vertical-align-center">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Order Detail Add Product</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure add this product ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-danger btn-outline bold" id="button_add_product_confirm">Confirm</a>
+                        <a href="#" class="btn btn-default  btn-outline bold" id="button_add_product_cancel" data-dismiss="modal" aria-hidden="true">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('customjs')
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{{ asset('libs/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('libs/prism/prism.js') }}"></script>
     <script src="http://800pharmacy.1001dubaipanel.com/Content/dataTables/datatables.min.js"></script>
@@ -997,11 +1063,10 @@
     <script src="http://800pharmacy.1001dubaipanel.com/Content/Template/js/plugins.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.modal').on('shown.bs.modal', function () {
+            $('.modal').on('hidden.bs.modal', function () {
                 if ($('.modal').hasClass('in') && !$('body').hasClass('modal-open')) {
                     $('body').addClass('modal-open');
-                    $('.modal').addClass('show');
-                    $('.modal').css('opacity', '.8');
+                    
                 }
             });
         });

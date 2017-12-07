@@ -1,3 +1,4 @@
+<?php use Illuminate\Support\Facades\Route; ?>
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 
@@ -10,8 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+   
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('libs/bootstrap/css/bootstrap.min.css') }}">
+    @if(Route::getFacadeRoot()->current()->uri() == 'orders') 
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    @else <link rel="stylesheet" type="text/css" href="{{ asset('libs/bootstrap/css/bootstrap.min.css') }}">
+    @endif
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/line-awesome/css/line-awesome.min.css') }}">
     <!--<link rel="stylesheet" type="text/css" href="assets/fonts/open-sans/styles.css">-->
 

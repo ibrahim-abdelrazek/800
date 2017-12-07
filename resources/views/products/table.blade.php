@@ -32,7 +32,7 @@
                     <tr>
                         <td>{{$product->id}}</td>
                         <td><img src="{!! URL::asset('upload/products'.'/'.$product->image) !!}" style="width:150px !important; height: 100px !important;"></td>
-                        <td>{{ $product->title }}</td>
+                        <td>{{ $product->name }}</td>
 
                         <td><ul>
                             @foreach($product->category as $cat)
@@ -47,8 +47,8 @@
                         <td>
                             {!! Form::open(['route' => ['products.destroy', $product->id], 'method' => 'delete']) !!}
                             <div class='btn-group'>
-                                <a href="{!! route('products.show', [$product->id]) !!}" class='btn btn-default btn-xs'>Show</a>
-                                <a href="{!! route('products.edit', [$product->id]) !!}" class='btn btn-default btn-xs'>Edit</a>
+<!--                                <a href="{!! route('products.show', [$product->id]) !!}" class='btn btn-default btn-xs'>Show</a>
+-->                                <a href="{!! route('products.edit', [$product->id]) !!}" class='btn btn-default btn-xs'>Edit</a>
                                 {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                             </div>
                             {!! Form::close() !!}

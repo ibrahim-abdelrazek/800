@@ -400,7 +400,7 @@ class PatientController extends Controller
 
         $partner = Partner::find($request->c);
         if(!empty($partner)){
-            $patients = Patient::select(DB::raw("id, CONCAT(first_name,' ', last_name, ' - ', contact_number) AS name"))->where('partner_id', $request->c)->where(function($query) use ($request){
+            $patients = Patient::where('partner_id', $request->c)->where(function($query) use ($request){//select(DB::raw("id, CONCAT(first_name,' ', last_name, ' - ', contact_number) AS name"))->
 
                 $query->where('first_name', 'LIKE', '%'.$request->input('q').'%')
                        ->orWhere('last_name', 'LIKE', '%'.$request->input('q').'%')
@@ -409,10 +409,10 @@ class PatientController extends Controller
             $response = [];
             foreach ($patients as $patient) {
                           $res['id'] = $patient->id;
-                          $res['name'] = $patient->first_name . ' ' . $patient->last_name . ' - ' . $patient->contact_number;
+                          $res['name'] = $patient->first_name . ' ' . $patient->last_name . ' ( +' . $patient->contact_number.' )';
                           $response[] = $res;
                        }           
-           return response()->json($patients, 200);
+           return response()->json($response, 200);
         }
         return response()->json(['success'=>false], 200);   
     }

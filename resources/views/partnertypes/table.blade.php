@@ -24,9 +24,9 @@
                 {!! Form::open(['route' => ['partnertypes.destroy', $partnertype->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     <a href="{!! route('partnertypes.edit', [$partnertype->id]) !!}" class="btn btn-default btn-xs">
-                        <i class="la la-pencil-square-o" aria-hidden="true">Edit</i>
+                        Edit
                     </a>
-                    {!! Form::button('Delete', ['type' => 'submit', 'style'=>'cursor:pointer;', 'class' => 'btn btn-danger la la-trash btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    {!! Form::button('Delete', ['type' => 'submit', 'style'=>'cursor:pointer;', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                 </div>
                 {!! Form::close() !!}
             </td>

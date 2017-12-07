@@ -396,6 +396,7 @@
 <script src="{{ asset('libs/flexdatalist/jquery.flexdatalist.min.js') }}"></script>
 <script type="application/javascript">
     $(document).ready(function () {
+        $('#partner_id').select2();
         handle_user_group_form();
         $("#user_group_id").on('change', function () {
             var isAdmin = "<?=  Auth::user()->isAdmin()?>";

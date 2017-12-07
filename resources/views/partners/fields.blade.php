@@ -56,7 +56,7 @@
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner_type_id', 'Partner Type:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
         @if(\App\PartnerType::count() > 0)
-            {!! Form::select('partner_type_id',  App\PartnerType::pluck('name', 'id') , null, ['class' => 'form-control' , 'required']) !!}
+            {!! Form::select('partner_type_id',  App\PartnerType::where('status', 1)->pluck('name', 'id') , null, ['class' => 'form-control' , 'required']) !!}
         @else
             <p>You don't have added Partner Types yet, Please <a href="{{route('partnertypes.index')}}"><b class="label-danger">Add
                         new Partner Types</b></a></p>

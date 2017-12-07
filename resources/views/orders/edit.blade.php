@@ -55,10 +55,10 @@
 
 
                     loadDoctors($('select[name=partner_id]').val());
-                    loadPatients($('select[name=partner_id]').val());
+                    //loadPatients($('select[name=partner_id]').val());
                     $('select[name=partner_id]').on('change', function(e){
                         var partner_id = $(this).val();
-                        loadPatients(partner_id);
+                       // loadPatients(partner_id);
                         loadDoctors(partner_id);
                     });
                 });

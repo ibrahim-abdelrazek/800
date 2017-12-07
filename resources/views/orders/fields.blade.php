@@ -271,7 +271,17 @@
 <script type="text/javascript">
     $('.fancybox').fancybox();
 </script>
+<?php
+$data = (request()->route()->getAction()['as'] == "orders.edit")? DB::table('patients')->select(DB::raw("id, CONCAT(first_name, ' ' , last_name) AS name"))->where('id',$order['patient_id'])->first () : [];
+//dd($data->name);
+if($data){
+    $data = '[{id: '.$data->id.', name: "'.$data->name.'"}] ';//json_encode($data)
+}else{
+    $data ='';
+}
+?>
 <script type="text/javascript">
+    var isEdit = <?= (request()->route()->getAction()['as'] == "orders.edit")? 1 : 0;?>;
     var isAdmin = "<?=  Auth::user()->isAdmin()?>";
     var partnerID = "<?= (!Auth::user()->isAdmin())? Auth::user()->partner_id:'' ?>";
     var partner = (isAdmin != 1)? partnerID : $('#partner_id').val();
@@ -282,6 +292,7 @@
             partner = $('#partner_id').val();
             searchableUrl = '{{url("patient/searchpatient")}}?c='+partner;
           $('.token-input-list').remove();
+
 
             $("#search").tokenInput(searchableUrl,
                 {
@@ -299,14 +310,29 @@
 //            $('#patients-holder ul li.token-input-input-token' ).css('padding', '0px 15px !important');
 //            $('#patients-holder ul li.token-input-input-token' ).css('height', '0px !important');
         });
-        $("#search").tokenInput(searchableUrl,
-            {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                'searchDelay':1,
-                'minChars':2,
-                'tokenLimit':1,
-            }
-        );
+        if(isEdit){
+            var isData = <?= (empty($data))? 0 : $data?>;
+            var DATA = (isData!=0)? isData : "";
+            console.log(DATA);
+            $("#search").tokenInput(searchableUrl,
+                {
+                    'prePopulate': DATA,
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'searchDelay':1,
+                    'minChars':2,
+                    'tokenLimit':1,
+                }
+            );
+        }else{
+            $("#search").tokenInput(searchableUrl,
+                {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'searchDelay':1,
+                    'minChars':2,
+                    'tokenLimit':1,
+                }
+            );
+        }
         $('#patients-holder ul').addClass('form-control');
         $('#patients-holder ul li').addClass('form-control');
         $('#patients-holder ul').css('width', 'unset');

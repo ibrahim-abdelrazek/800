@@ -7,6 +7,8 @@ use App\Patient;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Order;
+use App\User;
+use App\Notifier;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -73,12 +75,17 @@ class OrderController extends Controller
                 'notes' => 'nullable|string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
-                'quantities'=> 'required|array',
-                'quantities.*' => 'numeric',
-                'copayments'=> 'required|array',
-                'copayments.*' => 'numeric'
+                
                 ]);
-
+            if($request->has('products') && is_array($request->products) ){
+                if(count($request->products) > 1 || (count($request->products) == 1 && $request->products[0] != '0'))
+                $this->validate($request, [
+                    'quantities'=> 'required|array',
+                    'quantities.*' => 'numeric',
+                    'copayments'=> 'required|array',
+                    'copayments.*' => 'numeric'
+                ]);
+            }
             $prescription = '';
             $insurance_claim='';
             // upload image
@@ -113,16 +120,39 @@ class OrderController extends Controller
 
                 $order = array_merge($request->all(), ['partner_id' => Auth::user()->partner->id]);
             }
+            
             $order = array_merge($order, ['user_id' => Auth::user()->id,
                 'prescription' => $prescription,
                 'insurance_claim' => $insurance_claim,
-                'products'=>array_combine($request->products, $request->quantities),
-                'copayments'=>array_combine($request->products, $request->copayments),
                 'status_id' =>  getConfig('order_default_status')]
                 );
-            if(Order::create($order))
-               
+            $order['products'] = null;
+            $order['copayments'] = null;
+            if($request->has('products') && is_array($request->products)){
+                if(count($request->products) > 1 || (count($request->products) == 1 && $request->products[0] != '0'))
+                $order = array_merge($order, [
+                 
+                'products'=>array_combine($request->products, $request->quantities),
+                'copayments'=>array_combine($request->products, $request->copayments)]);
+                
+            } 
+                 
+            if(Order::create($order)){
+                /* 
+                *Notify Staff 
+                * Administrators 1
+                * partner 2
+                * Call Center Supervisor 28
+                * Call Center Agent 29
+                */
+                $users = User::where('user_group_id', 1)->orWhere('user_group_id', 28)->orWhere('user_group_id', 29)->orWhere('partner_id', Auth::user()->partner_id)->get();
+                foreach($users as $user){
+                    Notifier::create(['user_id'=>$user->id]);
+                }
                  return redirect(route('orders.index'));
+            }
+               
+                
             
                
 
@@ -372,10 +402,10 @@ class OrderController extends Controller
     }
     public function GetNewOrderItem(Request $request)
     {
-        $order = $request->ObjectId;
+        $order = Order::where('id', $request->ObjectId)->first();
         if(!empty($order)){
             if(Auth::user()->isAdmin() || ($order->partner_id == Auth::user()->partner_id))
-                return response()->json(Order::where('id', $order)->first(), 200);
+                return response()->json($order, 200);
 
             return response()->json(['success'=>false], 200);
     
@@ -385,7 +415,7 @@ class OrderController extends Controller
     public function CheckNewOrder(Request $request)
     {
         // Get Notifier by id
-        $notifiers = Auth::user()->notifiers->where('read_at', NULL);
+        $notifiers = Notifier::where('user_id', Auth::user()->id)->where('read_at', NULL)->get();
         if($notifiers->count() > 0){
             //Update Read
             foreach($notifiers as $notifier){
@@ -438,7 +468,7 @@ class OrderController extends Controller
                  $response['PricePerItem'] = $product->price;
                  $response['Price'] = $order->products[$product->id] * $product->price;
                  $response['Discount'] = $order->products[$product->id] * $product->price * $order->copayments[$product->id] /100;
-                 $response['IsCanceled'] = array_key_exists($product->id, $order->canceled) ? true : false;
+                 $response['IsCanceled'] = !empty($order->canceled) && array_key_exists($product->id, $order->canceled) ? true : false;
                  return response()->json($response, 200);
               }  
             }
@@ -458,8 +488,14 @@ class OrderController extends Controller
             if(!empty($order)){
                 if($request->insureRate == -1) 
                 $request->insureRate = 0;
-                $order->products = $order->products + [$request->ProductId=>$request->Quantity];
+                if(!empty($order->products)){
+                    $order->products = $order->products + [$request->ProductId=>$request->Quantity];
                 $order->copayments = $order->copayments + [$request->ProductId=>$request->insureRate];
+                }else{
+                    $order->products = [$request->ProductId=>$request->Quantity];
+                $order->copayments = [$request->ProductId=>$request->insureRate];  
+                }
+                
                 $product = Product::where('id', $request->ProductId)->first();
                 $total = $order->FormattedTotal + ($product->price * $request->Quantity * (100 - $request->insureRate) / 100);
                 $normalPrice = $order->NormalPrice + ($product->price * $request->Quantity);
@@ -477,14 +513,16 @@ class OrderController extends Controller
         if(Auth::user()->ableTo('edit',Order::$model) && !empty($request->ProductId) && !empty($request->ObjectId) && !empty($request->IsCanceled) ){
             $order = Order::where('id', $request->ObjectId)->first();
             if(!empty($order)){
-                if($request->IsCanceled == true && !array_key_exists($request->ProductId, $order->canceled))
+                
+                if(!empty($order->canceled) && !array_key_exists($request->ProductId, $order->canceled))
                 $order->canceled = $order->canceled + [$request->ProductId=>true];
+                else $order->canceled = [$request->ProductId=>true];
                 $product = Product::where('id', $request->ProductId)->first();
                 $total = $order->FormattedTotal - ($product->price * $order->products[$product->id] * (100 - $order->copayments[$product->id]) / 100);
                 $normalPrice = $order->NormalPrice - ($product->price * $order->products[$product->id] );
                 $totalDiscount = $order->TotalDiscount + ($product->price * $order->products[$product->id] * ( $order->copayments[$product->id]) / 100);
                 if($order->save())
-                    return response()->json(['success'=>true, 'message'=>'product has been added', 'Total'=>$total, 'NormalPriceTotal'=>$normalPrice, 'DiscountTotal'=>$totalDiscount, 'Orders'=>$order->Orders], 200);
+                    return response()->json(['success'=>true, 'message'=>'product has been canceled', 'Total'=>$total, 'NormalPriceTotal'=>$normalPrice, 'DiscountTotal'=>$totalDiscount, 'Orders'=>$order->Orders], 200);
             return response()->json(['success'=>false, 'message'=>'failed to save order'], 200);    
             }
             return response()->json(['success'=>false, 'message'=>'order not found'], 200);

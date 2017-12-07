@@ -98,7 +98,7 @@ class Order extends Model
                 $product = Product::find($key);
                 if(!empty($product)){
                     $canceled = false;
-                    if(array_key_exists($key, $this->canceled))
+                    if(!empty($this->canceled) && array_key_exists($key, $this->canceled))
                         $canceled = true;
                 $array[] = array_merge($product->toArray(), [
                     'Quantity'=>(int) $value,
@@ -120,11 +120,11 @@ class Order extends Model
     {
         $total = 0;
         if(!empty($this->products)){
-           foreach($this->products as $product=>$value){
-               if(!array_key_exists($product, $this->canceled)){
+            $products = !empty($this->canceled) ? array_diff_key($this->products , $this->canceled) : $this->products;
+           foreach($products as $product=>$value){
             $prod = Product::find($product);
             $total += $prod->price * $value * (100 - $this->copayments[$product]) / 100;
-               }
+               
            } 
         }
         

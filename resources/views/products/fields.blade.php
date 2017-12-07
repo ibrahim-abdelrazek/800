@@ -10,11 +10,13 @@
        </div>
        @endif
 </div>
+@if(!isset($product))
 <!--  id -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
     {!! Form::label('id', 'Barcode:',['class'=> 'required']) !!}
     {!! Form::text('id', null, [  'class' => 'form-control']) !!}
 </div>
+@endif
 <!--  title -->
 <div class="form-group col-sm-8 col-sm-offset-2" id=''>
     {!! Form::label('name', 'Title:',['class'=> 'required']) !!}

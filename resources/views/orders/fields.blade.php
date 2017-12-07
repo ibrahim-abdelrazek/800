@@ -17,7 +17,7 @@
 <!--  prescription -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('prescription', 'prescription:',['class'=> 'required']) !!}
+        {!! Form::label('prescription', 'Prescription:',['class'=> 'required']) !!}
     </label>
 
     <div class="col-sm-10">
@@ -61,7 +61,7 @@
 <!-- notes -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('notes', 'notes:') !!}
+        {!! Form::label('notes', 'Notes:') !!}
     </label>
     <div class="col-sm-10">
         {!! Form::textarea('notes',null, [  'class' => 'form-control']) !!}
@@ -91,7 +91,7 @@
     <!-- Doctor -->
     <div class="form-group row">
         <label for="default-input" class="col-sm-2 form-control-label">
-            {!! Form::label('doctor', 'doctor',['class'=> 'required']) !!}
+            {!! Form::label('doctor', 'Doctor',['class'=> 'required']) !!}
         </label>
 
         <div class="col-sm-10">
@@ -130,7 +130,7 @@
     <!--  doctor_id -->
     <div class="form-group row">
         <label for="default-input" class="col-sm-2 form-control-label">
-            {!! Form::label('doctor', 'doctor',['class'=> 'required']) !!}
+            {!! Form::label('doctor', 'Doctor',['class'=> 'required']) !!}
         </label>
         <div id="doctors-holder" class="col-sm-10">
             {!! form::select ('doctor_id',App\Doctor::select(DB::raw("CONCAT(first_name,' ', last_name) AS name,id "))->where('partner_id', Auth::user()->partner_id)->pluck('name','id'),null,['class' => 'form-control '])!!}
@@ -140,33 +140,35 @@
 <!--  product_id -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('product', 'Product',['class'=> 'required']) !!}
+        {!! Form::label('product', 'Product',[]) !!}
     </label>
 
     <div id="products_wrapper" class="col-sm-10">
         @if(isset($order))
             @php $i=1; $products = $order->products; @endphp
+            @if(count($products) > 0)
             @foreach($products as $key => $val)
 
                 <div class="form-group row">
                     <div class="col-sm-3">
-                        {!! form :: select ('products[]',App\Product::pluck('name','id'),$key,['class' => 'form-control'])!!}
+                        
+                        {!! form :: select ('products[]',App\Product::pluck('name','id'),$key,['id'=>'products-holder', 'class' => 'select2 form-control'])!!}
 
                     </div>
                     <div class="text-center col-sm-1">
                         <span class="label label-danger">X</span>
                     </div>
                     <div class="col-sm-3">
-                        {!! Form::text('quantities[]', $val, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}
+                        {!! Form::text('quantities[]', $val, [  'placeholder'=>'Enter Product\'s quantity','id'=>'products-holder',  'class' => 'form-control']) !!}
                     </div>
                     <div class="col-sm-3">
                         @php 
-                    $cop = [];
+                    $cop[-1] = 'Select Co-Payments';
                     @endphp
                     @for($i = 0; $i <= 35; $i=$i+5)
                     @php $cop[$i] = $i; @endphp
                     @endfor 
-                        {!! Form::select('copayments[]', $cop, $order->copayments[$key], ['class' => 'form-control']) !!}
+                        {!! Form::select('copayments[]', $cop, $order->copayments[$key], ['class' => 'select2 form-control']) !!}
                         
                     </div>
                     <div class="col-sm-2">
@@ -180,10 +182,15 @@
                     </div>
                 </div>
             @endforeach
-        @else
-             <div class="form-group row">
+            @else
+             <div class="form-group row"> 
+                @php 
+                    $prods = App\Product::pluck('name','id')->toArray();
+                    $prods[] = ['0' => 'Select Product'];
+                @endphp    
+
                  <div class="col-sm-3">
-                     {!! form :: select ('products[]',App\Product::pluck('name','id'),null,['class' => 'form-control'])!!}
+                     {!! form :: select ('products[]',$prods,0,['id'=>'products-holder', 'class' => 'select2 form-control'])!!}
 
                  </div>
                  <div class="text-center col-sm-1">
@@ -194,7 +201,38 @@
                  </div>
                  <div class="col-sm-3">
                     @php 
-                    $cop = [];
+                    $cop[-1] = 'Select Co-Payment';
+                    @endphp
+                    @for($i = 0; $i <= 35; $i=$i+5)
+                    @php $cop[$i] = $i; @endphp
+                    @endfor 
+                        {!! Form::select('copayments[]', $cop, null, ['class' => 'form-control']) !!}
+                    </div>
+                 <div class="col-sm-2">
+                     <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
+                 </div>
+             </div>
+            @endif
+        @else
+             <div class="form-group row"> 
+                @php 
+                    $prods = App\Product::pluck('name','id')->toArray();
+                    $prods[] = ['0' => 'Select Product'];
+                @endphp    
+
+                 <div class="col-sm-3">
+                     {!! form :: select ('products[]',$prods,0,['id'=>'products-holder', 'class' => 'select2 form-control'])!!}
+
+                 </div>
+                 <div class="text-center col-sm-1">
+                     <span class="label label-danger">X</span>
+                 </div>
+                 <div class="col-sm-3">
+                     {!! Form::text('quantities[]', null, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}
+                 </div>
+                 <div class="col-sm-3">
+                    @php 
+                    $cop[-1] = 'Select Co-Payment';
                     @endphp
                     @for($i = 0; $i <= 35; $i=$i+5)
                     @php $cop[$i] = $i; @endphp
@@ -234,12 +272,12 @@
     $('.fancybox').fancybox();
 </script>
 <script type="text/javascript">
-    var isAdmin = <?=  Auth::user()->isAdmin()?>;
+    var isAdmin = "<?=  Auth::user()->isAdmin()?>";
     var partnerID = "<?= (!Auth::user()->isAdmin())? Auth::user()->partner_id:'' ?>";
-    var partner = (!isAdmin)? partnerID : $('#partner_id').val();
+    var partner = (isAdmin != 1)? partnerID : $('#partner_id').val();
     var searchableUrl = '{{url("patient/searchpatient")}}?c='+partner;
     $(document).ready(function () {
-
+        $('#products-holder').select2();
         $("#partner_id").on('change', function () {
             partner = $('#partner_id').val();
             searchableUrl = '{{url("patient/searchpatient")}}?c='+partner;

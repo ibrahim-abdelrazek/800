@@ -637,7 +637,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <img id="order-detail-image" class="img-fluid" src="" alt="photo">
+                                <img id="order-detail-image" class="img-responsive" src="" alt="photo">
                             </div>
                             <div class="col-md-3">
                                 <label for="order-detail-product">Product</label>
@@ -704,11 +704,11 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="user-expiry-date">Insurance Card</label>
-                                    <img id="user-detail-image1" class="img-fluid">
+                                    <img id="user-detail-image1" class="img-responsive">
                                 </div>
                                 <div class="form-group">
                                     <label for="user-expiry-date">User Card</label>
-                                    <img id="user-detail-image2" class="img-fluid">
+                                    <img id="user-detail-image2" class="img-responsive">
                                 </div>
                             </div>
                         </div>

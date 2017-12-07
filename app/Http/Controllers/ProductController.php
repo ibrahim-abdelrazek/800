@@ -78,7 +78,7 @@ class ProductController extends Controller
                 $destinationPath = './upload/products';
                 $file = $request->file('image');
                 $input['image'] = $file->getClientOriginalName();
-                $input['image'] = rand(0, 10000000) . '_' . $input['image'];
+                $input['image'] = '/upload/products/'. rand(0, 10000000) . '_' . $input['image'];
                 $file->move($destinationPath, $input['image']);
             }
             if ($pro = Product::create($input)){
@@ -175,8 +175,8 @@ class ProductController extends Controller
 
             if (isset($request->image)) {
                 $file = $request->file('image');
-                $input['image'] = $file->getClientOriginalName();
-                $input['image']     = rand(0, 10000000) . '_' . $input['image'];
+                $input['image'] =  $file->getClientOriginalName();
+                $input['image']     = '/upload/products/'. rand(0, 10000000) . '_' . $input['image'];
                 $file->move($destinationPath, $input['image']);
 
             }
@@ -213,7 +213,11 @@ class ProductController extends Controller
             if (empty($product)) {
                 return redirect(route('products.index'));
             }
+
+
+            $product->category()->detach();
             $product->delete($id);
+
             return redirect(route('products.index'));
         }else {
             return view('extra.404');

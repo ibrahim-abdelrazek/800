@@ -31,7 +31,15 @@
                 @foreach($products as $product)
                     <tr>
                         <td>{{$product->id}}</td>
-                        <td><img src="{!! URL::asset('upload/products'.'/'.$product->image) !!}" style="width:150px !important; height: 100px !important;"></td>
+                        <td>
+                            @php 
+                            $image = URL::asset($product->image) ;
+                            @endphp
+                           
+                            @if(file_exists(public_path() . $product->image))
+                                <img src="{!! $image !!}" style="width:100px !important; height: 100px !important;">
+                            @endif
+                        </td>
                         <td>{{ $product->name }}</td>
 
                         <td><ul>

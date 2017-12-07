@@ -63,7 +63,7 @@ class ProductController extends Controller
         //
         if(Auth::user()->isAdmin()) {
             $request->validate([
-                'id' => 'required|unique:products',
+                'id' => 'required|numeric|unique:products',
                 'name' => 'required|min:1|max:191',
                 'price' => 'nullable|min:1|max:50',
                 'category' => 'required',
@@ -74,12 +74,13 @@ class ProductController extends Controller
 
             $input = $request->all();
 
-            $destinationPath = './upload/products';
-            $file = $request->file('image');
-            $input['image'] = $file->getClientOriginalName();
-            $input['image']     = rand(0, 10000000) . '_' . $input['image'];
-            $file->move($destinationPath, $input['image']);
-
+            if($request->hasFile('image')) {
+                $destinationPath = './upload/products';
+                $file = $request->file('image');
+                $input['image'] = $file->getClientOriginalName();
+                $input['image'] = rand(0, 10000000) . '_' . $input['image'];
+                $file->move($destinationPath, $input['image']);
+            }
             if ($pro = Product::create($input)){
                 // Assign new nurses to doctor
                 $categories = $request->category;
@@ -155,7 +156,7 @@ class ProductController extends Controller
 
 
             $request->validate([
-                'id' => 'required|unique:products,id,' .$id,
+                'id' => 'required|numeric|unique:products,id,' .$id,
                 'name' => 'required|min:1|max:191',
                 'price' => 'nullable|min:1|max:50',
                 'category' => 'required',

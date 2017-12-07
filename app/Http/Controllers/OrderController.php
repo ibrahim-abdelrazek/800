@@ -278,10 +278,17 @@ class OrderController extends Controller
                 // remove old image
                 $order = array_merge($order, ['insurance_claim' => $insurance_claim]);
             }
-
-            $order = array_merge($order, ['products'=>array_combine($request->products, $request->quantities),'copayments'=>array_combine($request->products, $request->copayments),]);
-
-
+             $order['products'] = null;
+             $order['copayments'] = null;
+            if($request->has('products') && is_array($request->products)){
+                if(count($request->products) > 1 || (count($request->products) == 1 && $request->products[0] != '0'))
+                $order = array_merge($order, [
+                 
+                'products'=>array_combine($request->products, $request->quantities),
+                'copayments'=>array_combine($request->products, $request->copayments)]);
+                
+            } 
+         
 
             //dd($orderr);
             $orderr->update($order);

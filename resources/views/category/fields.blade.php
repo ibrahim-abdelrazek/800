@@ -35,11 +35,11 @@
 
                       @if(!$category->children->isEmpty())
                         @foreach($category->children as $subcategory)
-                            <option value="{{$subcategory->id }}">&nbsp &nbsp &nbsp{{ $subcategory->name }}</option>
+                            <option value="{{$subcategory->id }}">{{ str_repeat('&nbsp;' ,10) .$subcategory->name }}</option>
 
                                 @if(!$subcategory->children->isEmpty())
                                         @foreach($subcategory->children as $subcategory1)
-                                    <option value="{{$subcategory1->id }}">&nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp   &nbsp {{ $subcategory1->name }}</option>>
+                                    <option value="{{$subcategory1->id }}"> {{str_repeat('&nbsp;' ,20) . $subcategory1->name }}</option>>
                                         @endforeach
 
                                 @endif
@@ -62,11 +62,11 @@
 
                     @if(!$category->children->isEmpty())
                         @foreach($category->children as $subcategory)
-                            <option value="{{$subcategory->id }}" @if($parent==$subcategory->id)  {{"selected"}} @endif>&nbsp &nbsp &nbsp{{ $subcategory->name }}</option>
+                            <option value="{{$subcategory->id }}" @if($parent==$subcategory->id)  {{"selected"}} @endif>{{str_repeat('&nbsp;' ,10) . $subcategory->name }}</option>
 
                             @if(!$subcategory->children->isEmpty())
                                 @foreach($subcategory->children as $subcategory1)
-                                    <option value="{{$subcategory1->id }}" @if($parent==$subcategory1->id)  {{"selected"}} @endif>&nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp   &nbsp {{ $subcategory1->name }}</option>>
+                                    <option value="{{$subcategory1->id }}" @if($parent==$subcategory1->id)  {{"selected"}} @endif>{{ str_repeat('&nbsp;' ,20) .$subcategory1->name }}</option>>
                                 @endforeach
 
                             @endif

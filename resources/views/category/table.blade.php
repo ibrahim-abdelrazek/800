@@ -2,7 +2,7 @@
     <div class="ks-nav-body-wrapper">
         <div class="container-fluid">
 <table id="categories-datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
-<thead>
+    <thead>
     <tr>
         <th rowspan="1">Name</th>
         <th rowspan="1">Parent</th>
@@ -19,9 +19,7 @@
     </tr>
     </tfoot>
     <tbody>
-    @php($i = 1)
     @foreach($categories as $category)
-
         <tr>
             <td scope="row"><b>{{ $category->name }}</b></td>
             <td scope="row">
@@ -45,47 +43,49 @@
         </tr>
 
         @if(!$category->children->isEmpty())
-            <tr>
+
                 @foreach($category->children as $subcategory)
-                    <td>&nbsp &nbsp &nbsp{{'__'. $subcategory->name }}</td>
-                    <td scope="row">
+                    <tr>
+                        <td style="color:#333"><b> {{str_repeat('&nbsp;' ,10) . $subcategory->name }}</b></td>
+                        <td scope="row">
 
-                        @if($subcategory->parent == 0)
-                            {{ 'root' }}
-                        @else
-                            {{\App\Category::where("id",$subcategory->parent)->value('name') }}
-                        @endif
+                            @if($subcategory->parent == 0)
+                                {{ 'root' }}
+                            @else
+                                {{\App\Category::where("id",$subcategory->parent)->value('name') }}
+                            @endif
 
-                    </td>
-                    <td><div class='btn-group'>
-                            <a href="{{ URL::to('category/' . $subcategory->id . '/edit') }}" class='btn btn-default btn-xs'>Edit</a>
-                            {!! Form::open(['route' => ['category.destroy', $subcategory->id], 'method' => 'delete']) !!}
-                            {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
-                            {!! Form::close() !!}
-                        </div>
-                    </td>
-            </tr>
+                        </td>
+                        <td><div class='btn-group'>
+                                <a href="{{ URL::to('category/' . $subcategory->id . '/edit') }}" class='btn btn-default btn-xs'>Edit</a>
+                                {!! Form::open(['route' => ['category.destroy', $subcategory->id], 'method' => 'delete']) !!}
+                                {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                {!! Form::close() !!}
+                            </div>
+                        </td>
+                    </tr>
                             @if(!$subcategory->children->isEmpty())
                                 <tr>
                                     @foreach($subcategory->children as $subcategory1)
                                         <tr>
-                                        <td>&nbsp &nbsp &nbsp&nbsp &nbsp &nbsp{{'____'.    $subcategory1->name }}</td>
-                                        <td scope="row">
+                                            <td style="color:#5c5353"><b>{{ str_repeat('&nbsp;' ,20) .$subcategory1->name }}</b></td>
+                                            <td scope="row">
 
-                                            @if($subcategory1->parent == 0)
-                                                {{ 'root' }}
-                                            @else
-                                                {{\App\Category::where("id",$subcategory1->parent)->value('name') }}
-                                            @endif
+                                                @if($subcategory1->parent == 0)
+                                                    {{ 'root' }}
+                                                @else
+                                                    {{\App\Category::where("id",$subcategory1->parent)->value('name') }}
+                                                @endif
 
-                                        </td>
-                                        <td>
-                                            <div class='btn-group'>
-                                                <a href="{{ URL::to('category/' . $subcategory1->id . '/edit') }}" class='btn btn-default btn-xs'>Edit</a>
-                                                {!! Form::open(['route' => ['category.destroy', $subcategory1->id], 'method' => 'delete']) !!}
-                                                {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
-                                                {!! Form::close() !!}
-                                            </div></td>
+                                            </td>
+                                            <td>
+                                                <div class='btn-group'>
+                                                    <a href="{{ URL::to('category/' . $subcategory1->id . '/edit') }}" class='btn btn-default btn-xs'>Edit</a>
+                                                    {!! Form::open(['route' => ['category.destroy', $subcategory1->id], 'method' => 'delete']) !!}
+                                                    {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                                    {!! Form::close() !!}
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
 
@@ -96,7 +96,6 @@
 
         @endif
 
-        @php($i++)
     @endforeach
     </tbody>
 </table>

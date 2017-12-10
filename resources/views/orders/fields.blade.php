@@ -162,12 +162,12 @@
                         {!! Form::text('quantities[]', $val, [  'placeholder'=>'Enter Product\'s quantity','id'=>'products-holder',  'class' => 'form-control']) !!}
                     </div>
                     <div class="col-sm-3">
-                        @php 
-                    $cop[-1] = 'Select Co-Payments';
-                    @endphp
-                    @for($i = 0; $i <= 35; $i=$i+5)
-                    @php $cop[$i] = $i; @endphp
-                    @endfor 
+                        @php
+                            $cop[-1] = 'Select Co-Payments';
+                        @endphp
+                        @for($i = 0; $i <= 35; $i=$i+5)
+                            @php $cop[$i] = $i; @endphp
+                        @endfor
                         {!! Form::select('copayments[]', $cop, $order->copayments[$key], ['class' => 'select2 form-control']) !!}
                         
                     </div>

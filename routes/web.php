@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('nurses', 'NurseController');
     Route::get('nurse/viewCard/{id}', 'NurseController@viewCard');
     Route::resource('products', 'ProductController');
+//    Route::get('products/getProducts', 'ProductController@getProducts');
     Route::get('orders/print/{id}', 'OrderController@download');
     Route::resource('orders', 'OrderController');
     Route::get('patient/searchpatient', 'PatientController@searchpatient');

@@ -55,6 +55,11 @@ class User extends Authenticatable
         return false;
     }
 
+    public function isCallCenter(){
+        if($this->usergroup->id === 28 || $this->usergroup->id === 29)
+            return true;
+        return false;
+    }
     public function ableTo($ability, $model)
     {
         if($this->isAdmin())

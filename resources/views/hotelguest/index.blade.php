@@ -19,7 +19,7 @@
                     <li class="nav-item">
                         <a class="nav-link @if(!$errors->any()) active @endif" href="#" data-toggle="tab" data-target="#hotelguests-list">
                             All Guests
-                            @if(Auth::user()->isAdmin())
+                            @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                                 <span class="badge badge-info badge-pill">{{ App\HotelGuest::count()}}</span>
                             @elseif(Auth::user()->isPartner())
                                 <span class="badge badge-info badge-pill">{{ App\HotelGuest::where('partner_id', Auth::user()->id)->count()}}</span>
@@ -29,7 +29,7 @@
 
                         </a>
                     </li>
-                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\HotelGuest::$model))
+                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->isCallCenter()|| Auth::user()->ableTo('add', App\HotelGuest::$model))
                         <li class="nav-item">
                             <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new-hotelguest">
                                 Create New Guest
@@ -46,7 +46,7 @@
                         @include('hotelguest.table')
                     </div>
 
-                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\HotelGuest::$model))
+                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->isCallCenter() || Auth::user()->ableTo('add', App\HotelGuest::$model))
 
                         <div class="tab-pane @if($errors->any()) active @endif" id="new-hotelguest" role="tabpanel">
                             <!-- Second Content -->

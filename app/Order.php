@@ -102,8 +102,9 @@ class Order extends Model
                         $canceled = true;
                 $array[] = array_merge($product->toArray(), [
                     'Quantity'=>(int) $value,
-                    'FormattedPricePerItem'=> $product->price, 'FormattedPrice'=>(int) $value * $product->price * (100 - $this->copayments[$key]) / 100,
-                    'FormattedDiscount'=>$value * $this->copayments[$key] * $product->price / 100,
+                    'FormattedPricePerItem'=> $product->price, 
+                    'FormattedPrice'=>$value * $this->copayments[$key] * $product->price / 100 ,
+                    'FormattedDiscount'=>(int) $value * $product->price * (100 - $this->copayments[$key]) / 100,
                     'sum' => $value * $product->price,
                     'IsCanceled'=>$canceled]);
                 }
@@ -121,11 +122,21 @@ class Order extends Model
         $total = 0;
         if(!empty($this->products)){
             $products = !empty($this->canceled) ? array_diff_key($this->products , $this->canceled) : $this->products;
+            if(!empty($products)){
            foreach($products as $product=>$value){
+               
             $prod = Product::find($product);
-            $total += $prod->price * $value * (100 - $this->copayments[$product]) / 100;
+            if(!isset($prod->price)){ 
+                $total= 0;
+                
+            } else{
+                $total += $value * $this->copayments[$product] * $prod->price / 100;
+            }
+            //$total += $value * $this->copayments[$product] * $prod->price / 100;
+             //$total += floor($prod->price * $value * (100 - $this->copayments[$product]) / 100);
                
            } 
+            }
         }
         
         return $total;

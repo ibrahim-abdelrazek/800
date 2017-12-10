@@ -37,7 +37,7 @@ class DoctorController extends Controller
         //
         if(Auth::user()->ableTo('view',Doctor::$model)) {
 
-            if (Auth::user()->isAdmin()) {
+            if (Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
                 $doctors = Doctor::all();
 

@@ -23,7 +23,7 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            @if(Auth::user()->isAdmin())
+            @if(Auth::user()->isAdmin() || Auth::user()->ableTo('view', App\PartnerType::$model))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('partnertypes.index') }}" role="button" aria-haspopup="true"
                        aria-expanded="false">
@@ -31,6 +31,8 @@
                         <span>Partner Types</span>
                     </a>
                 </li>
+            @endif
+            @if(Auth::user()->isAdmin() || Auth::user()->ableTo('view', App\Partner::$model))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('partners.index') }}" role="button" aria-haspopup="true"
                        aria-expanded="false">
@@ -39,7 +41,7 @@
                     </a>
                 </li>
             @endif
-            @if(Auth::user()->isAdmin() || Auth::user()->isPartner())
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\User::$model))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('users.index') }}" role="button" aria-haspopup="true"
                        aria-expanded="false">

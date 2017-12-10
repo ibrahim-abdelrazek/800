@@ -550,6 +550,33 @@ $(document).ready(function () {
 
         //$('#order-detail-modal-title').text('Order');
         $("#order-picked-up-service").hide();
+        
+        $('#order-objectid').val('');
+        $('#order-userid').val('');
+        $('#order-name').val('');
+        $('#order-surname').val('');
+        $('#order-mobile').val('');
+        $('#order-address').val('');
+        $('#order-address-description').val('');
+        $('#order-address-line').val('');
+        $('#order-note').val('');
+        $('#order-status').val('');
+        $('#order-used-point-exchange').val('');
+        $('#total-price').html('');
+        $('#total-discount-price').html('');
+        $('#total-normal-price').html('');
+        $("#status-type").html('');
+        $('#order-created-date').html('');
+        $("#order-status-date").html('');
+        $(".modal-footer").show();
+        $("#button_cancel_order").show();
+        $("#button_update_order").show();
+        $("#button_update_order_status").show();
+        $('#order-picked-up-service').val('')
+        $("#order-picked-up-service-div").hide();
+        $("#order-drop-off-service-div").hide();
+        $("#order-stamp-orders-div").hide();
+        // $("#table-order-detail tbody").html();
         $.ajax({
             type: "GET",
             url: "/Order/GetNewOrderItem?ObjectId=" + _orderId,
@@ -560,31 +587,6 @@ $(document).ready(function () {
             beforeSend: function () { $('.loading').show(); },
             complete: function () { $('.loading').hide(); },
             success: function (data) {
-                $('#order-objectid').val('');
-                $('#order-userid').val('');
-                $('#order-name').val('');
-                $('#order-surname').val('');
-                $('#order-mobile').val('');
-                $('#order-address').val('');
-                $('#order-address-description').val('');
-                $('#order-address-line').val('');
-                $('#order-note').val('');
-                $('#order-status').val('');
-                $('#order-used-point-exchange').val('');
-                $('#total-price').html('');
-                $('#total-discount-price').html('');
-                $('#total-normal-price').html('');
-                $("#status-type").html('');
-                $('#order-created-date').html('');
-                $("#order-status-date").html('');
-                $(".modal-footer").show();
-                $("#button_cancel_order").show();
-                $("#button_update_order").show();
-                $("#button_update_order_status").show();
-                $('#order-picked-up-service').val('')
-                $("#order-picked-up-service-div").hide();
-                $("#order-drop-off-service-div").hide();
-                $("#order-stamp-orders-div").hide();
 
                 if (data.SurName == null) {
                     data.SurName = "";
@@ -706,8 +708,10 @@ $(document).ready(function () {
                         break;
                     default:
                 }
-
                 table.destroy();
+                if(data.Orders==null){
+                    data.Orders = [];
+                }
                 table = $('#table-order-detail').DataTable({
                     paging: false,
                     searching: false,
@@ -768,6 +772,7 @@ $(document).ready(function () {
                         }
                     }
                 });
+                
 
                 if (false == false) {
                     table.column(0).visible(false);

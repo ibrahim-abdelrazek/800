@@ -29,7 +29,7 @@ class NurseController extends Controller
         //
         if (Auth::user()->ableTo('view', Nurse::$model)) {
 
-            if (Auth::user()->isAdmin()) {
+            if (Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
                 $nurses = Nurse::all();
 

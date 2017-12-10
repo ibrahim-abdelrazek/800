@@ -33,9 +33,15 @@
                         <td>
                             {!! Form::open(['route' => ['partners.destroy', $partner->id], 'method' => 'delete']) !!}
                             <div class='btn-group'>
+                                @if(Auth::user()->ableTo('view', App\Partner::$model))
                                 <a href="{!! route('partners.show', [$partner->id]) !!}" class='btn btn-default btn-xs'>Show</a>
+                                @endif
+                                @if(Auth::user()->ableTo('edit', App\Partner::$model))
                                 <a href="{!! route('partners.edit', [$partner->id]) !!}" class='btn btn-default btn-xs'>Edit</a>
+                                @endif
+                                @if(Auth::user()->ableTo('delete', App\Partner::$model))
                                 {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                                @endif
                             </div>
                             {!! Form::close() !!}
                         </td>

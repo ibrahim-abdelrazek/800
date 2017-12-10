@@ -436,7 +436,7 @@
                 })
             }
 
-            if(userGroup==1){
+            if(userGroup==1 || userGroup==28 || userGroup==29){
                 $('.partner_form_input').addClass('hidden');
             }else{
                 $('.partner_form_input').removeClass('hidden');

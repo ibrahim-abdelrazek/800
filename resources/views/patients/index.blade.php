@@ -27,7 +27,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="#" data-toggle="tab" data-target="#nurses-list">
                             All Patients
-                            @if(Auth::user()->isAdmin())
+                            @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                                 <span class="badge badge-info badge-pill">{{ App\Patient::count()}}</span>
                             @elseif(Auth::user()->isPartner())
                                 <span class="badge badge-info badge-pill">{{ App\Patient::where('partner_id', Auth::user()->id)->count()}}</span>
@@ -37,7 +37,7 @@
 
                         </a>
                     </li>
-                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Patient::$model))
+                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->isCallCenter() || Auth::user()->ableTo('add', App\Patient::$model))
                     <li class="nav-item">
                         <a class="nav-link" id="create_new" href="#" data-toggle="tab" data-target="#new-patient">
                             Create New Patient
@@ -53,7 +53,7 @@
                         <!-- Content Here -->
                         @include('patients.table')
                     </div>
-                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Patient::$model))
+                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->isCallCenter() || Auth::user()->ableTo('add', App\Patient::$model))
                                       
                         <div class="tab-pane" id="new-patient" role="tabpanel">
                         <!-- Second Content -->

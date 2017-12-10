@@ -68,7 +68,7 @@
     </div>
 </div>
 
-@if(!Auth::user()->isAdmin())
+@if(!Auth::user()->isAdmin() && !Auth::user()->isCallCenter())
 
     <!--  patient_id -->
     <div class="form-group row">
@@ -283,8 +283,9 @@ if($data){
 <script type="text/javascript">
     var isEdit = <?= (request()->route()->getAction()['as'] == "orders.edit")? 1 : 0;?>;
     var isAdmin = "<?=  Auth::user()->isAdmin()?>";
+    var isCallCenter = "<?=  Auth::user()->isCallCenter()?>";
     var partnerID = "<?= (!Auth::user()->isAdmin())? Auth::user()->partner_id:'' ?>";
-    var partner = (isAdmin != 1)? partnerID : $('#partner_id').val();
+    var partner = (isAdmin != 1 && isCallCenter != 1)? partnerID : $('#partner_id').val();
     var searchableUrl = '{{url("patient/searchpatient")}}?c='+partner;
     $(document).ready(function () {
         $('#products-holder').select2();

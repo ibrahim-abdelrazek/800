@@ -25,15 +25,15 @@
                     <li class="nav-item">
                         <a class="nav-link @if(!$errors->any()) active @endif " href="#" data-toggle="tab" data-target="#doctors-list">
                             All Doctors
-                            @if(Auth::user()->isAdmin())
+                            @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                             <span class="badge badge-info badge-pill">{{ App\Doctor::count()}}</span>
-                            @elseif(Auth::user()->isPartner())
-                            <span class="badge badge-info badge-pill">{{ App\Doctor::where('partner_id', Auth::user()->id)->count()}}</span>
+                            @else(Auth::user()->isPartner())
+                            <span class="badge badge-info badge-pill">{{ App\Doctor::where('partner_id', Auth::user()->partner_id)->count()}}</span>
                             @endif
                             
                         </a>
                     </li>
-                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Doctor::$model))
+                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->isCallCenter() || Auth::user()->ableTo('add', App\Doctor::$model))
                     <li class="nav-item">
                         <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new_doctor">
                             Create New Doctor
@@ -49,7 +49,7 @@
                      <!-- Content Here --> 
                      @include('doctors.table')
                      </div>
-                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\Doctor::$model))
+                    @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->isCallCenter() || Auth::user()->ableTo('add', App\Doctor::$model))
                   
                     <div class="tab-pane @if($errors->any()) active @endif" id="new_doctor" role="tabpanel">
                         <!-- Second Content --> 
@@ -160,7 +160,7 @@
         })(jQuery);
     </script>
 
-    @if(Auth::user()->isAdmin())
+    @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
         <script type="application/javascript">
             // asynchronous content
             (function ($) {

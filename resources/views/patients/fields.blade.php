@@ -211,7 +211,7 @@
     </div>
 </div>
 
-@if(Auth::user()->isAdmin())
+@if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
 <!--  Partner -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('partner', 'partner:') !!}</label>

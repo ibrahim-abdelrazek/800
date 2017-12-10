@@ -86,6 +86,9 @@ class UserGroupController extends Controller
 
             $input = $request->all();
             $models = [
+                \App\Partner::$model,
+                \App\PartnerType::$model,
+                \App\UserGroup::$model,
                 \App\Doctor::$model,
                 \App\Patient::$model,
                 \App\HotelGuest::$model,
@@ -115,7 +118,7 @@ class UserGroupController extends Controller
 
             $data['group_name'] = $input['group_name'];
             $data['action'] = $action;
-            $data['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id;
+            //$data['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id;
 
             $usergroups = UserGroup::create($data);
 
@@ -164,6 +167,12 @@ class UserGroupController extends Controller
             $usergroup = UserGroup::find($id);
 
             $models = [
+                \App\Partner::$model,
+                \App\PartnerType::$model,
+                \App\UserGroup::$model,
+                \App\Partner::$model,
+                \App\PartnerType::$model,
+                \App\UserGroup::$model,
                 \App\Doctor::$model,
                 \App\Patient::$model,
                 \App\HotelGuest::$model,
@@ -238,6 +247,9 @@ class UserGroupController extends Controller
 
             $input = $request->all();
             $models = [
+                \App\Partner::$model,
+                \App\PartnerType::$model,
+                \App\UserGroup::$model,
                 \App\Doctor::$model,
                 \App\Patient::$model,
                 \App\HotelGuest::$model,
@@ -264,7 +276,7 @@ class UserGroupController extends Controller
 
             $data['group_name'] = $input['group_name'];
             $data['action'] = $action;
-            $data['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id;
+            //$data['partner_id'] = ($request->has('partner_id') && Auth::user()->isAdmin()) ? $request->input('partner_id') : Auth::user()->partner_id;
 
             if (empty($usergroup)) {
                 return redirect(route('usergroups.index'));

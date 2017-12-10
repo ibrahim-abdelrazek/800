@@ -17,18 +17,15 @@ class HotelGuestController extends Controller
     {
 
         if (Auth::user()->ableTo('view', HotelGuest::$model)) {
-            if (Auth::user()->isAdmin()) {
+            if (Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
                 $hotelguests = HotelGuest::all();
 
-            } elseif (Auth::user()->user_group_id == 2) {
+            } else {
 
                 $hotelguests = HotelGuest::where('partner_id', Auth::user()->partner_id)->get();
 
-            } else {
-
-                $hotelguests = HotelGuest::where('id', Auth::user()->id)->get();
-            }
+            } 
 
             return view('hotelguest.index')->with('hotelguests', $hotelguests);
         } else {
@@ -76,12 +73,7 @@ class HotelGuestController extends Controller
             if ($request->has('partner_id')) {
                 $guest = $request->all();
             } else {
-                if (Auth::user()->user_group_id == 2) {
-                    $guest = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                } else {
-                    $guest = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                    $guest = array_merge($guest, ['id' => Auth::user()->id]);
-                }
+                 $guest = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
             }
 
             if ($request->has('full_number')) {
@@ -180,12 +172,8 @@ class HotelGuestController extends Controller
             if ($request->has('partner_id')) {
                 $guest = $request->all();
             } else {
-                if (Auth::user()->user_group_id == 2) {
-                    $guest = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                } else {
-                    $guest = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
-                    $guest = array_merge($guest, ['id' => Auth::user()->id]);
-                }
+                $guest = array_merge($request->all(), ['partner_id' => Auth::user()->partner_id]);
+               
             }
 
             if ($request->has('full_number')) {

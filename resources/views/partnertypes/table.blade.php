@@ -23,10 +23,14 @@
             <td>
                 {!! Form::open(['route' => ['partnertypes.destroy', $partnertype->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
+                    @if(Auth::user()->ableTo('edit', App\PartnerType::$model))
                     <a href="{!! route('partnertypes.edit', [$partnertype->id]) !!}" class="btn btn-default btn-xs">
                         Edit
                     </a>
+                    @endif
+                    @if(Auth::user()->ableTo('delete', App\PartnerType::$model))
                     {!! Form::button('Delete', ['type' => 'submit', 'style'=>'cursor:pointer;', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    @endif
                 </div>
                 {!! Form::close() !!}
             </td>

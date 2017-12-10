@@ -99,7 +99,7 @@ class UserController extends Controller
             $user['contact_number'] = str_replace('+', '', $request->full_number);
             unset($user['full_number']);
 
-            if($user['user_group_id'] == 1){
+            if($user['user_group_id'] == 1 || $user['user_group_id'] == 28 || $user['user_group_id'] == 29){
                 $user['partner_id'] = null;
             }elseif($user['user_group_id'] == 31){
                 $doctorData = $user;
@@ -257,7 +257,7 @@ class UserController extends Controller
         $data['email'] = $request->email;
         $data['user_group_id'] = $request->user_group_id;
         
-        if($request->user_group_id == 1){
+        if($request->user_group_id == 1 || $request->user_group_id == 28 || $request->user_group_id == 29){
             $data['partner_id'] = null;
         }elseif(Auth::user()->isAdmin())
             $data['partner_id'] = $request->partner_id;

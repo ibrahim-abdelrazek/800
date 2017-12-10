@@ -62,7 +62,7 @@
     <div class="col-sm-10">{!! Form::text('items', null, [  'class' => 'form-control']) !!}</div>
 </div>
 
-@if(Auth::user()->isAdmin())
+@if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
     <!--  Partner -->
     <div class="form-group row">
         <label for="default-input"

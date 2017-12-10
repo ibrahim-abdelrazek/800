@@ -25,7 +25,7 @@ class OrderController extends Controller
         //
         if(Auth::user()->ableTo('view',Order::$model)) {
 
-            if (Auth::user()->isAdmin()) {
+            if (Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
                 $orders = Order::all();
 
@@ -490,8 +490,9 @@ class OrderController extends Controller
         }
     }
     public function InsertDetailItem(Request $request){
-         if(Auth::user()->ableTo('edit',Order::$model) && !empty($request->ProductId) && !empty($request->id) && !empty($request->Quantity) && !empty($request->insureRate) ){
+         if((Auth::user()->isAdmin() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model)) && !empty($request->ProductId) && !empty($request->id) && !empty($request->Quantity) && !empty($request->insureRate) ){
             $order = Order::where('id', $request->id)->first();
+        //var_dump($order);die();
             if(!empty($order)){
                 if($request->insureRate == -1) 
                 $request->insureRate = 0;
@@ -517,7 +518,7 @@ class OrderController extends Controller
         return response()->json(['success'=>false, 'message'=>'not authorized'], 200);
     }
     public function CancelDetailItem(Request $request){
-        if(Auth::user()->ableTo('edit',Order::$model) && !empty($request->ProductId) && !empty($request->ObjectId) && !empty($request->IsCanceled) ){
+        if((Auth::user()->isAdmin() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model))  && !empty($request->ProductId) && !empty($request->ObjectId) && !empty($request->IsCanceled) ){
             $order = Order::where('id', $request->ObjectId)->first();
             if(!empty($order)){
                 
@@ -537,7 +538,7 @@ class OrderController extends Controller
         return response()->json(['success'=>false, 'message'=>'not authorized'], 200);
     }
     public function PrintOrder(Request $request, $id){
-         if(Auth::user()->ableTo('view',Order::$model)) {
+         if( Auth::user()->isAdmin() || Auth::user()->isPartner()|| Auth::user()->ableTo('view',Order::$model) ) {
 
             $order = Order::find($id);
 
@@ -551,7 +552,7 @@ class OrderController extends Controller
         }
     }    
     public function UpdateOrderDetailImage(Request $request){
-         if(Auth::user()->ableTo('edit',Order::$model) && !empty($request->id) && !empty($request->degree)) {
+         if((Auth::user()->isAdmin() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model)) && !empty($request->id) && !empty($request->degree)) {
 
             $order = Order::find($request->id);
 

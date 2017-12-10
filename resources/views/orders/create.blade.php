@@ -50,7 +50,7 @@
         </script>
 @endpush
     @push('customjs')
-    @if(Auth::user()->isAdmin())
+    @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
 
         <script type="application/javascript">
             // asynchronous content

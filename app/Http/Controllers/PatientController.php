@@ -26,7 +26,7 @@ class PatientController extends Controller
         //
         if(Auth::user()->ableTo('view',Patient::$model)) {
 
-            if (Auth::user()->isAdmin()) {
+            if (Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
                 $patients = Patient::all();
 
@@ -78,10 +78,10 @@ class PatientController extends Controller
                 'email' => 'required|email|unique:patients,email',
                 'insurance_file' => 'required|mimes:jpg,png,jpeg,pdf',
                 'insurance_provider' => 'numeric',
-                'card_number' => 'string',
+                'card_number' => '',
 //                'insurance_expiry' => 'required',
                 'id_file' => 'required|mimes:jpg,png,jpeg,pdf',
-                'id_number' => 'string',
+                'id_number' => '',
 //                'id_expiry' => 'required',
                 'notes' => 'max:200|min:0',
                 'city'=>'required|numeric',
@@ -251,7 +251,7 @@ class PatientController extends Controller
                 $patient->company_name = $address[2];
                 $patient->area = $patient->area->neighborhood_name;
                 $patient->city = $patient->city->city_name;
-                $patient->city = $address[5];
+                // $patient->city = $address[5];
                 $patient->type1 = 'office';
 
             }
@@ -286,9 +286,9 @@ class PatientController extends Controller
                 'contact_number' => 'required|string|max:10',
                 'email' => 'required|email|unique:patients,email,'.$patientt->id,
                 'insurance_provider' => 'numeric',
-                'card_number' => 'string',
+                'card_number' => '',
 //                'insurance_expiry' => 'required',
-                'id_number' => 'string',
+                'id_number' => '',
 //                'id_expiry' => 'required',
                 'notes' => 'max:200|min:0',
                 'city'=>'required|numeric',

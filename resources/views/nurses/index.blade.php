@@ -27,7 +27,7 @@
                             @if(Auth::user()->isAdmin())
                                 <span class="badge badge-info badge-pill">{{ App\Nurse::count()}}</span>
                             @elseif(Auth::user()->isPartner())
-                                <span class="badge badge-info badge-pill">{{ App\Nurse::where('partner_id', Auth::user()->id)->count()}}</span>
+                                <span class="badge badge-info badge-pill">{{ App\Nurse::where('partner_id', Auth::user()->partner_id)->count()}}</span>
                             @else
                                 <span class="badge badge-info badge-pill">{{ App\Nurse::where('partner_id', Auth::user()->partner_id)->count()}}</span>
                             @endif

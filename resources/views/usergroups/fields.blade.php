@@ -31,9 +31,9 @@
 @php
 
     $models = [
-/*    \App\Partner::$model,
+    \App\Partner::$model,
     \App\PartnerType::$model,
-    \App\UserGroup::$model,*/
+    \App\UserGroup::$model,
     \App\Doctor::$model,
     \App\Patient::$model,
     \App\HotelGuest::$model,

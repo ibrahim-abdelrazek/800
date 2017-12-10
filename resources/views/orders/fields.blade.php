@@ -145,16 +145,15 @@
 
     <div id="products_wrapper" class="col-sm-10">
         @if(isset($order))
-            @php $i=1; $products = $order->products; @endphp
+            @php $k=1; $products = $order->products; @endphp
             @if(count($products) > 0)
-            @foreach($products as $key => $val)
+                @foreach($products as $key => $val)
+                    <div class="form-group row">
+                        <div class="col-sm-3">
 
-                <div class="form-group row">
-                    <div class="col-sm-3">
-                        
-                        {!! form :: select ('products[]',App\Product::pluck('name','id'),$key,['id'=>'products-holder', 'class' => 'select2 form-control'])!!}
+                            {!! form :: select ('products[]',App\Product::pluck('name','id'),$key,['id'=>'products-holder', 'class' => 'select2 form-control'])!!}
 
-                    </div>
+                        </div>
                     <div class="text-center col-sm-1">
                         <span class="label label-danger">X</span>
                     </div>
@@ -172,18 +171,18 @@
                         
                     </div>
                     <div class="col-sm-2">
-                        @if($i == 1 )
+                        @if($k == 1 )
                         <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
                         @else
                             <a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a>
                         @endif
-                            @php $i++; @endphp
+                            @php $k++; @endphp
 
                     </div>
                 </div>
-            @endforeach
+                @endforeach
             @else
-             <div class="form-group row"> 
+                <div class="form-group row">
                 @php 
                     $prods = App\Product::pluck('name','id')->toArray();
                     $prods[] = ['0' => 'Select Product'];
@@ -243,7 +242,7 @@
                      <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
                  </div>
              </div>
-            @endif
+        @endif
     </div>
 </div>
 

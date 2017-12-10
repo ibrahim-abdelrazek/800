@@ -626,8 +626,8 @@ $(document).ready(function () {
                 switch (data.status_id) {
                     case 0:
                         $("#status-date-label").hide();
-                        $("#staff-group").hide();
-                        $("#button_order_detail_add").hide();
+                        //$("#staff-group").hide();
+                        //$("#button_order_detail_add").hide();
                         $("#button_cancel_order_detail").hide();
                         $('#order-estimated-delivery-time').attr("disabled", false);
                         break;
@@ -712,6 +712,7 @@ $(document).ready(function () {
                 if(data.Orders==null){
                     data.Orders = [];
                 }
+                console.log(data.Orders);
                 table = $('#table-order-detail').DataTable({
                     paging: false,
                     searching: false,

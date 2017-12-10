@@ -128,15 +128,25 @@ class OrderController extends Controller
                 );
             $order['products'] = null;
             $order['copayments'] = null;
+            $order['prices'] = null;
+            $order['total'] = 0;
+            $order['totaldiscount'] = 0;
+            $prices = array();
             if($request->has('products') && is_array($request->products)){
-                if(count($request->products) > 1 || (count($request->products) == 1 && $request->products[0] != '0'))
-                $order = array_merge($order, [
-                 
-                'products'=>array_combine($request->products, $request->quantities),
-                'copayments'=>array_combine($request->products, $request->copayments)]);
-                
-            } 
-                 
+                if(count($request->products) > 1 || (count($request->products) == 1 && $request->products[0] != '0')) {
+                    for ($i = 0; $i < count($request->products); $i++) {
+                        $price = Product::find($request->products[$i])->price;
+                        $order['totaldiscount'] += ($request->copayments[$i] > 0)? $price * ($request->copayments[$i] / 100) : $price;
+                        $order['total'] += $price;
+                        $prices[] = $price;
+                    }
+                    $order = array_merge($order, [
+                        'products' => array_combine($request->products, $request->quantities),
+                        'copayments' => array_combine($request->products, $request->copayments),
+                        'prices' => array_combine($request->products, $prices)
+                    ]);
+                }
+            }
             if(Order::create($order)){
                 /* 
                 *Notify Staff 
@@ -278,15 +288,26 @@ class OrderController extends Controller
                 // remove old image
                 $order = array_merge($order, ['insurance_claim' => $insurance_claim]);
             }
-             $order['products'] = null;
-             $order['copayments'] = null;
+            $order['products'] = null;
+            $order['copayments'] = null;
+            $order['prices'] = null;
+            $order['total'] = 0;
+            $order['totaldiscount'] = 0;
+            $prices = array();
             if($request->has('products') && is_array($request->products)){
-                if(count($request->products) > 1 || (count($request->products) == 1 && $request->products[0] != '0'))
-                $order = array_merge($order, [
-                 
-                'products'=>array_combine($request->products, $request->quantities),
-                'copayments'=>array_combine($request->products, $request->copayments)]);
-                
+                if(count($request->products) > 1 || (count($request->products) == 1 && $request->products[0] != '0')) {
+                    for ($i = 0; $i < count($request->products); $i++) {
+                        $price = Product::find($request->products[$i])->price;
+                        $order['totaldiscount'] += ($request->copayments[$i] > 0)? $price * ($request->copayments[$i] / 100) : $price;
+                        $order['total'] += $price;
+                        $prices[] = $price;
+                    }
+                    $order = array_merge($order, [
+                        'products' => array_combine($request->products, $request->quantities),
+                        'copayments' => array_combine($request->products, $request->copayments),
+                        'prices' => array_combine($request->products, $prices)
+                    ]);
+                }
             } 
          
 
@@ -481,7 +502,7 @@ class OrderController extends Controller
             }
             
         } 
-    } 
+    }
     public function GetUserItemDetail(Request $request){
         if(!empty($request->endUserId)){
             $patient = Patient::find($request->endUserId);
@@ -490,24 +511,27 @@ class OrderController extends Controller
         }
     }
     public function InsertDetailItem(Request $request){
-         if((Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model)) && !empty($request->ProductId) && !empty($request->id) && !empty($request->Quantity) && !empty($request->insureRate) ){
+         if((Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model)) && !empty($request->ProductId) && !empty($request->id) && !empty($request->Quantity)){
             $order = Order::where('id', $request->id)->first();
-        //var_dump($order);die();
+        //var_dump($order);//die();
             if(!empty($order)){
                 if($request->insureRate == -1) 
                 $request->insureRate = 0;
+                $product = Product::where('id', $request->ProductId)->first();
                 if(!empty($order->products)){
                     $order->products = $order->products + [$request->ProductId=>$request->Quantity];
-                $order->copayments = $order->copayments + [$request->ProductId=>$request->insureRate];
+                    $order->copayments = $order->copayments + [$request->ProductId=>$request->insureRate];
+                    $order->prices = $order->prices + [$request->ProductId=>$product->price];
                 }else{
                     $order->products = [$request->ProductId=>$request->Quantity];
-                $order->copayments = [$request->ProductId=>$request->insureRate];  
+                    $order->copayments = [$request->ProductId=>$request->insureRate];
                 }
-                
-                $product = Product::where('id', $request->ProductId)->first();
-                $total = $order->FormattedTotal + ($product->price * $request->Quantity * (100 - $request->insureRate) / 100);
-                $normalPrice = $order->NormalPrice + ($product->price * $request->Quantity);
-                $totalDiscount = $order->TotalDiscount + ($product->price * $request->Quantity * ( $request->insureRate) / 100);
+                $normalPrice = $order->total + ($product->price * $request->Quantity);
+                $total = $order->totaldiscount + ($product->price * $request->Quantity * ( $request->insureRate / 100));
+                $totalDiscount = $normalPrice - $total;
+
+                $order->total = $normalPrice;
+                $order->totaldiscount = $total;
             
                 if($order->save())
                     return response()->json(['success'=>true, 'message'=>'product has been added', 'Total'=>$total, 'NormalPriceTotal'=>$normalPrice, 'DiscountTotal'=>$totalDiscount, 'Orders'=>$order->Orders], 200);
@@ -523,14 +547,18 @@ class OrderController extends Controller
             if(!empty($order)){
                 
                 if(!empty($order->canceled) && !array_key_exists($request->ProductId, $order->canceled))
-                $order->canceled = $order->canceled + [$request->ProductId=>true];
-                else $order->canceled = [$request->ProductId=>true];
-                $product = Product::where('id', $request->ProductId)->first();
-                $total = $order->FormattedTotal - ($product->price * $order->products[$product->id] * (100 - $order->copayments[$product->id]) / 100);
-                $normalPrice = $order->NormalPrice - ($product->price * $order->products[$product->id] );
-                $totalDiscount = $order->TotalDiscount + ($product->price * $order->products[$product->id] * ( $order->copayments[$product->id]) / 100);
+                    $order->canceled = $order->canceled + [$request->ProductId=>true];
+                else
+                    $order->canceled = [$request->ProductId=>true];
+
+                $normalPrice = $order->total - ($order->prices[$request->ProductId] * $order->products[$request->ProductId] );
+                $total = $order->totaldiscount - ($order->prices[$request->ProductId] * $order->products[$request->ProductId] * ($order->copayments[$request->ProductId] / 100));
+                $totalDiscount = $normalPrice - $total;
+
+                $order->total = $normalPrice;
+                $order->totaldiscount = $total;
                 if($order->save())
-                    return response()->json(['success'=>true, 'message'=>'product has been canceled', 'Total'=>$total, 'NormalPriceTotal'=>$normalPrice, 'DiscountTotal'=>$totalDiscount, 'Orders'=>$order->Orders], 200);
+                    return response()->json(['success'=>true, 'message'=>'product has been canceled', 'Total'=>round($total, 2), 'NormalPriceTotal'=>$normalPrice, 'DiscountTotal'=>$totalDiscount, 'Orders'=>$order->Orders], 200);
             return response()->json(['success'=>false, 'message'=>'failed to save order'], 200);    
             }
             return response()->json(['success'=>false, 'message'=>'order not found'], 200);

@@ -10,6 +10,8 @@
 <script src="{{ asset('libs/noty/noty.min.js') }}"></script>
 <script src="{{ asset('libs/velocity/velocity.min.js') }}"></script>
 <script src="{{ asset('libs/fancybox/jquery.fancybox.js') }}"></script>
+<script src="{{ asset('libs/howl/howler.min.js') }}"></script>
+
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <script src="{{ asset('assets/scripts/common.min.js') }}"></script>
@@ -138,7 +140,66 @@
 
         return text;
     }
+    var sound = new Howl({
+        src: ['/assets/raw/notify.mp3'],
+        loop: true,
+        onplay: function () {
+            if (soundCounter === maxSoundCounter - 1) {
+                sound.loop(false);
+            }
+        },
+        onend: function () {
+            soundCounter++;
+            if (soundCounter === maxSoundCounter - 1) {
+                sound.loop(false);
+            }
+        }
+    });
 
+    _onload();
+
+    timeout();
+    function timeout() {
+        setTimeout(function () {
+            if (!$('#myModal').is(':visible')) {
+               if(!window.location.indexOf('orders') > -1)
+                   _onload();
+            }
+            timeout();
+        }, 60000);
+    }
+
+    function _onload() {
+        $.ajax({
+            type: "GET",
+            url: '/Order/CheckNewOrder',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            cache: false,
+            beforeSend: function () { $('.loading').show(); },
+            success: function (data) {
+                if (data.NoData == "false") {
+
+                    $.notify(data.Message);
+                    if (!sound.playing()) {
+                        sound.play();
+                    }
+                }
+                else if (data.NoData == "true") {
+                    if (sound.playing() && true != true) {
+                        sound.pause();
+                    }
+                }
+                else if (data.NoData == "error") { }
+
+
+            },
+            error: function (exception) {
+                console.log(exception);
+
+            }
+        });
+    }
 
 
 </script>

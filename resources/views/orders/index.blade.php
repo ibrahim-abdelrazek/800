@@ -957,7 +957,6 @@
     <script src="http://800pharmacy.1001dubaipanel.com/Content/dataTables/js/responsive.bootstrap.min.js"></script>
     <script src="http://800pharmacy.1001dubaipanel.com/Content/dataTables/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="http://800pharmacy.1001dubaipanel.com/Content/select2/js/select2.full.min.js"></script>
-    <script src="{{ asset('libs/howl/howler.min.js') }}"></script>
     <script src="http://800pharmacy.1001dubaipanel.com/Content/rotate/jquery.rotate.1-1.js"></script>
         <script src="{{ asset('libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 

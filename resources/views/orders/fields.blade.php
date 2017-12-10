@@ -313,7 +313,6 @@ if($data){
         if(isEdit){
             var isData = <?= (empty($data))? 0 : $data?>;
             var DATA = (isData!=0)? isData : "";
-            console.log(DATA);
             $("#search").tokenInput(searchableUrl,
                 {
                     'prePopulate': DATA,

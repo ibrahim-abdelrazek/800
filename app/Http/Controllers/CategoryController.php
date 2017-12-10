@@ -23,7 +23,7 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
 
             $categories = Category::where("parent",0)->get();
@@ -44,7 +44,7 @@ class CategoryController extends Controller
     public function create()
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
             return view('category.create');
         }else {
@@ -61,7 +61,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
             $request->validate([
                 'name' => 'required|min:3|max:50|unique:category',
                 'parent' => 'required',
@@ -87,7 +87,7 @@ class CategoryController extends Controller
     public function show($id)
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
             $product = Product::find($id);
 
@@ -111,7 +111,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
             $category = Category::find($id);
 
@@ -136,7 +136,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
             $request->validate([
                 'name' => 'required|min:3|max:50|unique:category,name,'.$id,
                 'parent' => 'required',
@@ -169,7 +169,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
             $category = Category::find($id);
             if (empty($category)) {

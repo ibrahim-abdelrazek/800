@@ -18,7 +18,7 @@
     </div>
 </div>
 
-@if(Auth::user()->isAdmin())
+@if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
     <div class="form-group row">
         <label for="default-input"
                class="col-sm-2 form-control-label">{!! Form::label('partner_id', 'Partner:',['class'=> 'required']) !!}</label>

@@ -2,13 +2,13 @@
 
 
 @php
-    $userCount = (Auth::user()->isAdmin())? (\App\User::count() - \App\Partner::count() -1):(\App\User::where("partner_id",Auth::user()->partner_id)->count()  -1);
-    $nurseCount = (Auth::user()->isAdmin())? (\App\Nurse::count()):(\App\Nurse::where("partner_id",Auth::user()->partner_id)->count());
-    $doctorCount = (Auth::user()->isAdmin())? (\App\Doctor::count()):(\App\Doctor::where("partner_id",Auth::user()->partner_id)->count());
-    $hotleGuestCount = (Auth::user()->isAdmin())? (\App\HotelGuest::count()):(\App\HotelGuest::where("partner_id",Auth::user()->partner_id)->count());
-    $patientCount = (Auth::user()->isAdmin())? (\App\Patient::count()):(\App\Patient::where("partner_id",Auth::user()->partner_id)->count());
-    $productCount = (Auth::user()->isAdmin()) ? (\App\Product::count()) : 0;
-    $orderCount = (Auth::user()->isAdmin())? (\App\Order::count()):(\App\Order::where("partner_id",Auth::user()->partner_id)->count());
+    $userCount = (Auth::user()->isAdmin() || Auth::user()->isCallCenter())? (\App\User::count() - \App\Partner::count() -1):(\App\User::where("partner_id",Auth::user()->partner_id)->count()  -1);
+    $nurseCount = (Auth::user()->isAdmin() || Auth::user()->isCallCenter())? (\App\Nurse::count()):(\App\Nurse::where("partner_id",Auth::user()->partner_id)->count());
+    $doctorCount = (Auth::user()->isAdmin() || Auth::user()->isCallCenter())? (\App\Doctor::count()):(\App\Doctor::where("partner_id",Auth::user()->partner_id)->count());
+    $hotleGuestCount = (Auth::user()->isAdmin() || Auth::user()->isCallCenter())? (\App\HotelGuest::count()):(\App\HotelGuest::where("partner_id",Auth::user()->partner_id)->count());
+    $patientCount = (Auth::user()->isAdmin() || Auth::user()->isCallCenter())? (\App\Patient::count()):(\App\Patient::where("partner_id",Auth::user()->partner_id)->count());
+    $productCount = (Auth::user()->isAdmin() || Auth::user()->isCallCenter()) ? (\App\Product::count()) : 0;
+    $orderCount = (Auth::user()->isAdmin() || Auth::user()->isCallCenter())? (\App\Order::count()):(\App\Order::where("partner_id",Auth::user()->partner_id)->count());
 
 
 @endphp
@@ -30,7 +30,7 @@
 
                 <div class="row">
 
-                    @if( \Illuminate\Support\Facades\Auth::user()->isAdmin() )
+                    @if( \Illuminate\Support\Facades\Auth::user()->isAdmin() || \Illuminate\Support\Facades\Auth::user()->isCallCenter() )
                     <div class="col-md-4">
                         <div class="card ks-widget-payment-simple-amount-item ks-green">
                             <div class="payment-simple-amount-item-icon-block">
@@ -52,7 +52,7 @@
                     </div>
                     @endif
 
-                    @if( \Illuminate\Support\Facades\Auth::user()->isAdmin() )
+                    @if( \Illuminate\Support\Facades\Auth::user()->isAdmin() || \Illuminate\Support\Facades\Auth::user()->isCallCenter() )
 
                         <div class=" col-md-4">
                             <div class="card ks-widget-payment-simple-amount-item ks-orange">
@@ -74,11 +74,11 @@
                         @endif
 
                     @php
-                        $userClass = (\Illuminate\Support\Facades\Auth::user()->isAdmin())?  "" :  "col-md-4";
+                        $userClass = (\Illuminate\Support\Facades\Auth::user()->isAdmin() || \Illuminate\Support\Facades\Auth::user()->isCallCenter() )?  "" :  "col-md-4";
                         echo "<div class='". $userClass."'></div>";
 
                     @endphp
-                        @if(Auth::user()->isAdmin() || Auth::user()->isPartner())
+                        @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner())
                             <div class="col-md-4">
                                 <div class="card ks-widget-payment-simple-amount-item ks-pink">
                                     <div class="payment-simple-amount-item-icon-block">
@@ -160,7 +160,7 @@
                         </div>
                         </a>
                     </div>
-                    @if(Auth::user()->isAdmin())
+                    @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                     <div class="col-xl-4">
                         <a href="{{url("/products")}}">
 

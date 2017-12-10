@@ -31,7 +31,7 @@
 
                         </a>
                     </li>
-                    @if(Auth::user()->isAdmin())
+                    @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                         <li class="nav-item">
                             <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new-partner">
                                 Create New Partner
@@ -48,7 +48,7 @@
                         @include('partners.table')
                     </div>
 
-                    @if(Auth::user()->isAdmin())
+                    @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
 
                         <div class="tab-pane @if($errors->any()) active @endif" id="new-partner" role="tabpanel">
                             <!-- Second Content -->

@@ -5,7 +5,7 @@
                     <th rowspan="1" colspan="1">Name</th>
                     <th rowspan="1" colspan="1">Email</th>
                     <th rowspan="1" colspan="1">User Group</th>
-                    @if(Auth::user()->isAdmin())
+                    @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                         <th>Partner</th>
                     @endif
                     <th rowspan="1" colspan="1">Actions</th>
@@ -17,7 +17,7 @@
                     <th rowspan="1" colspan="1">Name</th>
                     <th rowspan="1" colspan="1">Email</th>
                     <th rowspan="1" colspan="1">User Group</th>
-                    @if(Auth::user()->isAdmin())
+                    @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                         <th>Partner</th>
                     @endif
                     <th rowspan="1" colspan="1">Actions</th>
@@ -31,7 +31,7 @@
                 <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->first_name . ' ' . $user->last_name !!}" data-original-title="{!! $user->first_name . ' ' . $user->last_name !!}">{!! substr($user->first_name . ' ' . $user->last_name,0,20) !!}</span></td>
                 <td><span data-toggle="tooltip" data-placement="top" title="{!! $user->email !!}" data-original-title="{!! $user->email !!}">{!! strlen($user->email) > 20 ? substr($user->email,0,20) . '...' : $user->email !!}</span></td>
                 <td>{!! $user->userGroup->group_name !!}</td>
-                @if(Auth::user()->isAdmin())
+                @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                     <td>{!! \App\Partner::where('id',$user->partner_id)->value('first_name') . ' '  . \App\Partner::where('id',$user->partner_id)->value('last_name')!!}</td>
                 @endif
 

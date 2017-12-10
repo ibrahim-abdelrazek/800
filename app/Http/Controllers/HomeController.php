@@ -64,7 +64,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->isAdmin()){
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()){
             $data = $this->getLastSevenDaysOfOrders();
         }else {
             $data = $this->getLastSevenDaysOfOrders(Auth::user()->partner_id);

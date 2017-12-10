@@ -5,14 +5,14 @@
                 <thead>
                 <tr>
                     <th rowspan="1" colspan="1">Name</th>
-                    @if(Auth::user()->isAdmin()) <th rowspan="1" colspan="1">Partner</th>@endif
+                    @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) <th rowspan="1" colspan="1">Partner</th>@endif
                     <th rowspan="1" colspan="1">Actions</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
                     <th rowspan="1" colspan="1">Name</th>
-                    @if(Auth::user()->isAdmin()) <th rowspan="1" colspan="1">Partner</th>@endif
+                    @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) <th rowspan="1" colspan="1">Partner</th>@endif
                     <th rowspan="1" colspan="1">Actions</th>
                 </tr>
                 </tfoot>
@@ -21,7 +21,7 @@
                 @foreach($usergroups as $usergroup)
                     <tr role="row" class="{{ $i%2==0 ? 'even' : 'odd' }}">
                         <td>{!! $usergroup->group_name !!}</td>
-                        @if(Auth::user()->isAdmin())<td>{!! \App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name "))->where('id', $usergroup->partner_id)->value('name') !!}</td>@endif
+                        @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())<td>{!! \App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name "))->where('id', $usergroup->partner_id)->value('name') !!}</td>@endif
 
                         <td>
                             <div class='btn-group'>
@@ -57,7 +57,7 @@
     <script type="application/javascript">
         (function ($) {
             $(document).ready(function () {
-            @if(Auth::user()->isAdmin())
+            @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
 
                 var table = $('#usergroups-datatable').DataTable({
                     lengthChange: false,

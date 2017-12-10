@@ -42,7 +42,7 @@ class StatusController extends Controller
     public function create()
     {
         //
-        if (Auth::user()->isAdmin()) {
+        if (Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
             return view('status.create');
         }else{
@@ -58,7 +58,7 @@ class StatusController extends Controller
      */
     public function store(Request $request)
     {
-        if ( Auth::user()->isAdmin()) {
+        if ( Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
             $request->validate([
                 'message' => 'required|min:3|max:50|unique:statuses',
                 'code' => 'required',
@@ -96,7 +96,7 @@ class StatusController extends Controller
      */
     public function edit($id)
     {
-        if (Auth::user()->isAdmin()) {
+        if (Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
             $status = Status::find($id);
 
@@ -119,7 +119,7 @@ class StatusController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ( Auth::user()->isAdmin()) {
+        if ( Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
             $request->validate([
                 'message' => 'required|min:3|max:50|unique:statuses,message,' . $id,
                 'code' => 'required',
@@ -149,7 +149,7 @@ class StatusController extends Controller
      */
     public function destroy($id)
     {
-        if (Auth::user()->isAdmin()){
+        if (Auth::user()->isAdmin() || Auth::user()->isCallCenter()){
             $status = Status::find($id);
 
             if (empty($status)) {

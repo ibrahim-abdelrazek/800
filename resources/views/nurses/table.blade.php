@@ -5,7 +5,7 @@
         <th rowspan="2">Personal Photo</th>
         <th rowspan="2">Name</th>
         <th colspan="2">Contact Details</th>
-        @if(Auth::user()->isAdmin())
+        @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
             <th rowspan="2">Partner</th>
         @endif
         <th rowspan="2">Actions</th>
@@ -22,7 +22,7 @@
         <th rowspan="1">Name</th>
         <th rowspan="1">Email</th>
         <th rowspan="1">Number</th>
-        @if(Auth::user()->isAdmin())
+        @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
             <th rowspan="1">Partner</th>
         @endif
         <th rowspan="1">Actions</th>
@@ -44,7 +44,7 @@
             <td>{{ $nurse->first_name ." " .$nurse->last_name }}</td>
             <td>{{$nurse->contact_email}}</td>
             <td>{{ '+' . $nurse->contact_number }}</td>
-            @if(Auth::user()->isAdmin())
+            @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                 <td>{{ $nurse->partner->first_name . ' ' . $nurse->partner->last_name }}</td>
             @endif
             <td>

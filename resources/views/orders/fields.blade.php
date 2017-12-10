@@ -284,7 +284,7 @@ if($data){
     var isEdit = <?= (request()->route()->getAction()['as'] == "orders.edit")? 1 : 0;?>;
     var isAdmin = "<?=  Auth::user()->isAdmin()?>";
     var isCallCenter = "<?=  Auth::user()->isCallCenter()?>";
-    var partnerID = "<?= (!Auth::user()->isAdmin())? Auth::user()->partner_id:'' ?>";
+    var partnerID = "<?= (!Auth::user()->isAdmin() && !Auth::user()->isCallCenter())? Auth::user()->partner_id:'' ?>";
     var partner = (isAdmin != 1 && isCallCenter != 1)? partnerID : $('#partner_id').val();
     var searchableUrl = '{{url("patient/searchpatient")}}?c='+partner;
     $(document).ready(function () {

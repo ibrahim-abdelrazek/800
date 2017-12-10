@@ -27,7 +27,7 @@
                     <li class="nav-item">
                         <a class="nav-link @if(!$errors->any()) active @endif" href="#" data-toggle="tab" data-target="#users-list">
                             All Users
-                            @if(Auth::user()->isAdmin())
+                            @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                                 <span class="badge badge-info badge-pill">{{ App\User::count()}}</span>
                             @elseif(Auth::user()->isPartner())
                                 <span class="badge badge-info badge-pill">{{ App\User::where('partner_id', Auth::user()->id)->count()}}</span>

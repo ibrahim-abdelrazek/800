@@ -23,7 +23,7 @@ class ProductController extends Controller
     public function index()
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
 
             $products = Product::get();
@@ -44,7 +44,7 @@ class ProductController extends Controller
     public function create()
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
             return view('products.create');
         }else {
@@ -61,7 +61,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
             $request->validate([
                 'id' => 'required|numeric|unique:products',
                 'name' => 'required|min:1|max:191',
@@ -103,7 +103,7 @@ class ProductController extends Controller
     public function show($id)
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
             $product = Product::find($id);
 
@@ -127,7 +127,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
             $product = Product::find($id);
 
@@ -152,7 +152,7 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
 
             $request->validate([
@@ -207,7 +207,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
-        if(Auth::user()->isAdmin()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter()) {
 
             $product = Product::find($id);
             if (empty($product)) {

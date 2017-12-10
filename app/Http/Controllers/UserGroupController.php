@@ -20,7 +20,7 @@ class UserGroupController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()) {
             if (Auth::user()->user_group_id == 1) {
 
                 $usergroups = UserGroup::where('id', '!=', 1)->where('id', '!=', 2)->get();
@@ -47,7 +47,7 @@ class UserGroupController extends Controller
     public function create()
     {
         //
-        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()) {
 
             return view('usergroups.create');
         }else {
@@ -65,7 +65,7 @@ class UserGroupController extends Controller
     public function store(Request $request)
     {
 
-        if(Auth::user()->isAdmin())
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
             $count = UserGroup::where('group_name', $request->group_name)->where('partner_id', $request->partner_id)->count();
         else
             $count = UserGroup::where('group_name', $request->group_name)->where('partner_id', Auth::user()->partner_id)->count();
@@ -77,7 +77,7 @@ class UserGroupController extends Controller
         }
 
 
-        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()) {
 
             $request->validate([
                 'group_name' => 'required|min:3|max:50|string'],
@@ -139,7 +139,7 @@ class UserGroupController extends Controller
     public function show($id)
     {
         //
-        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()) {
 
             $usergroup = UserGroup::find($id);
 
@@ -162,7 +162,7 @@ class UserGroupController extends Controller
      */
     public function edit($id)
     {
-        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()) {
 
             $usergroup = UserGroup::find($id);
 
@@ -217,9 +217,9 @@ class UserGroupController extends Controller
     public function update(Request $request, $id)
     {
         //
-        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()) {
 
-            if(Auth::user()->isAdmin())
+            if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                 $count = UserGroup::where('id','!=',$id)->where('group_name', $request->group_name)->where('partner_id', $request->partner_id)->count();
             else
                 $count = UserGroup::where('id','!=',$id)->where('group_name', $request->group_name)->where('partner_id', Auth::user()->partner_id)->count();
@@ -229,7 +229,7 @@ class UserGroupController extends Controller
                 $err = "The name has already been taken.";
                 $data = array();
                 $data['id']= $id;
-                    if(Auth::user()->isAdmin())
+                    if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                     $data['partner_id']=$request->partner_id ;
                 else
                     $data['partner_id']= Auth::user()->partner_id ;
@@ -298,7 +298,7 @@ class UserGroupController extends Controller
      */
     public function destroy($id)
     {
-        if(Auth::user()->isAdmin() || Auth::user()->isPartner()) {
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()) {
 
             $usergroup = UserGroup::find($id);
             if (empty($usergroup)) {

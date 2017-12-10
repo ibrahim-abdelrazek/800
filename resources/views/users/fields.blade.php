@@ -13,7 +13,7 @@
 
 
 
-@if(Auth::user()->isAdmin())
+@if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
     <!--  user_group_id -->
     <div class="form-group row">
         <label for="default-input"
@@ -202,7 +202,7 @@
 
 @push('customjs')
 
-@if(Auth::user()->isAdmin())
+@if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
 <script type="application/javascript">
     // asynchronous content
     (function ($) {
@@ -400,8 +400,9 @@
         handle_user_group_form();
         $("#user_group_id").on('change', function () {
             var isAdmin = "<?=  Auth::user()->isAdmin()?>";
-            var partnerID = "<?= (!Auth::user()->isAdmin())? Auth::user()->partner_id:'' ?>";
-            var partner_id = (isAdmin!='1')? partnerID : $('select[name=partner_id]').val();
+            var isCallCenter = "<?=  Auth::user()->isCallCenter()?>";
+            var partnerID = "<?= (!Auth::user()->isAdmin() && !Auth::user()->isCallCenter())? Auth::user()->partner_id:'' ?>";
+            var partner_id = (isAdmin!='1' && isCallCenter!='1')? partnerID : $('select[name=partner_id]').val();
             handle_user_group_form();
             if($("#user_group_id").val()==31) {
                 loadNurses(1, partner_id);

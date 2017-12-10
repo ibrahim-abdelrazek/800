@@ -83,7 +83,7 @@
             </li>
             @endif
           
-            @if(Auth::user()->isAdmin())
+            @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                   <li class="nav-item">
                     <a class="nav-link" href="{{ route('category.index') }}" role="button" aria-haspopup="true"
                        aria-expanded="false">

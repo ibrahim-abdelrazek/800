@@ -24,7 +24,7 @@
                     <li class="nav-item">
                         <a class="nav-link @if(!$errors->any()) active @endif" href="#" data-toggle="tab" data-target="#nurses-list">
                             All Nurses
-                            @if(Auth::user()->isAdmin())
+                            @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                                 <span class="badge badge-info badge-pill">{{ App\Nurse::count()}}</span>
                             @elseif(Auth::user()->isPartner())
                                 <span class="badge badge-info badge-pill">{{ App\Nurse::where('partner_id', Auth::user()->partner_id)->count()}}</span>

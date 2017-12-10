@@ -44,7 +44,7 @@
                         <!-- Content Here -->
                         @include('products.table')
                     </div>
-                    @if(Auth::user()->isAdmin() || Auth::user()->ableTo('add', App\Category::$model))
+                    @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->ableTo('add', App\Category::$model))
 
                         <div class="tab-pane @if($errors->any()) active @endif" id="new_product" role="tabpanel">
                             <!-- Second Content -->

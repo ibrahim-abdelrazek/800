@@ -381,7 +381,7 @@ class OrderController extends Controller
     // Don't Touch anything here PLS
     public function GetOrderTable(Request $request){
         $orderStatus = $request->orderstatus;
-        if(Auth::user()->isAdmin())
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
             $orders = Order::where('status_id', $orderStatus)->with('patient', 'doctor');
         else
             $orders = Order::where('status_id', $orderStatus)->where('partner_id', Auth::user()->partner_id)->with('patient', 'doctor');    
@@ -389,7 +389,7 @@ class OrderController extends Controller
         $response['iTotalRecords'] = $orders->count();
         $response['iTotalDisplayRecords'] = $orders->count();
         if(!empty($request->sSearch)){
-            if(Auth::user()->isAdmin())
+            if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
             $patients = Patient::where('first_name', 'LIKE', '%' . $request->sSearch . '%')->orWhere('last_name','like','%'. $request->sSearch . '%')->pluck('id');
             else
                $patients = Patient::where('partner_id', Auth::user()->partner_id)->where(function($query){
@@ -411,7 +411,7 @@ class OrderController extends Controller
     {
         $order = Order::where('id', $request->ObjectId)->first();
         if(!empty($order)){
-            if(Auth::user()->isAdmin() || ($order->partner_id == Auth::user()->partner_id))
+            if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || ($order->partner_id == Auth::user()->partner_id))
                 return response()->json($order, 200);
 
             return response()->json(['success'=>false], 200);
@@ -439,7 +439,7 @@ class OrderController extends Controller
         $order =  Order::find($request->id);
         if(!empty($order))
         {
-            if(Auth::user()->isAdmin() || ($order->partner_id == Auth::user()->partner_id)){
+            if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || ($order->partner_id == Auth::user()->partner_id)){
 
             if(file_exists(public_path() . $order->prescription)){
               return response()->json([
@@ -467,7 +467,7 @@ class OrderController extends Controller
         if(!empty($request->ProductId) && !empty($request->ObjectId)){
             $order = Order::find($request->ObjectId);
             if(!empty($order)){
-              if(Auth::user()->isAdmin() || ($order->partner_id == Auth::user()->partner_id) || Auth::user()->ableTo('view',Order::$model)){
+              if(Auth::user()->isAdmin() || Auth::user()->isCallCenter() || ($order->partner_id == Auth::user()->partner_id) || Auth::user()->ableTo('view',Order::$model)){
                  $product = Product::find($request->ProductId);
                  $response['ImageUrl'] = $product->ImageUrl;
                  $response['Product'] = $product->name;
@@ -485,12 +485,12 @@ class OrderController extends Controller
     public function GetUserItemDetail(Request $request){
         if(!empty($request->endUserId)){
             $patient = Patient::find($request->endUserId);
-            if(!empty($patient) && (Auth::user()->isAdmin() || $patient->partner_id == Auth::user()->partner_id))
+            if(!empty($patient) && (Auth::user()->isAdmin() || Auth::user()->isCallCenter() || $patient->partner_id == Auth::user()->partner_id))
                 return response()->json($patient, 200);
         }
     }
     public function InsertDetailItem(Request $request){
-         if((Auth::user()->isAdmin() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model)) && !empty($request->ProductId) && !empty($request->id) && !empty($request->Quantity) && !empty($request->insureRate) ){
+         if((Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model)) && !empty($request->ProductId) && !empty($request->id) && !empty($request->Quantity) && !empty($request->insureRate) ){
             $order = Order::where('id', $request->id)->first();
         //var_dump($order);die();
             if(!empty($order)){
@@ -518,7 +518,7 @@ class OrderController extends Controller
         return response()->json(['success'=>false, 'message'=>'not authorized'], 200);
     }
     public function CancelDetailItem(Request $request){
-        if((Auth::user()->isAdmin() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model))  && !empty($request->ProductId) && !empty($request->ObjectId) && !empty($request->IsCanceled) ){
+        if((Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model))  && !empty($request->ProductId) && !empty($request->ObjectId) && !empty($request->IsCanceled) ){
             $order = Order::where('id', $request->ObjectId)->first();
             if(!empty($order)){
                 
@@ -538,7 +538,7 @@ class OrderController extends Controller
         return response()->json(['success'=>false, 'message'=>'not authorized'], 200);
     }
     public function PrintOrder(Request $request, $id){
-         if( Auth::user()->isAdmin() || Auth::user()->isPartner()|| Auth::user()->ableTo('view',Order::$model) ) {
+         if( Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()|| Auth::user()->ableTo('view',Order::$model) ) {
 
             $order = Order::find($id);
 
@@ -552,7 +552,7 @@ class OrderController extends Controller
         }
     }    
     public function UpdateOrderDetailImage(Request $request){
-         if((Auth::user()->isAdmin() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model)) && !empty($request->id) && !empty($request->degree)) {
+         if((Auth::user()->isAdmin() || Auth::user()->isCallCenter() || Auth::user()->isPartner()|| Auth::user()->ableTo('edit',Order::$model)) && !empty($request->id) && !empty($request->degree)) {
 
             $order = Order::find($request->id);
 

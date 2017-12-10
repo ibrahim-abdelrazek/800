@@ -86,7 +86,7 @@ class UserController extends Controller
                     'username.regex' => 'Username not allowing space',
                 ]);
     
-            if(Auth::user()->isAdmin())
+            if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                 $request->validate(['partner_id'=> 'required|numeric']);
     
     
@@ -237,7 +237,7 @@ class UserController extends Controller
             'avatar' =>'image|mimes:jpeg,png,jpg,gif',
         ]);
 
-        if(Auth::user()->isAdmin())
+        if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
             $request->validate(['partner_id'=> 'required']);
 
         if($request->has('password') && !empty($request->password ))
@@ -259,7 +259,7 @@ class UserController extends Controller
         
         if($request->user_group_id == 1 || $request->user_group_id == 28 || $request->user_group_id == 29){
             $data['partner_id'] = null;
-        }elseif(Auth::user()->isAdmin())
+        }elseif(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
             $data['partner_id'] = $request->partner_id;
         else
             $data['partner_id'] = Auth::user()->partner_id;

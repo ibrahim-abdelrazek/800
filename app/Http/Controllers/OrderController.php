@@ -519,9 +519,13 @@ class OrderController extends Controller
                 $request->insureRate = 0;
                 $product = Product::where('id', $request->ProductId)->first();
                 if(!empty($order->products)){
-                    $order->products = $order->products + [$request->ProductId=>$request->Quantity];
-                    $order->copayments = $order->copayments + [$request->ProductId=>$request->insureRate];
-                    $order->prices = $order->prices + [$request->ProductId=>$product->price];
+                    if(!empty($order->products[$request->ProductId])){
+                        return response()->json(['success'=>false, 'message'=>"Can't add product twice"], 200);
+                    }else{
+                        $order->products = $order->products + [$request->ProductId=>$request->Quantity];
+                        $order->copayments = $order->copayments + [$request->ProductId=>$request->insureRate];
+                        $order->prices = $order->prices + [$request->ProductId=>$product->price];
+                    }
                 }else{
                     $order->products = [$request->ProductId=>$request->Quantity];
                     $order->copayments = [$request->ProductId=>$request->insureRate];
@@ -557,6 +561,11 @@ class OrderController extends Controller
 
                 $order->total = $normalPrice;
                 $order->totaldiscount = $total;
+
+//                var_dump($normalPrice);
+//                var_dump($totalDiscount);
+//                var_dump($total);
+//                var_dump($order);die();
                 if($order->save())
                     return response()->json(['success'=>true, 'message'=>'product has been canceled', 'Total'=>round($total, 2), 'NormalPriceTotal'=>$normalPrice, 'DiscountTotal'=>$totalDiscount, 'Orders'=>$order->Orders], 200);
             return response()->json(['success'=>false, 'message'=>'failed to save order'], 200);    

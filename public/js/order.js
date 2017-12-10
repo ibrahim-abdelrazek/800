@@ -587,7 +587,6 @@ $(document).ready(function () {
             beforeSend: function () { $('.loading').show(); },
             complete: function () { $('.loading').hide(); },
             success: function (data) {
-
                 if (data.SurName == null) {
                     data.SurName = "";
                 }
@@ -597,7 +596,12 @@ $(document).ready(function () {
                 $('#order-name').val(data.patient.first_name);
                 $('#order-surname').val(data.patient.last_name);
                 $('#order-mobile').val(data.patient.contact_number);
-                $('#order-note').val(data.notes);
+                if(data.notes != null){
+                    $('#order-note').val(data.notes);
+                    $("#order-note-div").show();
+                }else{
+                    $("#order-note-div").hide();
+                }
                 $('#order-status').val(data.status.id);
                 $('#total-price').append(data.FormattedTotal);
                 $("#order-created-date").append(GetFormattedDate(data.CreatedDate));
@@ -712,7 +716,6 @@ $(document).ready(function () {
                 if(data.Orders==null){
                     data.Orders = [];
                 }
-                console.log(data.Orders);
                 table = $('#table-order-detail').DataTable({
                     paging: false,
                     searching: false,

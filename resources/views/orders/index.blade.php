@@ -669,7 +669,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-success btn-outline bold" id="button_update_order_detail">Update Order Detail</a>
+                        {{--<a href="#" class="btn btn-success btn-outline bold" id="button_update_order_detail">Update Order Detail</a>--}}
                         <a href="#" class="btn btn-danger btn-outline bold" id="button_cancel_order_detail" hidden="hidden">Cancel Product</a>
                         <a href="#" class="btn btn-default  btn-outline bold" id="button_close_order_detail_modal" data-dismiss="modal" aria-hidden="true">Close</a>
                     </div>

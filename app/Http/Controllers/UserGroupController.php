@@ -94,6 +94,7 @@ class UserGroupController extends Controller
                 \App\HotelGuest::$model,
                 \App\Nurse::$model,
                 \App\Order::$model,
+                \App\Commission::$model,
                     ];
             $actions = ['view', 'add', 'edit', 'delete'];
             $data = array();
@@ -170,14 +171,12 @@ class UserGroupController extends Controller
                 \App\Partner::$model,
                 \App\PartnerType::$model,
                 \App\UserGroup::$model,
-                \App\Partner::$model,
-                \App\PartnerType::$model,
-                \App\UserGroup::$model,
                 \App\Doctor::$model,
                 \App\Patient::$model,
                 \App\HotelGuest::$model,
                 \App\Nurse::$model,
                 \App\Order::$model,
+                \App\Commission::$model,
                 ];
             $actions = ['view', 'add', 'edit', 'delete'];
 
@@ -255,6 +254,7 @@ class UserGroupController extends Controller
                 \App\HotelGuest::$model,
                 \App\Nurse::$model,
                 \App\Order::$model,
+                \App\Commission::$model,
                      ];
             $actions = ['view', 'add', 'edit', 'delete'];
             $data = array();

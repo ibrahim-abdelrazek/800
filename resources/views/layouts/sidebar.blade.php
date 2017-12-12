@@ -110,7 +110,16 @@
                 </a>
             </li>
             @endif
-            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\HotelGuest::$model))
+            {{--@if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Commission::$model))--}}
+                {{--<li class="nav-item">--}}
+                    {{--<a class="nav-link" href="{{ url('commission') }}" role="button" aria-haspopup="true"--}}
+                       {{--aria-expanded="false">--}}
+                        {{--<span class="ks-icon la la-usd"></span>--}}
+                        {{--<span>Commission</span>--}}
+                    {{--</a>--}}
+                {{--</li>--}}
+            {{--@endif--}}
+            @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('view', App\Commission::$model))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('hotelguest.index') }}" role="button" aria-haspopup="true"
                        aria-expanded="false">

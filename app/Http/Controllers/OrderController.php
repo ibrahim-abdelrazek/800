@@ -629,4 +629,39 @@ class OrderController extends Controller
             return response()->json(['success'=>false, 'message'=>'Not Authorized'], 200);
         }
     }
+    public function commission()
+    {
+        if (Auth::user()->isAdmin()) {
+
+//            $doctors = Doctor::select('doctors.*', 'partners.commission', 'orders.doctor_id', 'orders.total')//, DB::raw('SUM(total) as Total')
+//                ->join('partners', 'partners.id', '=', 'doctors.partner_id')
+//                ->join('orders', 'doctors.id', '=', 'orders.doctor_id')
+//                ->groupBy('orders.doctor_id')
+//                ->get();
+            $doctors = Doctor::select('doctors.*', 'partners.commission')
+                ->join('partners', 'partners.id', '=', 'doctors.partner_id')
+                ->get();
+            dump($doctors);
+
+            foreach ($doctors as $doctor){
+                $orders = Doctor::find($doctor->id)->orders;
+                dump($orders);
+            }
+        } elseif(Auth::user()->isPartner()){
+
+            $doctors = Doctor::where('partner_id', Auth::user()->partner_id)->get();
+
+        }elseif(Auth::user()->ableTo('view',Order::$model)) {
+
+            $order = Doctor::find();
+
+            if (empty($order)) {
+                return redirect(route('orders.index'));
+            }
+
+            return view('orders.commission.index')->with('order', $order);
+        }else{
+            return view('extra.404');
+        }
+    }
 }

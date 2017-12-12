@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
 //    Route::get('products/getProducts', 'ProductController@getProducts');
     Route::get('orders/print/{id}', 'OrderController@download');
     Route::resource('orders', 'OrderController');
+    Route::get('commission', 'OrderController@commission');
     Route::get('patient/searchpatient', 'PatientController@searchpatient');
     Route::post('orders/update-status', 'OrderController@updateStatus');
     Route::resource('status', 'StatusController');

@@ -17,7 +17,7 @@
 <!--  prescription -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('prescription', 'Prescription:',['class'=> 'required']) !!}
+        {!! Form::label('prescription', 'Prescription:',['class'=> '']) !!}
     </label>
 
     <div class="col-sm-10">
@@ -38,7 +38,7 @@
 </div>
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('insurance_claim', 'Insurance Claim:',['class'=> 'required']) !!}
+        {!! Form::label('insurance_claim', 'Insurance Claim:',['class'=> '']) !!}
     </label>
 
     <div class="col-sm-10">
@@ -97,7 +97,7 @@
         <div class="col-sm-10">
             @if(\App\Doctor::where('partner_id', Auth::user()->partner_id)->count() > 0)
 
-                {!! form::select ('doctor_id',App\Doctor::select(DB::raw("CONCAT(first_name,' ', last_name) AS name,id "))->where('partner_id', Auth::user()->partner_id)->pluck('name','id'),null,['class' => 'form-control'])!!}
+                {!! form::select ('doctor_id',App\Doctor::select(DB::raw("CONCAT(first_name,' ', last_name) AS name,id "))->where('partner_id', Auth::user()->partner_id)->pluck('name','id'),null,['class' => 'form-control doctor_id'])!!}
             @else
                 <p>You don't have added doctors yet, Please <a href="{{route('doctors.index')}}"><b class="label-danger">Add
                             new Doctor</b></a></p>
@@ -113,8 +113,12 @@
             {!! Form::label('partner', 'Partner',['class'=> 'required']) !!}
         </label>
 
+        @php
+        $partners = App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id')->toArray();
+        $partners[''] = "Select Partner..";
+        @endphp
         <div class="col-sm-10">
-            {!! Form::select('partner_id',App\Partner::select(DB::raw("CONCAT(first_name,' ',last_name) AS name"),'id')->pluck('name', 'id'),null,['class' => 'form-control','id'=>'partner_id'])!!}
+            {!! Form::select('partner_id',$partners,null,['class' => 'select2 form-control','id'=>'partner_id'])!!}
         </div>
     </div>
     <!-- Patients Holder -->
@@ -133,14 +137,18 @@
             {!! Form::label('doctor', 'Doctor',['class'=> 'required']) !!}
         </label>
         <div id="doctors-holder" class="col-sm-10">
-            {!! form::select ('doctor_id',App\Doctor::select(DB::raw("CONCAT(first_name,' ', last_name) AS name,id "))->where('partner_id', Auth::user()->partner_id)->pluck('name','id'),null,['class' => 'form-control '])!!}
+            @php
+                $doctors = App\Doctor::select(DB::raw("CONCAT(first_name,' ', last_name) AS name,id "))->where('partner_id', Auth::user()->partner_id)->pluck('name','id')->toArray();
+                $doctors[''] = "Select Doctor..";
+            @endphp
+            {!! form::select ('doctor_id',$doctors,null,['class' => 'form-control doctor_id'])!!}
         </div>
     </div>
 @endif
 <!--  product_id -->
 <div class="form-group row">
     <label for="default-input" class="col-sm-2 form-control-label">
-        {!! Form::label('product', 'Product',[]) !!}
+        {!! Form::label('product', 'Products',[]) !!}
     </label>
 
     <div id="products_wrapper" class="col-sm-10">
@@ -148,33 +156,42 @@
             @php $k=1; $products = $order->products; @endphp
             @if(count($products) > 0)
                 @foreach($products as $key => $val)
-                    <div class="form-group row">
-                        <div class="col-sm-3">
+                    @php $disabled = (!isset($order->canceled[$key]))? '':'disabled';
 
-                            {!! form :: select ('products[]',App\Product::pluck('name','id'),$key,['id'=>'products-holder', 'class' => 'select2 form-control'])!!}
+                    $prods = App\Product::pluck('name','id')->toArray();
+                    $prods[''] = "Select Product..";
+                    @endphp
+                    <div class="form-group row">
+                        <div class="col-sm-4">
+
+                            {!! form :: select ('products[]',$prods,$key,['id'=>'products-holder', 'class' => 'select2 form-control products-holder', $disabled => $disabled])!!}
 
                         </div>
-                    <div class="text-center col-sm-1">
-                        <span class="label label-danger">X</span>
-                    </div>
+                    {{--<div class="text-center col-sm-1">--}}
+                        {{--<span class="label label-danger">X</span>--}}
+                    {{--</div>--}}
                     <div class="col-sm-3">
-                        {!! Form::text('quantities[]', $val, [  'placeholder'=>'Enter Product\'s quantity','id'=>'products-holder',  'class' => 'form-control']) !!}
+                        {!! Form::text('quantities[]', $val, [  'placeholder'=>'Enter Product\'s quantity',  'class' => 'form-control', $disabled => $disabled]) !!}
                     </div>
                     <div class="col-sm-3">
                         @php
-                            $cop[-1] = 'Select Co-Payments';
+                            $cop[-1] = 'No Co-Payment';
                         @endphp
-                        @for($i = 0; $i <= 35; $i=$i+5)
+                        @for($i = 5; $i <= 35; $i=$i+5)
                             @php $cop[$i] = $i; @endphp
                         @endfor
-                        {!! Form::select('copayments[]', $cop, $order->copayments[$key], ['class' => 'select2 form-control']) !!}
+                        {!! Form::select('copayments[]', $cop, $order->copayments[$key], ['class' => 'select2 form-control', $disabled => $disabled]) !!}
                         
                     </div>
                     <div class="col-sm-2">
                         @if($k == 1 )
                         <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
                         @else
+                            @if(!isset($order->canceled[$key]))
                             <a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a>
+                            @else
+                                <span class="text-danger">Canceled</span>
+                            @endif
                         @endif
                             @php $k++; @endphp
 
@@ -185,24 +202,24 @@
                 <div class="form-group row">
                 @php 
                     $prods = App\Product::pluck('name','id')->toArray();
-                    $prods[] = ['0' => 'Select Product'];
+                    $prods[''] = "Select Product..";
                 @endphp    
 
-                 <div class="col-sm-3">
-                     {!! form :: select ('products[]',$prods,0,['id'=>'products-holder', 'class' => 'select2 form-control'])!!}
+                 <div class="col-sm-4">
+                     {!! form :: select ('products[]',$prods,null,['id'=>'products-holder', 'class' => 'select2 form-control products-holder'])!!}
 
                  </div>
-                 <div class="text-center col-sm-1">
-                     <span class="label label-danger">X</span>
-                 </div>
+                 {{--<div class="text-center col-sm-1">--}}
+                     {{--<span class="label label-danger">X</span>--}}
+                 {{--</div>--}}
                  <div class="col-sm-3">
                      {!! Form::text('quantities[]', null, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}
                  </div>
                  <div class="col-sm-3">
-                    @php 
-                    $cop[-1] = 'Select Co-Payment';
+                    @php
+                    $cop[-1] = 'No Co-Payment';
                     @endphp
-                    @for($i = 0; $i <= 35; $i=$i+5)
+                    @for($i = 5; $i <= 35; $i=$i+5)
                     @php $cop[$i] = $i; @endphp
                     @endfor 
                         {!! Form::select('copayments[]', $cop, null, ['class' => 'form-control']) !!}
@@ -216,30 +233,36 @@
              <div class="form-group row"> 
                 @php 
                     $prods = App\Product::pluck('name','id')->toArray();
-                    $prods[] = ['0' => 'Select Product'];
+                    $prods[''] = "Select Product..";
                 @endphp    
 
-                 <div class="col-sm-3">
-                     {!! form :: select ('products[]',$prods,0,['id'=>'products-holder', 'class' => 'select2 form-control'])!!}
+                 <div class="col-sm-4">
+                     {!! form :: select ('products[]',$prods,null,['id'=>'products-holder', 'class' => 'select2 form-control products-holder'])!!}
 
                  </div>
-                 <div class="text-center col-sm-1">
-                     <span class="label label-danger">X</span>
-                 </div>
+                 {{--<div class="text-center col-sm-1">--}}
+                     {{--<span class="label label-danger">X</span>--}}
+                 {{--</div>--}}
                  <div class="col-sm-3">
+                     <div class="form-group">
                      {!! Form::text('quantities[]', null, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}
+                     </div>
                  </div>
                  <div class="col-sm-3">
                     @php 
-                    $cop[-1] = 'Select Co-Payment';
+                    $cop[-1] = 'No Co-Payment';
                     @endphp
-                    @for($i = 0; $i <= 35; $i=$i+5)
+                    @for($i = 5; $i <= 35; $i=$i+5)
                     @php $cop[$i] = $i; @endphp
-                    @endfor 
+                    @endfor
+                    <div class="form-group">
                         {!! Form::select('copayments[]', $cop, null, ['class' => 'form-control']) !!}
                     </div>
+                </div>
                  <div class="col-sm-2">
-                     <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
+                     <div class="form-group">
+                        <a href="javascript:void(0);" style="padding-top:6px;" class="add_button btn btn-success" title="Add field"><span class="la la-plus-circle la-2x"></span> </a>
+                     </div>
                  </div>
              </div>
         @endif
@@ -287,7 +310,10 @@ if($data){
     var partner = (isAdmin != 1 && isCallCenter != 1)? partnerID : $('#partner_id').val();
     var searchableUrl = '{{url("patient/searchpatient")}}?c='+partner;
     $(document).ready(function () {
-        $('#products-holder').select2();
+        $('.products-holder').select2({allowClear:true,placeholder: "Select Product.."});
+        $('#partner_id').select2({allowClear:true,placeholder: "Select Partner.."});
+        $('.doctor_id').select2({allowClear:true,placeholder: "Select Doctor.."});
+
         $("#partner_id").on('change', function () {
             partner = $('#partner_id').val();
             searchableUrl = '{{url("patient/searchpatient")}}?c='+partner;

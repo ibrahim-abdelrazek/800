@@ -376,16 +376,16 @@
                                 <div class="modal-footer">
                                     <div style="margin-top:20px">
                                         <div class="pull-left">
-                                            <a href="#" class="btn btn-success btn-outline bold"
-                                               id="button_update_order">Edit Order</a>
-                                            <a href="#" class="btn btn-default bold" id="button_order_detail_add"
-                                               hidden="hidden">Add Product</a>
-                                            <a href="#" class="btn btn-primary bold" id="button_user_detail"
-                                               hidden="hidden">View User Details</a>
+                                            @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
+                                            <a href="#" class="btn btn-success btn-outline bold" id="button_update_order">Edit Order</a>
+                                            @endif
+                                            <a href="#" class="btn btn-default bold" id="button_order_detail_add" hidden="hidden">Add Product</a>
+                                            <a href="#" class="btn btn-primary bold" id="button_user_detail" hidden="hidden">View User Details</a>
                                         </div>
                                         <div class="pull-right">
                                             <a href="#" class="btn btn-primary bold" target="_blank" id="button_print_order"><i class="md md-print"></i>&nbsp;Print Order</a>
-                                            
+
+                                            @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                                             <div class="btn-group">
                                      <button class="status-holder btn btn-block" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                <span class="badge ks-circle badge-default">Order Confirmed</span>
@@ -403,7 +403,7 @@
                                             </div>
                                             @endif
                                         </div>
-                                        
+                                        @endif
                                         
                                         </div>
                                     </div>

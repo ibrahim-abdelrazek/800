@@ -24,28 +24,33 @@
 @endsection
 @push('customjs')
 
+    @php
+        $prods = App\Product::pluck('name','id')->toArray();
+        $prods[''] = "Select Product..";
+        //$prods[] = ['0' => 'Select Product'];
+    @endphp
 
-    
     <script type="text/javascript">
 
         (function($){
             $(document).ready(function(){
                 var addButton = $('.add_button'); //Add button selector
                 var wrapper = $('#products_wrapper'); //Input field wrapper
-                var productSelector = '{!! form :: select ('products[]',App\Product::pluck('name','id'),null,['class' => 'form-control'])!!}';
+                var productSelector = '{!! form :: select ('products[]',$prods,null,['class' => 'form-control product-select2'])!!}';
                 var quantitiesSelector = '{!! Form::text('quantities[]', null, [  'placeholder'=>'Enter Product\'s quantity', 'class' => 'form-control']) !!}';
                 //var copaymentsSelector = '{!! Form::text('copayments[]', null, [  'placeholder'=>'Enter Product\'s co payment', 'class' => 'form-control']) !!}';
                 @php
-                    $cop[-1] = 'Select Co-Payments';
+                    $cop[-1] = 'No Co-Payment';
                 @endphp
-                @for($i = 0; $i <= 35; $i=$i+5)
+                @for($i = 5; $i <= 35; $i=$i+5)
                 @php $cop[$i] = $i; @endphp
                 @endfor
                 var copaymentsSelector = '{!! Form::select('copayments[]', $cop, null, ['class' => 'select2 form-control']) !!}';
-                var fieldHTML = '<div class="form-group row"><div class="col-sm-3">' + productSelector + '</div><div class="col-sm-1 text-center"><span>X</span></div>';
+                var fieldHTML = '<div class="form-group row"><div class="col-sm-4">' + productSelector + '</div>';
                 fieldHTML += '<div class="col-sm-3">'+quantitiesSelector+'</div><div class="col-sm-3">'+copaymentsSelector+'</div><div class="col-sm-2"><a href="javascript:void(0);" style="padding-top:6px;" class=" remove_button btn btn-danger" title="Remove field"><span class="la la-minus-circle la-2x"></span> </a></div></div>'; //New input field html
                 $(addButton).click(function(){ //Once add button is clicked
                     $(wrapper).append(fieldHTML); // Add field html
+                    $('.product-select2').select2({allowClear:true,placeholder: "Select Product.."});
                 });
                 $(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
                     e.preventDefault();
@@ -96,7 +101,7 @@
                     $.getJSON("{{url('/doctors/get-doctors')}}/" + partner_id, [], function (data) {
                         var html = '';
                         if(data.success){
-                            html = '<select class="form-control ks-select" name="doctor_id">';
+                            html = '<select class="form-control ks-select doctor_id" name="doctor_id">';
                             $.each(data.data , function (key, value) {
                                 html += '<option value="'+key+'">'+value+'</option>';
                             });
@@ -108,6 +113,7 @@
                             $('input[type=submit]').prop('disabled', function(i, v) { return true; });
                         }
                         $('#doctors-holder').html(html);
+                        $('.doctor_id').select2({allowClear:true,placeholder: "Select Doctor..",width: '100%'});
 
                     })
                 }

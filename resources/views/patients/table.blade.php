@@ -24,7 +24,7 @@
                 @php($i=1)
         @foreach($patients as $patient)
             <tr>
-                <td>{{ $patient->first_name . $patient->last_name}}</td>
+                <td>{{ $patient->first_name .' '. $patient->last_name}}</td>
                 <td>{{ '(+971) ' .$patient->contact_number}}</td>
                 <td>{{ $patient->email}}</td>
                 <td>{{ $patient->notes }}</td>

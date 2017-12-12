@@ -84,8 +84,8 @@ class PatientController extends Controller
                 'id_number' => '',
 //                'id_expiry' => 'required',
                 'notes' => 'max:200|min:0',
-                'city'=>'required|numeric',
-                'area' => 'required|numeric',
+                'city'=>'numeric',
+                'area' => 'numeric',
                 'street' => 'max:150',
                 'type1' => '',
             ]);
@@ -291,8 +291,8 @@ class PatientController extends Controller
                 'id_number' => '',
 //                'id_expiry' => 'required',
                 'notes' => 'max:200|min:0',
-                'city'=>'required|numeric',
-                'area' => 'required|numeric',
+                'city'=>'numeric',
+                'area' => 'numeric',
                 'street' => 'max:150',
                 'type1' => '',
             ];

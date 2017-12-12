@@ -123,7 +123,7 @@
     <label for="default-input"
            class="col-sm-2 form-control-label">{!! Form::label('contact_number', 'Contact Number:',['class'=> 'required']) !!}</label>
     <div class="col-sm-10">
-        {!! Form::text('contact_number', null, [  'placeholder'=>'Enter Doctor\'s Number','style'=> 'padding-left:50px', 'maxlength'=> '10',  'class' => 'form-control phone-input', 'style' => 'padding-left: 100px;']) !!}
+        {!! Form::text('contact_number', null, [  'placeholder'=>'Enter contact Number','style'=> 'padding-left:50px', 'maxlength'=> '10',  'class' => 'form-control phone-input', 'style' => 'padding-left: 100px;']) !!}
     </div>
 </div>
 

@@ -70,8 +70,8 @@ class OrderController extends Controller
         if(Auth::user()->ableTo('add',Order::$model)) {
 
             $this->validate($request, [
-                'prescription' => 'required|mimes:jpeg,png,jpg,gif,svg,pdf',
-                'insurance_claim'=> 'required|mimes:jpeg,png,jpg,gif,svg,pdf',
+                'prescription' => 'mimes:jpeg,png,jpg,gif,svg,pdf',
+                'insurance_claim'=> 'mimes:jpeg,png,jpg,gif,svg,pdf',
                 'notes' => 'nullable|string',
                 'patient_id' => 'required|numeric',
                 'doctor_id' => 'required|numeric',
@@ -136,8 +136,8 @@ class OrderController extends Controller
                 if(count($request->products) > 1 || (count($request->products) == 1 && $request->products[0] != '0')) {
                     for ($i = 0; $i < count($request->products); $i++) {
                         $price = Product::find($request->products[$i])->price;
-                        $order['totaldiscount'] += ($request->copayments[$i] > 0)? $price * ($request->copayments[$i] / 100) : $price;
-                        $order['total'] += $price;
+                        $order['totaldiscount'] += ($request->copayments[$i] > 0)? $request->quantities[$i] * $price * ($request->copayments[$i] / 100) : $request->quantities[$i] * $price;
+                        $order['total'] += $request->quantities[$i] * $price;
                         $prices[] = $price;
                     }
                     $order = array_merge($order, [
@@ -288,30 +288,45 @@ class OrderController extends Controller
                 // remove old image
                 $order = array_merge($order, ['insurance_claim' => $insurance_claim]);
             }
-            $order['products'] = null;
-            $order['copayments'] = null;
-            $order['prices'] = null;
-            $order['total'] = 0;
-            $order['totaldiscount'] = 0;
-            $prices = array();
+
+
             if($request->has('products') && is_array($request->products)){
                 if(count($request->products) > 1 || (count($request->products) == 1 && $request->products[0] != '0')) {
+                    $order['products'] = $orderr->products;
+                    $order['copayments'] = $orderr->copayments;
+                    $order['prices'] = $orderr->prices;
+                    $order['canceled'] = $orderr->canceled;
+                    $order['total'] = $orderr->total;
+                    $order['totaldiscount'] = $orderr->totaldiscount;
+                    unset($order['quantities']);
+                    $prices = array();
+
                     for ($i = 0; $i < count($request->products); $i++) {
                         $price = Product::find($request->products[$i])->price;
-                        $order['totaldiscount'] += ($request->copayments[$i] > 0)? $price * ($request->copayments[$i] / 100) : $price;
-                        $order['total'] += $price;
+
+                        if(!isset($orderr->products[$request->products[$i]])){
+                            $order['products'][$request->products[$i]] = $request->quantities[$i];
+                            $order['copayments'][$request->products[$i]] = $request->copayments[$i];
+                            $order['prices'][$request->products[$i]] = $price;
+                            $order['total'] += $request->quantities[$i] * $price;
+                            $order['totaldiscount'] += ($request->copayments[$i] > 0)? $request->quantities[$i] * $price * ($request->copayments[$i] / 100) : $request->quantities[$i] * $price;
+                        }
                         $prices[] = $price;
                     }
-                    $order = array_merge($order, [
-                        'products' => array_combine($request->products, $request->quantities),
-                        'copayments' => array_combine($request->products, $request->copayments),
-                        'prices' => array_combine($request->products, $prices)
-                    ]);
+
+                    foreach($orderr->products as $key => $value){
+                        if(!in_array($key, $request->products)){
+                            $price = Product::find($key)->price;
+                            $order['canceled'][$key] = true;
+                            $order['total'] -= $order['products'][$key] * $price;
+                            $order['totaldiscount'] -= ($order['copayments'][$key]  > 0)? $order['products'][$key] * $price * ($order['copayments'][$key] / 100) : $order['products'][$key] * $price;
+                        }
+                    }
                 }
             } 
          
 
-            //dd($orderr);
+            //dd($order);
             $orderr->update($order);
 
             return redirect(route('orders.index'));
@@ -531,7 +546,11 @@ class OrderController extends Controller
                     $order->copayments = [$request->ProductId=>$request->insureRate];
                 }
                 $normalPrice = $order->total + ($product->price * $request->Quantity);
-                $total = $order->totaldiscount + ($product->price * $request->Quantity * ( $request->insureRate / 100));
+                if($request->insureRate > 0){
+                    $total = $order->totaldiscount + ($product->price * $request->Quantity * ( $request->insureRate / 100));
+                }else{
+                    $total = $order->totaldiscount + ($product->price * $request->Quantity);
+                }
                 $totalDiscount = $normalPrice - $total;
 
                 $order->total = $normalPrice;
@@ -556,7 +575,11 @@ class OrderController extends Controller
                     $order->canceled = [$request->ProductId=>true];
 
                 $normalPrice = $order->total - ($order->prices[$request->ProductId] * $order->products[$request->ProductId] );
-                $total = $order->totaldiscount - ($order->prices[$request->ProductId] * $order->products[$request->ProductId] * ($order->copayments[$request->ProductId] / 100));
+                if($order->copayments[$request->ProductId] > 0){
+                    $total = $order->totaldiscount - ($order->prices[$request->ProductId] * $order->products[$request->ProductId] * ($order->copayments[$request->ProductId] / 100));
+                }else{
+                    $total = $order->totaldiscount - ($order->prices[$request->ProductId] * $order->products[$request->ProductId]);
+                }
                 $totalDiscount = $normalPrice - $total;
 
                 $order->total = $normalPrice;

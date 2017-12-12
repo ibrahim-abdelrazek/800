@@ -152,7 +152,7 @@
 <!-- address -->
 <!-- address city-->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address city', 'City:',['class'=> 'required']) !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address city', 'City:',['class'=> '']) !!}</label>
     <div class="col-sm-10">
         {!! Form::select('city',App\City::pluck('city_name','id'),null,['class' => 'form-control'])!!}
     </div>
@@ -160,7 +160,7 @@
 
 <!-- address area-->
 <div class="form-group row" >
-    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address area', 'Area:',['class'=> 'required']) !!}</label>
+    <label for="default-input" class="col-sm-2 form-control-label">{!! Form::label('address area', 'Area:',['class'=> '']) !!}</label>
     <div id="neighbors-holder" class="col-sm-10"></div>
 </div>
 

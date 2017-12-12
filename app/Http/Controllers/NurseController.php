@@ -52,7 +52,8 @@ class NurseController extends Controller
      */
     public function create()
     {
-        //
+        return view('extra.404');
+
         if (Auth::user()->ableTo('add', Nurse::$model)) {
 
             return view('nurses.create');
@@ -69,7 +70,7 @@ class NurseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return view('extra.404');
         if (Auth::user()->ableTo('add', Nurse::$model)) {
 
             $request->validate([

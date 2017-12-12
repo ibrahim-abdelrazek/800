@@ -61,7 +61,8 @@ class DoctorController extends Controller
      */
     public function create()
     {
-        //
+        return view('extra.404');
+
         if (Auth::user()->ableTo('add', Doctor::$model))
             return view('doctors.create');
             
@@ -77,6 +78,8 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
+        return view('extra.404');
+
        if (Auth::user()->ableTo('add', Doctor::$model)) {
             $request->validate([
                 'first_name' => 'required|string|max:100',

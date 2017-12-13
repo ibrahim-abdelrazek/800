@@ -638,30 +638,32 @@ class OrderController extends Controller
 //                ->join('orders', 'doctors.id', '=', 'orders.doctor_id')
 //                ->groupBy('orders.doctor_id')
 //                ->get();
-            $doctors = Doctor::select('doctors.*', 'partners.commission')
+            $doctors = DB::table('doctors')->select(DB::raw("CONCAT(doctors.first_name, ' ' , doctors.last_name) AS doctor, CONCAT(partners.first_name, ' ' , partners.last_name) AS partner, 'doctors.created_at AS created_at', 'partners.commission'"))
                 ->join('partners', 'partners.id', '=', 'doctors.partner_id')
+                ->orderBy('doctors.created_at', 'DESC')
                 ->get();
-            dump($doctors);
+            dd($doctors);
 
-            foreach ($doctors as $doctor){
-                $orders = Doctor::find($doctor->id)->orders;
-                dump($orders);
-            }
+            // foreach ($doctors as $doctor){
+            //     $orders = Doctor::find($doctor->id)->orders;
+            //     dump($orders);
+            // }
         } elseif(Auth::user()->isPartner()){
 
-            $doctors = Doctor::where('partner_id', Auth::user()->partner_id)->get();
+            $doctors = Doctor::where('partner_id', Auth::user()->id)->get();
+            dump($doctors);
 
-        }elseif(Auth::user()->ableTo('view',Order::$model)) {
+        }elseif(Auth::user()->ableTo('view',Commission::$model)) {
 
-            $order = Doctor::find();
+            $order = where('partner_id', Auth::user()->partner_id)->get();
+            dump($doctors);
 
             if (empty($order)) {
                 return redirect(route('orders.index'));
             }
-
-            return view('orders.commission.index')->with('order', $order);
         }else{
             return view('extra.404');
         }
+        return view('orders.commission.index')->with('doctors', $doctors);
     }
 }

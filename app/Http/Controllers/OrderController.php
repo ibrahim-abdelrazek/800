@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Commission;
 use App\Doctor;
 use App\Patient;
 use App\Product;
@@ -629,41 +630,31 @@ class OrderController extends Controller
             return response()->json(['success'=>false, 'message'=>'Not Authorized'], 200);
         }
     }
-    public function commission()
+    public function Commission()
     {
         if (Auth::user()->isAdmin()) {
-
-//            $doctors = Doctor::select('doctors.*', 'partners.commission', 'orders.doctor_id', 'orders.total')//, DB::raw('SUM(total) as Total')
-//                ->join('partners', 'partners.id', '=', 'doctors.partner_id')
-//                ->join('orders', 'doctors.id', '=', 'orders.doctor_id')
-//                ->groupBy('orders.doctor_id')
-//                ->get();
-            $doctors = DB::table('doctors')->select(DB::raw("CONCAT(doctors.first_name, ' ' , doctors.last_name) AS doctor, CONCAT(partners.first_name, ' ' , partners.last_name) AS partner, 'doctors.created_at AS created_at', 'partners.commission'"))
-                ->join('partners', 'partners.id', '=', 'doctors.partner_id')
-                ->orderBy('doctors.created_at', 'DESC')
-                ->get();
-            dd($doctors);
-
-            // foreach ($doctors as $doctor){
-            //     $orders = Doctor::find($doctor->id)->orders;
-            //     dump($orders);
-            // }
+            $doctors = Doctor::all();
         } elseif(Auth::user()->isPartner()){
-
             $doctors = Doctor::where('partner_id', Auth::user()->id)->get();
-            dump($doctors);
-
+        }elseif(Auth::user()->user_group_id == 31 ){
+            $doctors = Doctor::where('id', Auth::user()->id)->get();
         }elseif(Auth::user()->ableTo('view',Commission::$model)) {
-
-            $order = where('partner_id', Auth::user()->partner_id)->get();
-            dump($doctors);
-
-            if (empty($order)) {
-                return redirect(route('orders.index'));
-            }
+            $doctors = Doctor::where('partner_id', Auth::user()->partner_id)->get();
         }else{
             return view('extra.404');
         }
         return view('orders.commission.index')->with('doctors', $doctors);
+    }
+
+    public function CommissionDetails(Request $request){
+//        dd($request->all());
+        if($request->ajax()){
+            $orders = DB::table('orders')->select(DB::raw('SUM(totaldiscount) as `TOTAL`'), DB::raw("DATE_FORMAT(created_at, '%m/%Y') new_date"),  DB::raw('YEAR(created_at) year, MONTH(created_at) month'))
+                ->where('doctor_id', $request->ID)
+                ->groupby('year','month')
+                ->get();
+            return json_encode($orders);
+        }
+        return false;
     }
 }

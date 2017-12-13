@@ -23,5 +23,7 @@ Homestead.json
 
 .idea/
 public/upload/
+vendor/
 .git/
 demo/
+storage/debugbar/.gitignore

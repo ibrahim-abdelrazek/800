@@ -41,7 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
 //    Route::get('products/getProducts', 'ProductController@getProducts');
     Route::get('orders/print/{id}', 'OrderController@download');
     Route::resource('orders', 'OrderController');
-    Route::get('commission', 'OrderController@commission');
+    Route::get('commission', 'OrderController@Commission');
     Route::get('patient/searchpatient', 'PatientController@searchpatient');
     Route::post('orders/update-status', 'OrderController@updateStatus');
     Route::resource('status', 'StatusController');
@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('Order/CancelDetailItem', 'OrderController@CancelDetailItem');
     Route::get('orders/{id}/print', 'OrderController@PrintOrder');
     Route::get('Order/UpdateOrderDetailImage', 'OrderController@UpdateOrderDetailImage');
+    Route::post('Order/CommissionDetails', 'OrderController@CommissionDetails');
     
 });
 

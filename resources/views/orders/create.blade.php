@@ -108,7 +108,7 @@
                             html += '</select>';
                             $('input[type=submit]').prop('disabled', function(i, v) { return false; });
                         }else{
-                            html = "<p>You don't have added doctors yet, Please <a href='{{route("doctors.index")}}'><b class='label-danger'>Add " +
+                            html = "<p>You don't have added doctors yet, Please <a href='{{route("users.index")}}?type=31'><b class='label-danger'>Add " +
                                 "new doctor</b></a></p>";
                             $('input[type=submit]').prop('disabled', function(i, v) { return true; });
                         }

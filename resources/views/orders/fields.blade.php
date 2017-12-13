@@ -99,7 +99,7 @@
 
                 {!! form::select ('doctor_id',App\Doctor::select(DB::raw("CONCAT(first_name,' ', last_name) AS name,id "))->where('partner_id', Auth::user()->partner_id)->pluck('name','id'),null,['class' => 'form-control doctor_id'])!!}
             @else
-                <p>You don't have added doctors yet, Please <a href="{{route('doctors.index')}}"><b class="label-danger">Add
+                <p>You don't have added doctors yet, Please <a href="{{route('users.index')}}?type=31"><b class="label-danger">Add
                             new Doctor</b></a></p>
             @endif
         </div>

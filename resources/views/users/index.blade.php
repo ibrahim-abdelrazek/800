@@ -25,7 +25,7 @@
             <div class="container-fluid">
                 <ul class="nav ks-nav-tabs ks-tabs-page-default ks-tabs-full-page">
                     <li class="nav-item">
-                        <a class="nav-link @if(!$errors->any()) active @endif" href="#" data-toggle="tab" data-target="#users-list">
+                        <a class="nav-link @if(!$errors->any() && !isset($_GET['type'])) active @endif " href="#" data-toggle="tab" data-target="#users-list">
                             All Users
                             @if(Auth::user()->isAdmin() || Auth::user()->isCallCenter())
                                 <span class="badge badge-info badge-pill">{{ App\User::count()}}</span>
@@ -39,7 +39,7 @@
                     </li>
                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\User::$model))
                         <li class="nav-item">
-                            <a class="nav-link @if($errors->any()) active @endif" href="#" data-toggle="tab" data-target="#new-user">
+                            <a class="nav-link @if($errors->any() || isset($_GET['type'])) active @endif" href="#" data-toggle="tab" data-target="#new-user">
                                 Create New User
                                 @if($errors->any())
                                     <span class="badge badge-danger badge-pill">{{ count($errors->all()) }}</span>
@@ -49,14 +49,14 @@
                     @endif
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane @if(!$errors->any()) active @endif ks-column-section" id="users-list" role="tabpanel">
+                    <div class="tab-pane @if(!$errors->any() && !isset($_GET['type'])) active @endif ks-column-section" id="users-list" role="tabpanel">
                         <!-- Content Here -->
                         @include('users.table')
                     </div>
 
                     @if(Auth::user()->isAdmin() || Auth::user()->isPartner() || Auth::user()->ableTo('add', App\User::$model))
 
-                        <div class="tab-pane @if($errors->any()) active @endif" id="new-user" role="tabpanel">
+                        <div class="tab-pane @if($errors->any() || isset($_GET['type'])) active @endif" id="new-user" role="tabpanel">
                             <!-- Second Content -->
 
                             @include('users.create')

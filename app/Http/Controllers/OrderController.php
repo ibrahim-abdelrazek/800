@@ -651,7 +651,7 @@ class OrderController extends Controller
         if($request->ajax()){
             $orders = DB::table('orders')->select(DB::raw('SUM(totaldiscount) as `TOTAL`'), DB::raw("DATE_FORMAT(created_at, '%m/%Y') new_date"),  DB::raw('YEAR(created_at) year, MONTH(created_at) month'))
                 ->where('doctor_id', $request->ID)
-                ->where('order_id', 4)
+                ->where('status_id', 4)
                 ->groupby('year','month')
                 ->get();
             return json_encode($orders);

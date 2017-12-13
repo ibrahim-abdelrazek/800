@@ -52,9 +52,11 @@
         <label for="default-input"
                class="col-sm-2 form-control-label">{!! Form::label('user_group_id', 'User Group:') !!}</label>
         <div class="col-sm-10">
+
+            @php $type = (isset($_GET['type']))? $_GET['type'] : null;@endphp
             {!! Form::select('user_group_id',
         App\UserGroup::where('id', '!=', 2)->where('id', '!=', 1)->where('id', '!=', 28)->where('id', '!=', 29)->get()->pluck("group_name","id")
-        , null, [  'class' => 'form-control ks-select']) !!}
+        , $type, [  'class' => 'form-control ks-select']) !!}
         </div>
     </div>
 @endif

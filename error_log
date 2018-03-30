@@ -1,2 +1,0 @@
-[16-Nov-2017 17:26:17 UTC] PHP Fatal error:  Interface 'JsonSerializable' not found in /home/pharmacy/public_html/vendor/laravel/framework/src/Illuminate/Support/Collection.php on line 19
-[16-Nov-2017 17:26:25 UTC] PHP Fatal error:  Interface 'JsonSerializable' not found in /home/pharmacy/public_html/vendor/laravel/framework/src/Illuminate/Support/Collection.php on line 19
